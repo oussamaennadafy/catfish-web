@@ -2,7 +2,7 @@
 import Video from "@/common/components/Video";
 import { useParams } from "next/navigation";
 import Peer, { MediaConnection } from "peerjs";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
 
@@ -20,88 +20,7 @@ export default function Home() {
 
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
 
-  useEffect(() => {
-    const socket = io('http://localhost:3000');
-    const myPeer = new Peer(userId, {
-      host: '/',
-      port: 3001
-    })
-    // request user media (audio and video)
-    navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true
-    }).then(stream => {
-      // add video preview of the current user stream
-      addVideoStream({ stream, isMuted: true, userId: userId });
-
-      // console.log("user own stream", stream);
-
-      // set up listener if a new user call the current user
-      myPeer.on('call', call => {
-        // console.log("someone calling..........");
-        // answer right away to the new user so he can enter
-        call.answer(stream);
-        // listen to the new user stream to show it to the current user
-        call.once('stream', userVideoStream => {
-          // console.log("on stream in on call getUserMedia...", userVideoStream);
-          // add video of the new user
-          addVideoStream({ stream: userVideoStream, userId: call.peer });
-        })
-
-        call.on("close", () => {
-          // console.log("call.on('close') close call with userId :", userId);
-          removeVideoStream(call.peer);
-        })
-
-        peers[userId] = call;
-      })
-      // user is ready to recieve calls in room
-      socket.emit("ready");
-
-      socket.on('user-connected', userId => {
-        // console.log(`user connected with id -> ${userId}`, { peers });
-        connectToNewUser(userId, stream, myPeer);
-      })
-
-    })
-    socket.on('user-disconnected', userId => {
-      // console.log("socket.on('user-disconnected') close call with userId :", userId);
-      // console.log(`user -> ${userId} disconnected`, { peers });
-      // close the call if a user leaves the room
-      if (peers[userId]) {
-        // console.log("we found peers[userId] and were about to close the call");
-        peers[userId].close();
-        //remove the peer id from peers
-        delete peers[userId];
-      }
-    })
-
-    myPeer.on('open', id => {
-      socket.emit('join-room', roomId, id)
-    })
-
-    const connectToNewUser = (userId: string, stream: MediaStream, peer: Peer) => {
-      // call the new entered user and pass current user stream
-      // console.log("call the other user with id of : " + userId);
-      const call = peer.call(userId, stream);
-
-      // listen to the new user stream to show it to the current user
-      call.once('stream', userVideoStream => {
-        // console.log("on stream in connectToNewUser...", userVideoStream);
-        addVideoStream({ stream: userVideoStream, userId });
-      })
-      call.on('close', () => {
-        // remove user from peers
-        // console.log("call.on('close') close call with userId :", userId);
-        removeVideoStream(userId);
-      })
-
-      // register the call in our dictionary
-      peers[userId] = call;
-    };
-  }, []);
-
-  const addVideoStream = ({ stream, isMuted, userId }: VideoStream) => {
+  const addVideoStream = useCallback(({ stream, isMuted, userId }: VideoStream) => {
     setVideoStreamsList((prev) => ([
       ...prev,
       {
@@ -110,16 +29,83 @@ export default function Home() {
         userId: userId
       },
     ]));
-    // console.log(videoStreamsList.length);
-  };
+  }, []);
 
-  const removeVideoStream = (userId : VideoStream["userId"]) => {
-    // const filteredList = videoStreamsList.filter((video: VideoStream) => video.userId == userId);
+  const removeVideoStream = useCallback((userId: VideoStream["userId"]) => {
     setVideoStreamsList((prev) => {
       return prev.filter((video: VideoStream) => video.userId !== userId);
     })
-    // setVideoStreamsList(filteredList);
-  };
+  }, []);
+
+  const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer) => {
+    // call the new entered user and pass current user stream
+    const call = peer.call(userId, stream);
+
+    // listen to the new user stream to show it to the current user
+    call.once('stream', userVideoStream => {
+      addVideoStream({ stream: userVideoStream, userId });
+    })
+    call.on('close', () => {
+      // remove user from peers
+      removeVideoStream(userId);
+    })
+
+    // register the call in our dictionary
+    peers[call.peer] = call;
+  }, [addVideoStream, removeVideoStream, peers]);
+
+  useEffect(() => {
+    const socket = io("http://localhost:3000");
+    const myPeer = new Peer(userId, {
+      host: "0.peerjs.com",
+      port: 443,
+    })
+    console.log(myPeer.options);
+    
+    // request user media (audio and video)
+    navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true
+    }).then(stream => {
+      // add video preview of the current user stream
+      addVideoStream({ stream, isMuted: true, userId: userId });
+
+      // set up listener if a new user call the current user
+      myPeer.on('call', call => {
+        // answer right away to the new user so he can enter
+        call.answer(stream);
+        // listen to the new user stream to show it to the current user
+        call.once('stream', userVideoStream => {
+          // add video of the new user
+          addVideoStream({ stream: userVideoStream, userId: call.peer });
+        })
+
+        call.on("close", () => {
+          removeVideoStream(call.peer);
+        })
+
+        peers[call.peer] = call;
+      })
+      // user is ready to recieve calls in room
+      socket.emit("ready");
+
+      socket.on('user-connected', userId => {
+        connectToNewUser(userId, stream, myPeer);
+      })
+
+    })
+    socket.on('user-disconnected', userId => {
+      // clean up to make sure that the user connection is closed
+      if (peers[userId]) {
+        peers[userId].close();
+        delete peers[userId];
+      }
+    })
+
+    myPeer.on('open', id => {
+      socket.emit('join-room', roomId, id)
+    })
+  }, [peers, roomId, userId, addVideoStream, removeVideoStream, connectToNewUser]);
 
   return (
     <div className="flex-col">
