@@ -55,10 +55,10 @@ export default function Home() {
   }, [addVideoStream, removeVideoStream, peers]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(process.env.SOCKET_URI);
     const myPeer = new Peer(userId, {
-      host: "0.peerjs.com",
-      port: 443,
+      host: process.env.PEERJS_HOST,
+      port: Number(process.env.PEERJS_PORT),
     })
     console.log(myPeer.options);
     
