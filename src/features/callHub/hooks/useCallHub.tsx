@@ -48,10 +48,10 @@ export const useCallHub = () => {
   }, [addVideoStream, removeVideoStream, peers]);
 
   useEffect(() => {
-    const socket = io(process.env.SOCKET_URI);
+    const socket = io("https://demo1.catfishmeet.live/");
     const myPeer = new Peer(userId, {
-      host: process.env.PEERJS_HOST,
-      port: Number(process.env.PEERJS_PORT),
+      host: "0.peerjs.com",
+      port: 443,
     })
 
     // request user media (audio and video)
