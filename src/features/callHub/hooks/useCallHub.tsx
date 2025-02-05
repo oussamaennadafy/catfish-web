@@ -48,7 +48,7 @@ export const useCallHub = () => {
   }, [addVideoStream, removeVideoStream, peers]);
 
   useEffect(() => {
-    const socket = io("https://demo1.catfishmeet.live/");
+    const socket = io("http://localhost:3000");
     const myPeer = new Peer(userId, {
       host: "0.peerjs.com",
       port: 443,
