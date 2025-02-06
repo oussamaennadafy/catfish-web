@@ -4,7 +4,7 @@ import TabBar from "@/features/callHub/components/TabBar";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-full w-full p-6">
+    <div className="flex flex-col gap-4 h-full w-full p-6">
       <Header />
       <CallFram />
       <TabBar />

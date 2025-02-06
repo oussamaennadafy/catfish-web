@@ -1,3 +1,7 @@
+"use client"
+import AppAvatar from '@/common/components/AppAvatar'
+import PrimaryButton from '@/common/components/PrimaryButton'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
 import React from 'react'
 
@@ -10,9 +14,16 @@ function Header() {
         height={50}
         alt='catfish logo'
       />
-      <p>
-        Header
-      </p>
+      <div className='flex items-center gap-4'>
+        <PrimaryButton
+          text='add friend'
+          icon={faUser}
+          onClick={() => {}}
+        />
+        <AppAvatar
+          rounded='meduim'
+        />
+      </div>
     </div>
   )
 }

@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
     SOCKET_URI: "https://demo1.catfishmeet.live/",
     PEERJS_HOST: "0.peerjs.com",
     PEERJS_PORT: "443",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co',
+      },
+    ]
   }
 };
 
