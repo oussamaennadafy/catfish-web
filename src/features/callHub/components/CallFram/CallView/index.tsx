@@ -1,14 +1,17 @@
 "use client"
 import AppAvatar from '@/common/components/Avatar';
+import Video from '@/common/components/Video';
+import { VideoStream } from '@/features/callHub/types';
 import React, { useMemo } from 'react';
 
 type CallViewProps = {
-  borderWidth?: "none" | "Small" | "Meduim" | "Large";
-  imageSrc: string;
-  userFullName: string;
+  borderWidth?: "none" | "Small" | "Meduim" | "Large",
+  videoStream: VideoStream,
+  imageSrc?: string,
+  userFullName: string,
 }
 
-function CallView({ borderWidth = "none", imageSrc, userFullName }: CallViewProps) {
+function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }: CallViewProps) {
   const borderWidthClassName = useMemo(() => {
     switch (borderWidth) {
       case "none":
@@ -22,7 +25,13 @@ function CallView({ borderWidth = "none", imageSrc, userFullName }: CallViewProp
     }
   }, [borderWidth])
   return (
-    <div style={{ '--image-url': `url(${imageSrc})` } as React.CSSProperties} className={`relative row-span-2 col-span-2 rounded-2xl bg-slate-400 overflow-hidden bg-[image:var(--image-url)] bg-cover bg-center ${borderWidthClassName} border-[#6B67C8]`}>
+    <div className={`relative row-span-2 col-span-2 rounded-2xl bg-slate-400 overflow-hidden bg-cover bg-center ${borderWidthClassName} border-[#6B67C8]`}>
+      <Video
+        srcObject={videoStream.stream}
+        muted={videoStream.isMuted}
+        autoPlay
+        className="h-full w-full object-cover"
+      />
       <div className='absolute bottom-2 left-2 flex items-center justify-between gap-2 bg-[#0000009d] py-1 px-2 rounded-lg'>
         <AppAvatar
           rounded='large'
