@@ -1,5 +1,5 @@
 "use client"
-import AppAvatar from '@/common/components/AppAvatar';
+import AppAvatar from '@/common/components/Avatar';
 import React, { useMemo } from 'react';
 
 type CallViewProps = {

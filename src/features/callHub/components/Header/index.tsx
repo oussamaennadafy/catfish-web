@@ -1,5 +1,5 @@
 "use client"
-import AppAvatar from '@/common/components/AppAvatar'
+import AppAvatar from '@/common/components/Avatar'
 import PrimaryButton from '@/common/components/PrimaryButton'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
