@@ -7,7 +7,7 @@ import { useCallHub } from '../../hooks/useCallHub';
 function CallFram() {
   const { videoStreamsList } = useCallHub();
   return (
-    <div className='grid gap-3 h-full grid-cols-4 grid-rows-2'>
+    <div className='grid gap-3 h-full grid-cols-2'>
       {
         videoStreamsList.map(video => {
           return <CallView
@@ -18,11 +18,6 @@ function CallFram() {
           />
         })
       }
-      {/* <CallView
-        imageSrc='https://i.ibb.co/c6m2Rk1/Shape-Square-Person-Duncan-Bentley.jpg'
-        borderWidth="Meduim"
-        userFullName="James"
-      /> */}
     </div>
   )
 }

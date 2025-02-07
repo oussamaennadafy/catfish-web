@@ -25,12 +25,12 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
     }
   }, [borderWidth])
   return (
-    <div className={`relative row-span-2 col-span-2 rounded-2xl bg-slate-400 overflow-hidden bg-cover bg-center ${borderWidthClassName} border-[#6B67C8]`}>
+    <div className={`relative rounded-2xl bg-slate-400 overflow-hidden bg-cover bg-center ${borderWidthClassName} border-[#6B67C8]`}>
       <Video
         srcObject={videoStream.stream}
         muted={videoStream.isMuted}
         autoPlay
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover -scale-x-100"
       />
       <div className='absolute bottom-2 left-2 flex items-center justify-between gap-2 bg-[#0000009d] py-1 px-2 rounded-lg'>
         <AppAvatar

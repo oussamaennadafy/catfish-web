@@ -50,8 +50,8 @@ export const useCallHub = () => {
   useEffect(() => {
     const socket = io("http://localhost:3000");
     const myPeer = new Peer(userId, {
-      host: "0.peerjs.com",
-      port: 443,
+      host: "/",
+      port: 3001,
     })
 
     // request user media (audio and video)
