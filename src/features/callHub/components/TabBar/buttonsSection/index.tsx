@@ -1,5 +1,5 @@
 "use client"
-import IconButton from '@/common/components/IconButton';
+import IconButton from '@/common/components/buttons/IconButton';
 import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
@@ -10,40 +10,40 @@ function ButtonsSection() {
         <IconButton
           icon={faMicrophone}
           containerClassName='rounded-r-none border-r-0'
-          onClick={() => {}}
-          />
+          onClick={() => { }}
+        />
         <IconButton
           icon={faEllipsisVertical}
           containerClassName='rounded-l-none'
-          onClick={() => {}}
-          />
+          onClick={() => { }}
+        />
       </div>
       <div className='flex'>
         <IconButton
           icon={faVideo}
           containerClassName='rounded-r-none border-r-0'
-          onClick={() => {}}
-          />
+          onClick={() => { }}
+        />
         <IconButton
           icon={faEllipsisVertical}
           containerClassName='rounded-l-none'
-          onClick={() => {}}
-          />
+          onClick={() => { }}
+        />
       </div>
       <IconButton
         icon={faShuffle}
-        onClick={() => {}}
-        />
+        onClick={() => { }}
+      />
       <div className='flex'>
         <IconButton
           icon={faArrowRightFromBracket}
           containerClassName='rounded-l-none border-l-0 rotate-180 bg-red-500'
-          onClick={() => {}}
-          />
+          onClick={() => { }}
+        />
         <IconButton
           icon={faEllipsisVertical}
           containerClassName='rounded-l-none bg-red-500'
-          onClick={() => {}}
+          onClick={() => { }}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client"
-import IconButton from '@/common/components/IconButton'
-import PrimaryButton from '@/common/components/PrimaryButton'
+import IconButton from '@/common/components/buttons/IconButton'
+import PrimaryButton from '@/common/components/buttons/PrimaryButton'
 import { faArrowRight, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 

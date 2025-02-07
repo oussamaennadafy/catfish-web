@@ -1,6 +1,6 @@
 "use client"
 import AppAvatar from '@/common/components/Avatar'
-import PrimaryButton from '@/common/components/PrimaryButton'
+import PrimaryButton from '@/common/components/buttons/PrimaryButton'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
 import React from 'react'
