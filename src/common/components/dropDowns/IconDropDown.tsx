@@ -1,32 +1,46 @@
-import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { PropsWithChildren, useMemo } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
+import IconButton, { IconButtonProps } from '../buttons/IconButton'
+import { RoomTypeEnum } from '@/features/callHub/components/TabBar/buttonsSection/types'
+import { createPortal } from 'react-dom';
 
 type IconDropDownProps = {
-  icon?: IconDefinition,
-  iconColor?: "red" | "white",
-  iconSize?: SizeProp,
-  containerClassName?: string,
-  onClick?: () => void,
+  items: (IconButtonProps & { id: RoomTypeEnum })[],
+  selectedItemId: string,
 }
 
-function IconDropDown({ icon, iconColor = "white", iconSize = "1x", onClick, children, containerClassName }: PropsWithChildren<IconDropDownProps>) {
-  const iconBackgroundClassName = useMemo(() => {
-    switch (iconColor) {
-      case "red":
-        return 'text-red-500';
-      case "white":
-        return 'text-slate-50';
-    }
-  }, [iconColor]);
+function IconDropDown({ items, selectedItemId }: PropsWithChildren<IconDropDownProps>) {
+  const [selectedItemState, setSelectedItemState] = useState(selectedItemId);
+  const selectedItem = items.filter(item => item.id.toString() == selectedItemState).at(0);
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <button disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} h-10 p-2 border border-slate-800 rounded-lg ${containerClassName}`} onClick={onClick}>
+    <div className='relative'>
+      <IconButton
+        {...selectedItem}
+        onClick={() => { setIsOpen(true); }}
+      />
       {
-        icon ? 
-        <FontAwesomeIcon className={`text-lg ${iconBackgroundClassName}`} size={iconSize} icon={icon} />
-        : children
+        <div className={`absolute z-20 bottom-0 flex flex-col gap-1 transition-all ${isOpen ? "opacity-100 pointer-events-auto visible" : "opacity-0 pointer-events-none invisible translate-y-3"}`}>
+          {
+            items.map(item => (
+              <IconButton
+                key={item.icon?.iconName}
+                {...item}
+                isActive={item.id.toString() == selectedItemState}
+                onClick={() => {
+                  item.onClick?.();
+                  setSelectedItemState(item.id.toString());
+                  setIsOpen(false);
+                }}
+              />
+            ))
+          }
+        </div>
       }
-    </button>
+      {isOpen && createPortal(
+        <div onClick={() => { setIsOpen(false); }} className='absolute top-0 right-0 left-0 bottom-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-10'></div>,
+        document.body
+      )}
+    </div>
   )
 }
 

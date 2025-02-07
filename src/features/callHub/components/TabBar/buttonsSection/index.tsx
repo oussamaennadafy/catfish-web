@@ -1,7 +1,14 @@
 "use client"
 import IconButton from '@/common/components/buttons/IconButton';
+import IconDropDown from '@/common/components/dropDowns/IconDropDown';
 import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import { RoomTypeEnum } from './types';
+import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
+import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
+import TwoPersonsIcon from '../../../../../../public/icons/two-person';
+
+
 
 function ButtonsSection() {
   return (
@@ -30,9 +37,30 @@ function ButtonsSection() {
           onClick={() => { }}
         />
       </div>
-      <IconButton
-        icon={faShuffle}
-        onClick={() => { }}
+      <IconDropDown
+        selectedItemId={RoomTypeEnum.twoUsers.toString()}
+        items={[
+          {
+            id: RoomTypeEnum.moreThanThreeUsers,
+            children: <PlusThreePersonsIcon />,
+            onClick: () => { },
+          },
+          {
+            id: RoomTypeEnum.threeUsers,
+            children: <ThreePersonsIcon />,
+            onClick: () => { },
+          },
+          {
+            id: RoomTypeEnum.shuffle,
+            icon: faShuffle,
+            onClick: () => { },
+          },
+          {
+            id: RoomTypeEnum.twoUsers,
+            children: <TwoPersonsIcon />,
+            onClick: () => { },
+          },
+        ]}
       />
       <div className='flex'>
         <IconButton
