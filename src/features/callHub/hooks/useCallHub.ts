@@ -56,7 +56,7 @@ export const useCallHub = ({ selectedRoomType }: useCallHubParams) => {
     const myPeer = new Peer(userId, {
       host: "/",
       port: 3001,
-    })
+    });
 
     // request user media (audio and video)
     navigator.mediaDevices.getUserMedia({
