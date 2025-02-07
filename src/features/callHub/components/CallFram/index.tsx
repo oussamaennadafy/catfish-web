@@ -2,9 +2,14 @@
 import React from 'react';
 import CallView from './CallView';
 import { useCallHub } from '../../hooks/useCallHub';
+import { RoomTypeEnum } from '../../types';
 
-function CallFram() {
-  const { videoStreamsList } = useCallHub();
+type CallFramProps = {
+  selectedRoomType: RoomTypeEnum,
+}
+
+function CallFram({ selectedRoomType }: CallFramProps) {
+  const { videoStreamsList } = useCallHub({ selectedRoomType });
   return (
     <div className='grid gap-3 h-full grid-cols-2'>
       {

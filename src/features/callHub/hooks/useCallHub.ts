@@ -3,9 +3,14 @@ import Peer, { MediaConnection } from "peerjs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
-import { VideoStream } from "../types";
+import { RoomTypeEnum, VideoStream } from "../types";
 
-export const useCallHub = () => {
+type useCallHubParams = {
+  selectedRoomType: RoomTypeEnum,
+} 
+
+export const useCallHub = ({ selectedRoomType }: useCallHubParams) => {
+  console.log(selectedRoomType);
   const { roomId } = useParams<{ roomId: string }>();
   const [videoStreamsList, setVideoStreamsList] = useState<VideoStream[]>([]);
   const userIdRef = useRef(v4());

@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
 import IconButton, { IconButtonProps } from '../buttons/IconButton'
-import { RoomTypeEnum } from '@/features/callHub/components/TabBar/buttonsSection/types'
 import { createPortal } from 'react-dom';
+import { RoomTypeEnum } from '@/features/callHub/types';
 
 type IconDropDownProps = {
   items: (IconButtonProps & { id: RoomTypeEnum })[],
@@ -9,8 +9,7 @@ type IconDropDownProps = {
 }
 
 function IconDropDown({ items, selectedItemId }: PropsWithChildren<IconDropDownProps>) {
-  const [selectedItemState, setSelectedItemState] = useState(selectedItemId);
-  const selectedItem = items.filter(item => item.id.toString() == selectedItemState).at(0);
+  const selectedItem = items.filter(item => item.id.toString() == selectedItemId).at(0);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className='relative'>
@@ -25,10 +24,9 @@ function IconDropDown({ items, selectedItemId }: PropsWithChildren<IconDropDownP
               <IconButton
                 {...item}
                 key={item.id}
-                isActive={item.id.toString() == selectedItemState}
+                isActive={item.id.toString() == selectedItemId}
                 onClick={() => {
                   item.onClick?.();
-                  setSelectedItemState(item.id.toString());
                   setIsOpen(false);
                 }}
               />

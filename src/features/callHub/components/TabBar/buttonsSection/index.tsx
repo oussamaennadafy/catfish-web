@@ -2,15 +2,18 @@
 import IconButton from '@/common/components/buttons/IconButton';
 import IconDropDown from '@/common/components/dropDowns/IconDropDown';
 import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
-import { RoomTypeEnum } from './types';
+import React, { Dispatch, SetStateAction } from 'react';
 import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
 import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
 import TwoPersonsIcon from '../../../../../../public/icons/two-person';
+import { RoomTypeEnum } from '@/features/callHub/types';
 
+type ButtonsSectionProps = {
+  selectedRoomType: RoomTypeEnum,
+  setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
+}
 
-
-function ButtonsSection() {
+function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectionProps) {
   return (
     <div className='flex items-center gap-3'>
       <div className='flex'>
@@ -38,27 +41,35 @@ function ButtonsSection() {
         />
       </div>
       <IconDropDown
-        selectedItemId={RoomTypeEnum.twoUsers.toString()}
+        selectedItemId={selectedRoomType.toString()}
         items={[
           {
             id: RoomTypeEnum.moreThanThreeUsers,
             children: <PlusThreePersonsIcon />,
-            onClick: () => { },
+            onClick: () => { 
+              setSelectedRoomType(RoomTypeEnum.moreThanThreeUsers)
+            },
           },
           {
             id: RoomTypeEnum.threeUsers,
             children: <ThreePersonsIcon />,
-            onClick: () => { },
+            onClick: () => { 
+              setSelectedRoomType(RoomTypeEnum.threeUsers)
+            },
           },
           {
             id: RoomTypeEnum.shuffle,
             icon: faShuffle,
-            onClick: () => { },
+            onClick: () => { 
+              setSelectedRoomType(RoomTypeEnum.shuffle)
+            },
           },
           {
             id: RoomTypeEnum.twoUsers,
             children: <TwoPersonsIcon />,
-            onClick: () => { },
+            onClick: () => { 
+              setSelectedRoomType(RoomTypeEnum.twoUsers)
+            },
           },
         ]}
       />
