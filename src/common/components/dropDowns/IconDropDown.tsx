@@ -23,8 +23,8 @@ function IconDropDown({ items, selectedItemId }: PropsWithChildren<IconDropDownP
           {
             items.map(item => (
               <IconButton
-                key={item.icon?.iconName}
                 {...item}
+                key={item.id}
                 isActive={item.id.toString() == selectedItemState}
                 onClick={() => {
                   item.onClick?.();
