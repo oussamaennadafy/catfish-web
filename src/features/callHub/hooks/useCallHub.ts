@@ -10,7 +10,7 @@ type useCallHubParams = {
 } 
 
 export const useCallHub = ({ selectedRoomType }: useCallHubParams) => {
-  console.log(selectedRoomType);
+  console.log(RoomTypeEnum[selectedRoomType]);
   const { roomId } = useParams<{ roomId: string }>();
   const [videoStreamsList, setVideoStreamsList] = useState<VideoStream[]>([]);
   const userIdRef = useRef(v4());

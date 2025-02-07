@@ -1,4 +1,3 @@
-"use client"
 import IconButton from '@/common/components/buttons/IconButton';
 import IconDropDown from '@/common/components/dropDowns/IconDropDown';
 import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';

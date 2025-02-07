@@ -1,4 +1,3 @@
-"use client"
 import AppAvatar from '@/common/components/Avatar'
 import PrimaryButton from '@/common/components/buttons/PrimaryButton'
 import { faUser } from '@fortawesome/free-solid-svg-icons'

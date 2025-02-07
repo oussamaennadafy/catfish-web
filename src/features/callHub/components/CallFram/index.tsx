@@ -1,4 +1,3 @@
-"use client"
 import React from 'react';
 import CallView from './CallView';
 import { useCallHub } from '../../hooks/useCallHub';

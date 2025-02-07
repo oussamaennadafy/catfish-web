@@ -1,4 +1,3 @@
-"use client"
 import IconButton from '@/common/components/buttons/IconButton'
 import { faCircleDot } from '@fortawesome/free-regular-svg-icons'
 import React from 'react'

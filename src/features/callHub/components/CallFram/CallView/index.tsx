@@ -1,4 +1,3 @@
-"use client"
 import AppAvatar from '@/common/components/Avatar';
 import Video from '@/common/components/Video';
 import { VideoStream } from '@/features/callHub/types';
