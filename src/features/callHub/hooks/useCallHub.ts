@@ -10,7 +10,6 @@ type useCallHubParams = {
 } 
 
 export const useCallHub = ({ selectedRoomType }: useCallHubParams) => {
-  console.log(RoomTypeEnum[selectedRoomType]);
   const { roomId } = useParams<{ roomId: string }>();
   const [videoStreamsList, setVideoStreamsList] = useState<VideoStream[]>([]);
   const userIdRef = useRef(v4());
@@ -100,7 +99,7 @@ export const useCallHub = ({ selectedRoomType }: useCallHubParams) => {
     })
 
     myPeer.on('open', id => {
-      socket.emit('join-room', roomId, id)
+      socket.emit('join-room', roomId, id, RoomTypeEnum[selectedRoomType])
     })
   }, [peers, roomId, userId, addVideoStream, removeVideoStream, connectToNewUser]);
 
