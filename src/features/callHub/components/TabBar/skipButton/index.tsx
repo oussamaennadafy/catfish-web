@@ -1,7 +1,7 @@
 "use client"
 import IconButton from '@/common/components/IconButton'
 import PrimaryButton from '@/common/components/PrimaryButton'
-import { faQuestion, faShuffle } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 
 function SkipButton() {
@@ -9,7 +9,7 @@ function SkipButton() {
     <div className='flex items-center justify-center gap-3'>
       <PrimaryButton
         text='Switch User'
-        icon={faShuffle}
+        icon={faArrowRight}
       />
       <IconButton
         icon={faQuestion}

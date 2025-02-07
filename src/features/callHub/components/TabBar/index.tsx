@@ -1,7 +1,7 @@
-import React from 'react'
-import RecordingDetails from './recordingDetails'
-import ButtonsSection from './buttonsSection'
-import SkipButton from './skipButton'
+import React from 'react';
+import RecordingDetails from './recordingDetails';
+import ButtonsSection from './buttonsSection';
+import SkipButton from './skipButton';
 
 function TabBar() {
   return (
@@ -11,6 +11,6 @@ function TabBar() {
       <SkipButton />
     </div>
   )
-}
+};
 
-export default TabBar
+export default TabBar;

@@ -1,7 +1,6 @@
 "use client"
-// import Image from 'next/image'
-import React from 'react'
-import CallView from './CallView'
+import React from 'react';
+import CallView from './CallView';
 import { useCallHub } from '../../hooks/useCallHub';
 
 function CallFram() {

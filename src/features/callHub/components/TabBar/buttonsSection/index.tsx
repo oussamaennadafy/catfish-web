@@ -1,7 +1,7 @@
 "use client"
-import IconButton from '@/common/components/IconButton'
-import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faSliders, faVideo } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
+import IconButton from '@/common/components/IconButton';
+import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
 function ButtonsSection() {
   return (
@@ -31,7 +31,7 @@ function ButtonsSection() {
           />
       </div>
       <IconButton
-        icon={faSliders}
+        icon={faShuffle}
         onClick={() => {}}
         />
       <div className='flex'>
@@ -48,6 +48,6 @@ function ButtonsSection() {
       </div>
     </div>
   )
-}
+};
 
-export default ButtonsSection
+export default ButtonsSection;
