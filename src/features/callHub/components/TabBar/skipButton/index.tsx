@@ -3,12 +3,17 @@ import PrimaryButton from '@/common/components/buttons/PrimaryButton'
 import { faArrowRight, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 
-function SkipButton() {
+type SkipButtonProps = {
+  joinRoom: () => void,
+}
+
+function SkipButton({ joinRoom }: SkipButtonProps) {
   return (
     <div className='flex items-center justify-center gap-3'>
       <PrimaryButton
         text='Switch User'
         icon={faArrowRight}
+        onClick={joinRoom}
       />
       <IconButton
         icon={faQuestion}

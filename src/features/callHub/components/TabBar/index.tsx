@@ -7,9 +7,10 @@ import { RoomTypeEnum } from '../../types';
 type TabBarProps = {
   selectedRoomType: RoomTypeEnum,
   setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
+  joinRoom: () => void,
 }
 
-function TabBar({ selectedRoomType, setSelectedRoomType }: TabBarProps) {
+function TabBar({ selectedRoomType, setSelectedRoomType, joinRoom }: TabBarProps) {
   return (
     <div className='flex items-center justify-between'>
       <RecordingDetails />
@@ -17,7 +18,7 @@ function TabBar({ selectedRoomType, setSelectedRoomType }: TabBarProps) {
         selectedRoomType={selectedRoomType}
         setSelectedRoomType={setSelectedRoomType}
       />
-      <SkipButton />
+      <SkipButton joinRoom={joinRoom} />
     </div>
   )
 };
