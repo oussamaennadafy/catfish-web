@@ -21,7 +21,7 @@ function AppAvatar({ src, rounded = "meduim", size = 45 }: AppAvatarProps) {
   return (
     <div>
       <Image
-        src={{ src: src || "https://i.ibb.co/c6m2Rk1/Shape-Square-Person-Duncan-Bentley.jpg", width: size, height: size }}
+        src={{ src: src || "/images/user.png", width: size, height: size }}
         alt='user avatar'
         className={`${imageRoundedClass}`}
       />
