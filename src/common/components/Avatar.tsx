@@ -7,7 +7,7 @@ type AppAvatarProps = {
   size?: number,
 }
 
-function AppAvatar({ src, rounded = "meduim", size = 45 }: AppAvatarProps) {
+function AppAvatar({ src, rounded = "meduim", size = 40 }: AppAvatarProps) {
   const imageRoundedClass = useMemo(() => {
     switch (rounded) {
       case "large":

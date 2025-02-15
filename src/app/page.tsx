@@ -9,20 +9,21 @@ export default function Home() {
     selectedRoomType,
     setSelectedRoomType,
     videoStreamsList,
-    joinRoom,
-    isMatchingStarted,
+    handleJoinNextRoom,
+    userState,
   } = useHome();
   return (
-    <div className="flex flex-col gap-4 h-full w-full p-6">
+    <div className="flex flex-col h-full w-full p-4 gap-6">
       <Header />
       <CallFram
         videoStreamsList={videoStreamsList}
-        isMatchingStarted={isMatchingStarted}
+        selectedRoomType={selectedRoomType}
       />
       <TabBar 
         selectedRoomType={selectedRoomType}
         setSelectedRoomType={setSelectedRoomType}
-        joinRoom={joinRoom}
+        handleJoinNextRoom={handleJoinNextRoom}
+        userState={userState}
       />
     </div>
   );

@@ -1,27 +1,27 @@
-import React from 'react';
-import CallView from './CallView';
-import { VideoStream } from '../../types';
+import React from 'react'
+import { CallFramContentType, RoomTypeEnum } from '../../types'
+import TwoUsersCallFram from './TwoUsersCallFram';
+import ThreeUsersCallFram from './ThreeUsersCallFram';
+import MoreThanThreeUsersCallFram from './MorrThanThreeUsersCallFram';
+import ShuffleCallFram from './ShuffleCallFram';
+
 
 type CallFramProps = {
-  videoStreamsList: VideoStream[],
-  isMatchingStarted: boolean,
+  videoStreamsList: CallFramContentType[],
+  selectedRoomType: RoomTypeEnum,
 }
 
-function CallFram({ videoStreamsList, isMatchingStarted }: CallFramProps) {
-  return (
-    <div className='grid gap-3 h-full grid-cols-2'>
-      {
-        videoStreamsList.map(video => {
-          return <CallView
-            key={video.userId}
-            videoStream={video}
-            imageSrc='https://i.ibb.co/JR2RS1Hy/girl.png'
-            userFullName="Mona Joseph"
-          />
-        })
-      }
-    </div>
-  )
+function CallFram({ videoStreamsList, selectedRoomType }: CallFramProps) {
+  switch (selectedRoomType) {
+    case RoomTypeEnum.twoUsers:
+      return <TwoUsersCallFram videoStreamsList={videoStreamsList} />
+    case RoomTypeEnum.threeUsers:
+      return <ThreeUsersCallFram videoStreamsList={videoStreamsList} />
+    case RoomTypeEnum.moreThanThreeUsers:
+      return <MoreThanThreeUsersCallFram videoStreamsList={videoStreamsList} />
+    case RoomTypeEnum.shuffle:
+      return <ShuffleCallFram videoStreamsList={videoStreamsList} />
+  }
 }
 
 export default CallFram

@@ -1,23 +1,43 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
-import { VideoStream } from "../types";
+import { CallFramContentType, userStateType, VideoStream } from "../types";
 import Peer, { MediaConnection } from "peerjs";
 
-export const useHomeHelpers = (setVideoStreamsList: Dispatch<SetStateAction<VideoStream[]>>) => {
-  const addVideoStream = useCallback(({ stream, isMuted, userId }: VideoStream) => {
+type useHomeHelpersParams = {
+  setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
+  setUserState: Dispatch<SetStateAction<userStateType>>,
+}
+
+export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHelpersParams) => {
+  const addCallFram = useCallback(({ stream, isMuted, userId }: VideoStream) => {
     setVideoStreamsList((prev) => ([
       ...prev,
       {
-        isMuted: isMuted || false,
-        stream: stream,
-        userId: userId
+        id: prev.length + 1,
+        content: {
+          isMuted: isMuted || false,
+          stream: stream,
+          userId: userId,
+        },
       },
     ]));
   }, [setVideoStreamsList]);
 
-  const removeVideoStream = useCallback((userId: VideoStream["userId"]) => {
+  const removeCallFram = useCallback((userId: VideoStream["userId"]) => {
     setVideoStreamsList((prev) => {
-      return prev.filter((video: VideoStream) => video.userId !== userId);
+      return prev.filter((callFram: CallFramContentType) => (callFram.content as VideoStream)["userId"] !== userId);
     })
+  }, [setVideoStreamsList]);
+
+  const updateCallFram = useCallback((id: CallFramContentType["id"], callFramContent: CallFramContentType["content"]) => {
+    setVideoStreamsList((prev) => {
+      return prev.map(item => {
+        if(item.id == id) {
+          return { id: item.id, content: callFramContent };
+        } else {
+          return item;
+        }
+      })
+    });
   }, [setVideoStreamsList]);
 
   const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>) => {
@@ -26,20 +46,22 @@ export const useHomeHelpers = (setVideoStreamsList: Dispatch<SetStateAction<Vide
 
     // listen to the new user stream to show it to the current user
     call.once('stream', userVideoStream => {
-      addVideoStream({ stream: userVideoStream, userId });
+      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false });
+      setUserState("inCall");
     })
     call.on('close', () => {
       // remove user from peers
-      removeVideoStream(userId);
+      removeCallFram(userId);
     })
 
     // register the call in our dictionary
     peers[call.peer] = call;
-  }, [addVideoStream, removeVideoStream]);
+  }, [updateCallFram, removeCallFram, setUserState]);
 
   return {
-    addVideoStream,
-    removeVideoStream,
+    addCallFram,
+    removeCallFram,
     connectToNewUser,
+    updateCallFram,
   }
 }

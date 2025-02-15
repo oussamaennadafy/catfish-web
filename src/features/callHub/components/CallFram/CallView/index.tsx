@@ -1,5 +1,6 @@
 import AppAvatar from '@/common/components/Avatar';
 import Video from '@/common/components/Video';
+import { CALLFRAM_HEIGHT } from '@/common/constants/sizes';
 import { VideoStream } from '@/features/callHub/types';
 import React, { useMemo } from 'react';
 
@@ -29,6 +30,7 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
         srcObject={videoStream.stream}
         muted={videoStream.isMuted}
         autoPlay
+        style={{ height: CALLFRAM_HEIGHT }}
         className="h-full w-full object-cover -scale-x-100"
       />
       <div className='absolute bottom-2 left-2 flex items-center justify-between gap-2 bg-[#0000009d] py-1 px-2 rounded-lg'>

@@ -9,8 +9,8 @@ function Header() {
     <div className='flex items-center justify-between'>
       <Image
         src="/icons/logo.svg"
-        width={50}
-        height={50}
+        width={40}
+        height={40}
         alt='catfish logo'
       />
       <div className='flex items-center gap-4'>
