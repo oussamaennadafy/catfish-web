@@ -11,10 +11,11 @@ export default function Home() {
     videoStreamsList,
     handleJoinNextRoom,
     userState,
+    handleAppFriend,
   } = useHome();
   return (
     <div className="flex flex-col h-full w-full p-4 gap-6">
-      <Header />
+      <Header handleAppFriend={handleAppFriend} />
       <CallFram
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}

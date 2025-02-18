@@ -33,7 +33,6 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
 
       // set up listener if a new user call the current user
       myPeer.on('call', call => {
-        console.log("receive call on init...");
         // answer right away to the new user so he can enter
         call.answer(stream);
         // listen to the new user stream to show it to the current user
@@ -44,15 +43,15 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
         })
 
         call.on("close", () => {
-          removeCallFram(call.peer);
+          updateCallFram(1, "loader");
+          setUserState("waiting");
         })
 
         peers[call.peer] = call;
       })
 
-      // listenner on future connected users 
+      // listenner on future connected users
       socket.on('user-connected', userId => {
-        console.log("user-connected, please call him...");
         connectToNewUser(userId, stream, myPeer, peers);
       })
 
@@ -76,6 +75,7 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
   return {
     userId,
     isReady,
+    peers,
     updateCallFram,
   }
 }

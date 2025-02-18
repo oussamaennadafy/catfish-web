@@ -5,7 +5,7 @@ import SquarCircleSvg from '../../../../../../public/icons/squar-circle'
 
 function RecordingDetails() {
   return (
-    <div className='flex gap-2'>
+    <div className='gap-2 hidden md:flex'>
       <IconButton
         icon={faCircleDot}
         iconColor='red'

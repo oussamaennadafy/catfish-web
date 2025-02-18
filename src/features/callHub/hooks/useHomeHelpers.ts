@@ -31,7 +31,7 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
   const updateCallFram = useCallback((id: CallFramContentType["id"], callFramContent: CallFramContentType["content"]) => {
     setVideoStreamsList((prev) => {
       return prev.map(item => {
-        if(item.id == id) {
+        if (item.id == id) {
           return { id: item.id, content: callFramContent };
         } else {
           return item;
@@ -51,12 +51,13 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
     })
     call.on('close', () => {
       // remove user from peers
-      removeCallFram(userId);
+      updateCallFram(1, "loader");
+      setUserState("waiting");
     })
 
     // register the call in our dictionary
     peers[call.peer] = call;
-  }, [updateCallFram, removeCallFram, setUserState]);
+  }, [updateCallFram, setUserState]);
 
   return {
     addCallFram,

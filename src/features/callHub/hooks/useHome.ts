@@ -8,7 +8,7 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-  const { userId, isReady, updateCallFram } = useInit({ setVideoStreamsList, setUserState });
+  const { userId, isReady, updateCallFram, peers } = useInit({ setVideoStreamsList, setUserState });
 
   const handleJoinNextRoom = useCallback(() => {
     if (isReady.isPeerOpen && isReady.isUserReady) {
@@ -16,15 +16,22 @@ export const useHome = () => {
       if (userState == "noAction") {
         updateCallFram(1, "loader");
         setUserState("waiting");
-        console.log("emit join room");
         socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-      } else if(userState == "inCall") {
-        // disconnect from curent call
-        console.log("user should leave this room and join another one...");
-        // try to connect to new room
+      } else if (userState == "inCall") {
+        // close all calls
+        for (const peer in peers) {
+          peers[peer].close();
+        }
+        socket.emit('user-disconnected', userId);
+        socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
       }
     }
-  }, [isReady.isPeerOpen, isReady.isUserReady, userId, selectedRoomType, updateCallFram, userState]);
+  }, [isReady.isPeerOpen, isReady.isUserReady, userId, selectedRoomType, updateCallFram, userState, peers]);
+
+
+  const handleAppFriend = useCallback(() => {
+    console.log({ peers, userState });
+  }, [peers, userState])
 
   return {
     videoStreamsList,
@@ -32,5 +39,6 @@ export const useHome = () => {
     setSelectedRoomType,
     handleJoinNextRoom,
     userState,
+    handleAppFriend,
   }
 }

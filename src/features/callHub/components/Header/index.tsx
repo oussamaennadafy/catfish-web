@@ -4,7 +4,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
 import React from 'react'
 
-function Header() {
+type HeaderProps = {
+  handleAppFriend: () => void;
+}
+
+function Header({ handleAppFriend }: HeaderProps) {
   return (
     <div className='flex items-center justify-between'>
       <Image
@@ -17,7 +21,7 @@ function Header() {
         <PrimaryButton
           text='add friend'
           icon={faUser}
-          onClick={() => {}}
+          onClick={handleAppFriend}
         />
         <AppAvatar
           rounded='meduim'

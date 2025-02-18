@@ -39,7 +39,7 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
           src={imageSrc}
           size={35}
         />
-        <p className='text-sm'>{userFullName}</p>
+        <p className='text-sm'>{`${userFullName} - ${videoStream.userId}`}</p>
       </div>
     </div>
   )

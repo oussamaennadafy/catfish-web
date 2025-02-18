@@ -18,24 +18,24 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectio
       <div className='flex'>
         <IconButton
           icon={faMicrophone}
-          containerClassName='rounded-r-none border-r-0'
+          containerClassName='md:rounded-r-none md:border-r-0'
           onClick={() => { }}
         />
         <IconButton
           icon={faEllipsisVertical}
-          containerClassName='rounded-l-none'
+          containerClassName='rounded-l-none hidden md:flex'
           onClick={() => { }}
         />
       </div>
       <div className='flex'>
         <IconButton
           icon={faVideo}
-          containerClassName='rounded-r-none border-r-0'
+          containerClassName='md:rounded-r-none md:border-r-0'
           onClick={() => { }}
         />
         <IconButton
           icon={faEllipsisVertical}
-          containerClassName='rounded-l-none'
+          containerClassName='rounded-l-none hidden md:flex'
           onClick={() => { }}
         />
       </div>
@@ -75,12 +75,12 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectio
       <div className='flex'>
         <IconButton
           icon={faArrowRightFromBracket}
-          containerClassName='rounded-l-none border-l-0 rotate-180 bg-red-500'
+          containerClassName='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
           onClick={() => { }}
         />
         <IconButton
           icon={faEllipsisVertical}
-          containerClassName='rounded-l-none bg-red-500'
+          containerClassName='rounded-l-none bg-red-500 hidden md:flex'
           onClick={() => { }}
         />
       </div>
