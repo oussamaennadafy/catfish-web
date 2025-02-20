@@ -1,0 +1,81 @@
+import Image from 'next/image'
+import React from 'react'
+
+type SliderProps = {
+  images: string[];
+  duration?: number;
+  gap?: number;
+  direction?: 'up' | 'down';
+}
+
+function Slider({ 
+  images, 
+  duration = 20, 
+  gap = 16, 
+  direction = 'up'
+}: SliderProps) {
+  return (
+    <div className="relative overflow-hidden h-full w-[300px]">
+      <style>
+        {`
+          @keyframes slideUp {
+            0% {
+              transform: translateY(0);
+            }
+            100% {
+              transform: translateY(calc(-${images.length} * (300px + ${gap}px)));
+            }
+          }
+          @keyframes slideDown {
+            0% {
+              transform: translateY(calc(-${images.length} * (300px + ${gap}px)));
+            }
+            100% {
+              transform: translateY(0);
+            }
+          }
+        `}
+      </style>
+      <div 
+        className="flex flex-col absolute"
+        style={{ 
+          gap: `${gap}px`,
+          animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
+        }}
+      >
+        {/* First set of images */}
+        {images.map((image, index) => (
+          <div
+            key={`${image}-${index}`}
+            className="flex-shrink-0"
+          >
+            <Image
+              className="rounded-xl w-[300px] h-[300px] object-cover"
+              src={image}
+              width={300}
+              height={300}
+              alt={`Slide ${index + 1}`}
+            />
+          </div>
+        ))}
+        {/* Duplicate set for seamless loop */}
+        {images.map((image, index) => (
+          <div
+            key={`${image}-${index}-duplicate`}
+            className="flex-shrink-0"
+          >
+            <Image
+              className="rounded-xl w-[300px] h-[300px] object-cover"
+              src={image}
+              width={300}
+              height={300}
+              alt={`Slide ${index + 1}`}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default Slider

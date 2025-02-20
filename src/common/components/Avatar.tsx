@@ -21,7 +21,7 @@ function AppAvatar({ src, rounded = "meduim", size = 40 }: AppAvatarProps) {
   return (
     <div>
       <Image
-        src={{ src: src || "/images/user.png", width: size, height: size }}
+        src={{ src: src || "/images/user-placeholder.png", width: size, height: size }}
         alt='user avatar'
         className={`${imageRoundedClass}`}
       />
