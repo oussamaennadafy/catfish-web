@@ -1,0 +1,10 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - rm -r node_modules
+        - npm i
+    build:
+      commands:
+        - npm run build
