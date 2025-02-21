@@ -12,6 +12,7 @@ export default function Home() {
     handleJoinNextRoom,
     userState,
     handleAppFriend,
+    handleEndLive
   } = useHome();
   return (
     <div className="flex flex-col h-full w-full p-4 gap-6">
@@ -25,6 +26,7 @@ export default function Home() {
         setSelectedRoomType={setSelectedRoomType}
         handleJoinNextRoom={handleJoinNextRoom}
         userState={userState}
+        handleEndLive={handleEndLive}
       />
     </div>
   );

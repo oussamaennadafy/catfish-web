@@ -5,7 +5,7 @@ import React, { PropsWithChildren, useMemo } from 'react'
 export type IconButtonProps = PropsWithChildren<{
   icon?: IconDefinition,
   isActive?: boolean,
-  iconColor?: "red" | "white",
+  iconColor?: "red" | "white" | "gray",
   backgroundColor?: string,
   iconSize?: SizeProp,
   containerClassName?: string,
@@ -19,6 +19,8 @@ function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, child
         return 'text-red-500';
       case "white":
         return 'text-slate-50';
+      case "gray":
+        return 'text-slate-500';
     }
   }, [iconColor]);
   return (

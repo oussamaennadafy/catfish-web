@@ -10,16 +10,17 @@ import { RoomTypeEnum } from '@/features/callHub/types';
 type ButtonsSectionProps = {
   selectedRoomType: RoomTypeEnum,
   setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
+  handleEndLive: () => void,
 }
 
-function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectionProps) {
+function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive }: ButtonsSectionProps) {
   return (
     <div className='flex items-center gap-3'>
       <div className='flex'>
         <IconButton
           icon={faMicrophone}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -31,7 +32,7 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectio
         <IconButton
           icon={faVideo}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -76,7 +77,7 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType }: ButtonsSectio
         <IconButton
           icon={faArrowRightFromBracket}
           containerClassName='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
-          onClick={() => { }}
+          onClick={handleEndLive}
         />
         <IconButton
           icon={faEllipsisVertical}

@@ -12,41 +12,51 @@ export const useHome = () => {
   const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const handleJoinNextRoom = useCallback(() => {
-    if (isReady.isPeerOpen && isReady.isUserReady) {
-      // handle first click
-      if (userState == "noAction") {
-        updateCallFram(1, "loader");
-        setUserState("waiting");
-        socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-      } else if (userState == "inCall") {
-        setUserState("waiting");
-        // close all calls
-        for (const peer in peers) {
-          peers[peer].close();
-        }
-        socket.emit('user-disconnected', userId);
-        socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-        // clear previous interval
-        clearInterval(prevIntervalId.current);
-
-        // set interval
-        const intervalId = setInterval(() => {
-          if (Object.keys(peers).length == 0) {
-            socket.emit('user-disconnected', userId);
-            socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-          }
-        }, 5000);
-
-        // set the interval id to clear later
-        prevIntervalId.current = intervalId;
+    if (!isReady.isPeerOpen && !isReady.isUserReady) return;
+    // handle first click
+    if (userState == "noAction") {
+      updateCallFram(1, "loader");
+      setUserState("waiting");
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+    } else if (userState == "inCall") {
+      setUserState("waiting");
+      // close all calls
+      for (const peer in peers) {
+        peers[peer].close();
       }
+      socket.emit('user-disconnected', userId);
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+      // clear previous interval
+      clearInterval(prevIntervalId.current);
+
+      // set interval
+      const intervalId = setInterval(() => {
+        if (Object.keys(peers).length == 0) {
+          socket.emit('user-disconnected', userId);
+          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+        }
+      }, 5000);
+
+      // set the interval id to clear later
+      prevIntervalId.current = intervalId;
     }
   }, [isReady.isPeerOpen, isReady.isUserReady, userId, selectedRoomType, updateCallFram, userState, peers]);
 
 
   const handleAppFriend = useCallback(() => {
     console.log({ peers, userState });
-  }, [peers, userState])
+  }, [peers, userState]);
+
+  const handleEndLive = useCallback(() => {
+    // // close all calls
+    for (const peer in peers) {
+      peers[peer].close();
+    }
+    updateCallFram(1, "illustration");
+    setUserState("noAction");
+    socket.emit('user-disconnected', userId);
+    clearInterval(prevIntervalId.current);
+  }, [peers, updateCallFram, userId]);
 
   return {
     videoStreamsList,
@@ -55,5 +65,6 @@ export const useHome = () => {
     handleJoinNextRoom,
     userState,
     handleAppFriend,
+    handleEndLive
   }
 }

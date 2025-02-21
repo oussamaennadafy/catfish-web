@@ -9,15 +9,20 @@ type TabBarProps = {
   setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
   handleJoinNextRoom: () => void,
   userState: userStateType,
+  handleEndLive: () => void,
 }
 
-function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, userState }: TabBarProps) {
+function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, userState, handleEndLive }: TabBarProps) {
   return (
     <div className='flex items-center justify-between'>
-      <RecordingDetails />
+      <RecordingDetails
+        isLive={userState === "inCall"}
+        handleEndLive={handleEndLive}
+      />
       <ButtonsSection
         selectedRoomType={selectedRoomType}
         setSelectedRoomType={setSelectedRoomType}
+        handleEndLive={handleEndLive}
       />
       <SkipButton userState={userState} handleJoinNextRoom={handleJoinNextRoom} />
     </div>
