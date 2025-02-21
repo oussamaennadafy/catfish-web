@@ -1,6 +1,7 @@
 import Peer from "peerjs";
 
 export const createPeer = (userId: string) => new Peer(userId, {
-  host: "/",
-  port: 3001,
+  host: "0.peerjs.com",
+  port: 443,
+  secure: true,
 });
