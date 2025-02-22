@@ -14,7 +14,7 @@ type TabBarProps = {
 
 function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, userState, handleEndLive }: TabBarProps) {
   return (
-    <div className='flex items-center justify-between gap-2'>
+    <div className='flex items-center justify-between gap-2 max-h-10'>
       <RecordingDetails
         isLive={userState === "inCall"}
         handleEndLive={handleEndLive}

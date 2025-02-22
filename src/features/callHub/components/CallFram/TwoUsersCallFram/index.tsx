@@ -4,6 +4,7 @@ import { CallFramContentType } from '../../../types';
 import CallFramIllustration from '../CallFramStates/CallFramIllustration';
 import CallFramLoader from '../CallFramStates/CallFramLoader';
 import CallFramPlaceHolder from '../CallFramStates/CallFramPlaceHolder';
+import { CALLFRAM_HEIGHT } from '@/common/constants/sizes';
 
 type CallFramProps = {
   videoStreamsList: CallFramContentType[],
@@ -11,7 +12,9 @@ type CallFramProps = {
 
 function TwoUsersCallFram({ videoStreamsList }: CallFramProps) {
   return (
-    <div className='grid gap-3 h-full grid-cols-2 grid-rows-1'>
+    <div 
+    style={{ height: CALLFRAM_HEIGHT }}
+    className='grid gap-3 h-full grid-cols-2 grid-rows-1'>
       {
         videoStreamsList.map(callFram => {
           switch (callFram.content) {

@@ -10,7 +10,7 @@ type HeaderProps = {
 
 function Header({ handleAppFriend }: HeaderProps) {
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex items-center justify-between max-h-10'>
       <Image
         src="/icons/logo.svg"
         width={40}

@@ -6,7 +6,7 @@ import searchAnimation from "./../../../../../../../public/lottie/search-animati
 
 function CallFramLoader() {
   return (
-    <div className='flex items-center justify-center bg-[rgba(0,0,0,0.2)] rounded-2xl'>
+    <div className='flex items-center justify-center bg-[rgba(0,0,0,0.2)] rounded-2xl' >
       <div className='flex items-center justify-center bg-[rgba(0,0,0,0.2)] rounded-2xl'>
         <Lottie
           animationData={searchAnimation}
