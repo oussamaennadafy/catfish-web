@@ -1,6 +1,7 @@
 import React from 'react'
 import Slider from './Slider'
 import { CALLFRAM_HEIGHT } from '@/common/constants/sizes'
+import { DeviceUtility } from '@/utils/device_utility'
 
 function CallFramIllustration() {
   return (
@@ -27,17 +28,20 @@ function CallFramIllustration() {
           "/images/persons/female/female-6.jpg",
         ]}
       />
-      <Slider
-        direction="up"
-        images={[
-          "/images/persons/male/male-7.jpg",
-          "/images/persons/female/female-7.jpg",
-          "/images/persons/male/male-8.jpg",
-          "/images/persons/female/female-8.jpg",
-          "/images/persons/male/male-9.jpg",
-          "/images/persons/female/female-9.jpg",
-        ]}
-      />
+      {
+        !DeviceUtility.isMobile() &&
+        < Slider
+          direction="up"
+          images={[
+            "/images/persons/male/male-7.jpg",
+            "/images/persons/female/female-7.jpg",
+            "/images/persons/male/male-8.jpg",
+            "/images/persons/female/female-8.jpg",
+            "/images/persons/male/male-9.jpg",
+            "/images/persons/female/female-9.jpg",
+          ]}
+        />
+      }
     </div>
   )
 }

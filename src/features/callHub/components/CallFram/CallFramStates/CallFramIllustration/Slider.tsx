@@ -1,5 +1,6 @@
+import { DeviceUtility } from '@/utils/device_utility';
 import Image from 'next/image'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 type SliderProps = {
   images: string[];
@@ -14,8 +15,11 @@ function Slider({
   gap = 16, 
   direction = 'up'
 }: SliderProps) {
+  const imageSize = useMemo(() => {
+    return DeviceUtility.isMobile() ? "200px" : "300px"
+  }, []);
   return (
-    <div className="relative overflow-hidden h-full w-[300px]">
+    <div className={`relative overflow-hidden h-full w-[${imageSize}]`}>
       <style>
         {`
           @keyframes slideUp {
@@ -23,12 +27,12 @@ function Slider({
               transform: translateY(0);
             }
             100% {
-              transform: translateY(calc(-${images.length} * (300px + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (${imageSize} + ${gap}px)));
             }
           }
           @keyframes slideDown {
             0% {
-              transform: translateY(calc(-${images.length} * (300px + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (${imageSize} + ${gap}px)));
             }
             100% {
               transform: translateY(0);
@@ -50,7 +54,7 @@ function Slider({
             className="flex-shrink-0"
           >
             <Image
-              className="rounded-xl w-[300px] h-[300px] object-cover"
+              className={`rounded-xl w-[${imageSize}] h-[${imageSize}] object-cover`}
               src={image}
               width={300}
               height={300}
@@ -65,7 +69,7 @@ function Slider({
             className="flex-shrink-0"
           >
             <Image
-              className="rounded-xl w-[300px] h-[300px] object-cover"
+              className={`rounded-xl w-[${imageSize}] h-[${imageSize}] object-cover`}
               src={image}
               width={300}
               height={300}
