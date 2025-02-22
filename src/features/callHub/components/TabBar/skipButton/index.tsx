@@ -11,9 +11,9 @@ type SkipButtonProps = {
 
 function SkipButton({ handleJoinNextRoom, userState }: SkipButtonProps) {
   return (
-    <div className='flex items-center justify-center gap-3'>
+    <div className='flex items-center justify-center gap-3 w-full md:w-auto'>
       <PrimaryButton
-        text={userState == "noAction" ? "start connecting" : userState == "waiting" ? "waiting for users" : userState == "inCall" ? "leave this room" : ""}
+        text={userState == "noAction" ? "start" : userState == "waiting" ? "waiting" : userState == "inCall" ? "leave" : ""}
         icon={faArrowRight}
         onClick={handleJoinNextRoom}
         isLoading={userState === "waiting"}

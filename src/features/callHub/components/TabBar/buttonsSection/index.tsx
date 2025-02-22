@@ -5,22 +5,24 @@ import React, { Dispatch, SetStateAction } from 'react';
 import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
 import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
 import TwoPersonsIcon from '../../../../../../public/icons/two-person';
-import { RoomTypeEnum } from '@/features/callHub/types';
+import { RoomTypeEnum, userStateType } from '@/features/callHub/types';
 
 type ButtonsSectionProps = {
   selectedRoomType: RoomTypeEnum,
   setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
   handleEndLive: () => void,
+  userState: userStateType,
 }
 
-function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive }: ButtonsSectionProps) {
+function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, userState }: ButtonsSectionProps) {
   return (
-    <div className='flex items-center gap-3'>
+    <div className='flex items-center gap-1 md:gap-3'>
+      {/* mic button */}
       <div className='flex'>
         <IconButton
           icon={faMicrophone}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -28,11 +30,12 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive }
           onClick={() => { }}
         />
       </div>
+      {/* video button */}
       <div className='flex'>
         <IconButton
           icon={faVideo}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -40,51 +43,56 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive }
           onClick={() => { }}
         />
       </div>
+      {/* room type dropdown */}
       <IconDropDown
         selectedItemId={selectedRoomType.toString()}
         items={[
           {
             id: RoomTypeEnum.moreThanThreeUsers,
             children: <PlusThreePersonsIcon />,
-            onClick: () => { 
+            onClick: () => {
               setSelectedRoomType(RoomTypeEnum.moreThanThreeUsers)
             },
           },
           {
             id: RoomTypeEnum.threeUsers,
             children: <ThreePersonsIcon />,
-            onClick: () => { 
+            onClick: () => {
               setSelectedRoomType(RoomTypeEnum.threeUsers)
             },
           },
           {
             id: RoomTypeEnum.shuffle,
             icon: faShuffle,
-            onClick: () => { 
+            onClick: () => {
               setSelectedRoomType(RoomTypeEnum.shuffle)
             },
           },
           {
             id: RoomTypeEnum.twoUsers,
             children: <TwoPersonsIcon />,
-            onClick: () => { 
+            onClick: () => {
               setSelectedRoomType(RoomTypeEnum.twoUsers)
             },
           },
         ]}
       />
-      <div className='flex'>
-        <IconButton
-          icon={faArrowRightFromBracket}
-          containerClassName='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
-          onClick={handleEndLive}
-        />
-        <IconButton
-          icon={faEllipsisVertical}
-          containerClassName='rounded-l-none bg-red-500 hidden md:flex'
-          onClick={() => { }}
-        />
-      </div>
+      {/* leave room button */}
+      {
+        userState !== "noAction" &&
+        <div className='flex'>
+          <IconButton
+            icon={faArrowRightFromBracket}
+            containerClassName='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
+            onClick={handleEndLive}
+          />
+          <IconButton
+            icon={faEllipsisVertical}
+            containerClassName='rounded-l-none bg-red-500 hidden md:flex'
+            onClick={() => { }}
+          />
+        </div>
+      }
     </div>
   )
 };

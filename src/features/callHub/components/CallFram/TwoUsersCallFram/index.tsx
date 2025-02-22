@@ -1,5 +1,5 @@
 import React from 'react';
-import CallView from '../CallView';
+import CallView from './CallView';
 import { CallFramContentType } from '../../../types';
 import CallFramIllustration from '../CallFramStates/CallFramIllustration';
 import CallFramLoader from '../CallFramStates/CallFramLoader';
