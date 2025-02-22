@@ -18,8 +18,14 @@ function Slider({
   const imageSize = useMemo(() => {
     return DeviceUtility.isMobile() ? "200px" : "300px"
   }, []);
+  const imageWidthClass = useMemo(() => {
+    return DeviceUtility.isMobile() ? "w-[200px]" : "w-[300px]"
+  }, []);
+  const imageHeightClass = useMemo(() => {
+    return DeviceUtility.isMobile() ? "h-[200px]" : "h-[300px]"
+  }, []);
   return (
-    <div className={`relative overflow-hidden h-full w-[${imageSize}]`}>
+    <div className={`relative overflow-hidden h-full ${imageWidthClass}`}>
       <style>
         {`
           @keyframes slideUp {
@@ -54,7 +60,7 @@ function Slider({
             className="flex-shrink-0"
           >
             <Image
-              className={`rounded-xl w-[${imageSize}] h-[${imageSize}] object-cover`}
+              className={`rounded-xl ${imageWidthClass} ${imageHeightClass} object-cover`}
               src={image}
               width={300}
               height={300}
@@ -69,7 +75,7 @@ function Slider({
             className="flex-shrink-0"
           >
             <Image
-              className={`rounded-xl w-[${imageSize}] h-[${imageSize}] object-cover`}
+              className={`rounded-xl ${imageWidthClass} ${imageHeightClass} object-cover`}
               src={image}
               width={300}
               height={300}
