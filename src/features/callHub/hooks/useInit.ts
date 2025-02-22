@@ -24,7 +24,7 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
     const myPeer = createPeer(userId);
 
     // request user media (audio and video)
-    navigator.mediaDevices.getUserMedia({
+    navigator.mediaDevices?.getUserMedia({
       video: true,
       audio: true
     }).then(stream => {
