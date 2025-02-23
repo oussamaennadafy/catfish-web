@@ -25,6 +25,7 @@ function Header({ handleAppFriend }: HeaderProps) {
         />
         <AppAvatar
           rounded='meduim'
+          size={40}
         />
       </div>
     </div>

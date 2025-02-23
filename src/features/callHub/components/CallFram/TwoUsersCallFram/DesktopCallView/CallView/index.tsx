@@ -31,7 +31,7 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
         autoPlay
         className="h-full w-full object-cover -scale-x-100"
       />
-      <div className='absolute bottom-2 left-2 flex items-center justify-between gap-2 bg-[rgba(0,0,0,0.5)] py-1 px-2 rounded-lg backdrop-blur-lg'>
+      <div className='absolute bottom-2 left-2 mr-2 flex items-center justify-between gap-2 bg-[rgba(0,0,0,0.5)] py-1 px-2 rounded-lg backdrop-blur-lg'>
         <AppAvatar
           rounded='large'
           src={imageSrc}

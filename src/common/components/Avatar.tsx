@@ -19,7 +19,7 @@ function AppAvatar({ src, rounded = "meduim", size = 40 }: AppAvatarProps) {
     }
   }, [rounded])
   return (
-    <div>
+    <div style={{ height: size }} className='aspect-square'>
       <Image
         src={{ src: src || "/images/user-placeholder.png", width: size, height: size }}
         alt='user avatar'

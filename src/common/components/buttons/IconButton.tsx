@@ -24,7 +24,7 @@ function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, child
     }
   }, [iconColor]);
   return (
-    <button disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} h-10 p-2 border border-slate-800 rounded-lg ${isActive ? "bg-[#46446B]" : backgroundColor} ${containerClassName}`} onClick={onClick}>
+    <button disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} aspect-square h-10 p-2 border border-slate-800 rounded-lg ${isActive ? "bg-[#46446B]" : backgroundColor} ${containerClassName} ${onClick ? "cursor-pointer" : ""}`} onClick={onClick}>
       {
         icon ?
           <FontAwesomeIcon className={`text-lg ${iconBackgroundClassName}`} size={iconSize} icon={icon} />

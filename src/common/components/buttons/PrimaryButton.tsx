@@ -11,7 +11,7 @@ interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 function PrimaryButton({isLoading ,...props}: PrimaryButtonProps) {
   return (
-    <button disabled={isLoading} {...props} className='flex items-center justify-center md:justify-between gap-2 md:gap-4 px-6 py-2 w-full rounded-full bg-[#4139B0]'>
+    <button disabled={isLoading} {...props} className={`flex items-center justify-center md:justify-between gap-2 md:gap-4 px-6 py-2 w-full rounded-full bg-[#4139B0]  ${props.onClick ? "cursor-pointer" : ""}`}>
       <span>{props.text}</span>
       {
         props.icon && !isLoading &&

@@ -27,7 +27,7 @@ function PopupCallFram({ callFramContent }: PopupCallFramProps) {
       />
   }
   return (
-    <div className='absolute top-2 right-2 w-1/4 h-1/4 z-10'>
+    <div className='absolute top-2 right-2 w-1/4 h-1/4 z-10 rounded-xl overflow-hidden'>
       {content}
     </div>
   )
