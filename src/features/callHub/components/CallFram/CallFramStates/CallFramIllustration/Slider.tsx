@@ -39,7 +39,7 @@ function Slider({
         `}
       </style>
       <div 
-        className={`flex flex-col absolute ${direction === "up" ? "animate-[slideUp]" : "animate-[slideDown]"} 20s linear infinite`}
+        className={`flex flex-col absolute ${direction === "up" ? "animate-[slideUp]" : "animate-[slideDown]"} 20s linear infinite w-full`}
         style={{ 
           gap: `${gap}px`,
           animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
