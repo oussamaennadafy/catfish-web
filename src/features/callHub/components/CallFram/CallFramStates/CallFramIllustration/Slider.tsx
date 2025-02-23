@@ -9,10 +9,10 @@ type SliderProps = {
   containerClassName?: string,
 }
 
-function Slider({ 
-  images, 
-  duration = 20, 
-  gap = 16, 
+function Slider({
+  images,
+  duration = 20,
+  gap = 16,
   direction = 'up',
   containerClassName,
 }: SliderProps) {
@@ -38,9 +38,9 @@ function Slider({
           }
         `}
       </style>
-      <div 
+      <div
         className={`flex flex-col absolute ${direction === "up" ? "animate-[slideUp]" : "animate-[slideDown]"} 20s linear infinite w-full`}
-        style={{ 
+        style={{
           gap: `${gap}px`,
           animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
         }}
@@ -57,6 +57,8 @@ function Slider({
               width={300}
               height={300}
               alt={`Slide ${index + 1}`}
+              placeholder='blur'
+              blurDataURL={image}
             />
           </div>
         ))}
@@ -72,6 +74,8 @@ function Slider({
               width={300}
               height={300}
               alt={`Slide ${index + 1}`}
+              placeholder='blur'
+              blurDataURL={image}
             />
           </div>
         ))}
