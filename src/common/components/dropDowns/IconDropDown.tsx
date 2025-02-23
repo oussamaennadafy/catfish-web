@@ -35,7 +35,7 @@ function IconDropDown({ items, selectedItemId }: PropsWithChildren<IconDropDownP
         </div>
       }
       {isOpen && createPortal(
-        <div onClick={() => { setIsOpen(false); }} className='absolute top-0 right-0 left-0 bottom-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-10'></div>,
+        <div onClick={() => { setIsOpen(false); }} className='absolute top-0 right-0 left-0 bottom-0 w-screen h-[100svh] bg-[rgba(0,0,0,0.5)] z-10'></div>,
         document.body
       )}
     </div>

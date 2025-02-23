@@ -1,31 +1,23 @@
-import { DeviceUtility } from '@/utils/device_utility';
 import Image from 'next/image'
-import React, { useMemo } from 'react'
+import React from 'react'
 
 type SliderProps = {
   images: string[];
   duration?: number;
   gap?: number;
   direction?: 'up' | 'down';
+  containerClassName?: string,
 }
 
 function Slider({ 
   images, 
   duration = 20, 
   gap = 16, 
-  direction = 'up'
+  direction = 'up',
+  containerClassName,
 }: SliderProps) {
-  const imageSize = useMemo(() => {
-    return DeviceUtility.isMobile() ? "200px" : "300px"
-  }, []);
-  const imageWidthClass = useMemo(() => {
-    return DeviceUtility.isMobile() ? "w-[200px]" : "w-[300px]"
-  }, []);
-  const imageHeightClass = useMemo(() => {
-    return DeviceUtility.isMobile() ? "h-[200px]" : "h-[300px]"
-  }, []);
   return (
-    <div className={`relative overflow-hidden h-full ${imageWidthClass}`}>
+    <div className={`relative overflow-hidden h-full w-full ${containerClassName}`}>
       <style>
         {`
           @keyframes slideUp {
@@ -33,12 +25,12 @@ function Slider({
               transform: translateY(0);
             }
             100% {
-              transform: translateY(calc(-${images.length} * (${imageSize} + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (200px + ${gap}px)));
             }
           }
           @keyframes slideDown {
             0% {
-              transform: translateY(calc(-${images.length} * (${imageSize} + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (200px + ${gap}px)));
             }
             100% {
               transform: translateY(0);
@@ -47,7 +39,7 @@ function Slider({
         `}
       </style>
       <div 
-        className="flex flex-col absolute"
+        className={`flex flex-col absolute ${direction === "up" ? "animate-[slideUp]" : "animate-[slideDown]"} 20s linear infinite`}
         style={{ 
           gap: `${gap}px`,
           animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
@@ -57,10 +49,10 @@ function Slider({
         {images.map((image, index) => (
           <div
             key={`${image}-${index}`}
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <Image
-              className={`rounded-xl ${imageWidthClass} ${imageHeightClass} object-cover`}
+              className={`rounded-xl w-full h-[200px] md:h-[300px] object-cover`}
               src={image}
               width={300}
               height={300}
@@ -72,10 +64,10 @@ function Slider({
         {images.map((image, index) => (
           <div
             key={`${image}-${index}-duplicate`}
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <Image
-              className={`rounded-xl ${imageWidthClass} ${imageHeightClass} object-cover`}
+              className={`rounded-xl w-full h-[200px] md:h-[300px] object-cover`}
               src={image}
               width={300}
               height={300}

@@ -1,4 +1,3 @@
-import { CALLFRAM_HEIGHT } from '@/common/constants/sizes'
 import Lottie from 'lottie-react'
 import React from 'react'
 import searchAnimation from "./../../../../../../../public/lottie/search-animation.json";
@@ -11,9 +10,6 @@ function CallFramLoader() {
         <Lottie
           animationData={searchAnimation}
           loop={true}
-          style={{
-            height: CALLFRAM_HEIGHT,
-          }}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import CallView from '../TwoUsersCallFram/CallView';
+import CallView from '../TwoUsersCallFram/DesktopCallView/CallView';
 import { CallFramContentType } from '../../../types';
 
 type CallFramProps = {
