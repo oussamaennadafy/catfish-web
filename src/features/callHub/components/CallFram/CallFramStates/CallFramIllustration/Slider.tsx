@@ -1,23 +1,30 @@
-import Image from 'next/image'
+import Image from 'next/image';
 import React from 'react'
 
 type SliderProps = {
-  images: string[];
+  images?: string[];
   duration?: number;
   gap?: number;
   direction?: 'up' | 'down';
-  containerClassName?: string,
+  calssName?: string
 }
 
-function Slider({
-  images,
-  duration = 20,
-  gap = 16,
+function Slider({ 
+  images = [], 
+  duration = 20, 
+  gap = 20, 
   direction = 'up',
-  containerClassName,
+  calssName,
 }: SliderProps) {
+  const imageSize = 300;
+
+  // If no images, don't render
+  if (!images.length) {
+    return null;
+  }
+
   return (
-    <div className={`relative overflow-hidden h-full w-full ${containerClassName}`}>
+    <div className={`relative overflow-hidden h-full w-full ${calssName}`}>
       <style>
         {`
           @keyframes slideUp {
@@ -25,12 +32,12 @@ function Slider({
               transform: translateY(0);
             }
             100% {
-              transform: translateY(calc(-${images.length} * (200px + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (${imageSize}px + ${gap}px)));
             }
           }
           @keyframes slideDown {
             0% {
-              transform: translateY(calc(-${images.length} * (200px + ${gap}px)));
+              transform: translateY(calc(-${images.length} * (${imageSize}px + ${gap}px)));
             }
             100% {
               transform: translateY(0);
@@ -38,10 +45,9 @@ function Slider({
           }
         `}
       </style>
-      <div
-        className={`flex flex-col absolute ${direction === "up" ? "animate-[slideUp]" : "animate-[slideDown]"} 20s linear infinite w-full`}
-        style={{
-          gap: `${gap}px`,
+      <div 
+        className="flex flex-col absolute w-full gap-5"
+        style={{ 
           animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
         }}
       >
@@ -49,16 +55,13 @@ function Slider({
         {images.map((image, index) => (
           <div
             key={`${image}-${index}`}
-            className="shrink-0"
+            className="w-full"
           >
             <Image
-              className={`rounded-xl w-full h-[200px] md:h-[300px] object-cover`}
-              src={image}
-              width={300}
-              height={300}
+              style={{ height: `${imageSize}px` }}
+              className="rounded-xl object-cover w-full"
+              src={{src: image, width: imageSize, height: imageSize}}
               alt={`Slide ${index + 1}`}
-              placeholder='blur'
-              blurDataURL={image}
             />
           </div>
         ))}
@@ -66,16 +69,13 @@ function Slider({
         {images.map((image, index) => (
           <div
             key={`${image}-${index}-duplicate`}
-            className="shrink-0"
+            className="w-full"
           >
             <Image
-              className={`rounded-xl w-full h-[200px] md:h-[300px] object-cover`}
-              src={image}
-              width={300}
-              height={300}
+              style={{ height: `${imageSize}px` }}
+              className="rounded-xl object-cover w-full"
+              src={{src: image, width: imageSize, height: imageSize}}
               alt={`Slide ${index + 1}`}
-              placeholder='blur'
-              blurDataURL={image}
             />
           </div>
         ))}
