@@ -3,10 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   env: {
-    BASE_URI: "https://demo1.catfishmeet.live/",
-    SOCKET_URI: "https://demo1.catfishmeet.live/",
-    PEERJS_HOST: "0.peerjs.com",
-    PEERJS_PORT: "443",
+    // prod
+    PROD_BASE_URL: "https://api.catfishmeet.live/api/v1",
+    PROD_SOCKET_URL: "https://api.catfishmeet.live",
+    // dev
+    DEV_BASE_URL: "http://localhost:3001/api/v1",
+    DEV_SOCKET_URL: "http://localhost:3001"
   },
   images: {
     remotePatterns: [
