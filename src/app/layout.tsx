@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#161931] bg-[url('/images/background.png')] bg-cover bg-center h-[100svh]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#161931] bg-[url('/images/background.png')] bg-cover bg-center h-[100svh] overflow-hidden`}
       >
         {children}
       </body>
