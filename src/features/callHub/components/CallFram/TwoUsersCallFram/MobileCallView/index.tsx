@@ -1,4 +1,4 @@
-import { CallFramContentType } from '@/features/callHub/types'
+import { CallFramContentType, userStateType } from '@/features/callHub/types'
 import React from 'react'
 import CallFramIllustration from '../../CallFramStates/CallFramIllustration'
 import CallFramLoader from '../../CallFramStates/CallFramLoader'
@@ -9,15 +9,16 @@ import PopupCallFram from './PopupCallFram'
 type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
+  userState: userStateType,
 }
 
-function MobileCallView({ videoStreamsList, className }: MobileCallViewProps) {
+function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {
   return (
     <div
       className={`relative gap-3 h-full grid-cols-1 grid-rows-1 ${className}`}>
       {
         videoStreamsList.map((callFram, index) => {
-          if (index === 0) {
+          if (index === 0 && userState !== "noAction") {
             return <PopupCallFram
               callFramContent={callFram.content}
               key={index}

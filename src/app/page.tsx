@@ -15,11 +15,12 @@ export default function Home() {
     handleEndLive
   } = useHome();
   return (
-    <div className={`flex flex-col w-full h-full p-2 gap-2 md:p-4 md:gap-4`}>
+    <div className={`flex flex-col w-full h-full min-h-full p-2 gap-2 md:p-4 md:gap-4`}>
       <Header handleAppFriend={handleAppFriend} />
       <CallFram
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
+        userState={userState}
       />
       <TabBar
         selectedRoomType={selectedRoomType}
