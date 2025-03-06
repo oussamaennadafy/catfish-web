@@ -15,7 +15,9 @@ type MobileCallViewProps = {
 function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {
   return (
     <div
-      className={`relative gap-3 h-full grid-cols-1 grid-rows-1 ${className}`}>
+      className={`relative h-full grid-cols-1 grid-rows-1 ${className}`}
+      style={{ maxHeight: "calc(100svh - 112px)" }}
+    >
       {
         videoStreamsList.map((callFram, index) => {
           if (index === 0 && userState !== "noAction") {

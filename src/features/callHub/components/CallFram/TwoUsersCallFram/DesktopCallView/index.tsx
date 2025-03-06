@@ -13,7 +13,9 @@ type DesktopCallViewProps = {
 function DesktopCallView({ videoStreamsList, className }: DesktopCallViewProps) {
   return (
     <div
-      className={`relative gap-3 h-full grid-cols-1 md:grid-cols-2 grid-rows-1 ${className}`}>
+      className={`relative gap-3 h-full grid-cols-1 md:grid-cols-2 grid-rows-1 ${className}`}
+      style={{ maxHeight: "calc(100svh - 144px)" }}
+    >
       {
         videoStreamsList.map((callFram) => {
           switch (callFram.content) {
