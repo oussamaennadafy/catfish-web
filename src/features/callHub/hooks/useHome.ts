@@ -8,9 +8,12 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-  const { userId, isReady, updateCallFram, peers } = useInit({ setVideoStreamsList, setUserState });
+  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ setVideoStreamsList, setUserState });
   const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
 
+  const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
+  const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
+  
   const handleJoinNextRoom = useCallback(() => {
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
     // handle first click
@@ -58,13 +61,41 @@ export const useHome = () => {
     clearInterval(prevIntervalId.current);
   }, [peers, updateCallFram, userId]);
 
+  const handleToggleMic = useCallback(() => {
+    // check if current user has stream
+    if (!userStreamRef) return;
+    // disable audio track from users stream
+    const audioTrack = (userStreamRef.current as MediaStream).getAudioTracks()[0];
+    audioTrack.enabled = !audioTrack.enabled;
+    // set state to update ui
+    setIsMicOpen((prev) => !prev);
+  }, [userStreamRef]);
+  
+  const handleToggleCamera = useCallback(() => {
+    // check if current user has stream
+    if (!userStreamRef) return;
+    // disable video track from users stream
+    const videoTrack = (userStreamRef.current as MediaStream).getVideoTracks()[0];
+    videoTrack.enabled = !videoTrack.enabled;
+    // set state to update ui
+    setIsCameraOpen((prev) => !prev);
+  }, [userStreamRef]);
+
   return {
-    videoStreamsList,
-    selectedRoomType,
-    setSelectedRoomType,
-    handleJoinNextRoom,
-    userState,
-    handleAppFriend,
-    handleEndLive
+    state: {
+      videoStreamsList,
+      selectedRoomType,
+      setSelectedRoomType,
+      userState,
+      isCameraOpen,
+      isMicOpen,
+    },
+    functions: {
+      handleJoinNextRoom,
+      handleAppFriend,
+      handleEndLive,
+      handleToggleMic,
+      handleToggleCamera,
+    },
   }
 }

@@ -10,9 +10,11 @@ type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
   userState: userStateType,
+  isCameraOpen: boolean,
+  isMicOpen: boolean,
 }
 
-function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {
+function MobileCallView({ videoStreamsList, className, userState, isCameraOpen }: MobileCallViewProps) {
   return (
     <div
       className={`relative h-full grid-cols-1 grid-rows-1 ${className}`}
@@ -20,9 +22,11 @@ function MobileCallView({ videoStreamsList, className, userState }: MobileCallVi
     >
       {
         videoStreamsList.map((callFram, index) => {
-          if (index === 0 && userState !== "noAction") {
+          if (index === 0) {
+            if (userState === "noAction") return;
             return <PopupCallFram
               callFramContent={callFram.content}
+              isCameraOpen={isCameraOpen}
               key={index}
             />
           }

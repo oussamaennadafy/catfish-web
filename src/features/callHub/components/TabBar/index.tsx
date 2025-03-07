@@ -10,9 +10,13 @@ type TabBarProps = {
   handleJoinNextRoom: () => void,
   userState: userStateType,
   handleEndLive: () => void,
+  handleToggleCamera: () => void,
+  handleToggleMic: () => void,
+  isCameraOpen: boolean,
+  isMicOpen: boolean,
 }
 
-function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, userState, handleEndLive }: TabBarProps) {
+function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, userState, handleEndLive, handleToggleCamera, handleToggleMic, isCameraOpen }: TabBarProps) {
   return (
     <div className='flex items-center justify-between gap-2 max-h-10'>
       <RecordingDetails
@@ -24,6 +28,9 @@ function TabBar({ selectedRoomType, setSelectedRoomType, handleJoinNextRoom, use
         setSelectedRoomType={setSelectedRoomType}
         handleEndLive={handleEndLive}
         userState={userState}
+        handleToggleCamera={handleToggleCamera}
+        handleToggleMic={handleToggleMic}
+        isCameraOpen={isCameraOpen}
       />
       <SkipButton userState={userState} handleJoinNextRoom={handleJoinNextRoom} />
     </div>

@@ -19,6 +19,8 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
     isPeerOpen: false,
     isUserReady: false
   }).current;
+  
+  const userStreamRef = useRef<MediaStream>(null); 
 
   useEffect(() => {
     const myPeer = createPeer(userId);
@@ -28,6 +30,9 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
       video: true,
       audio: true
     }).then(stream => {
+      // save users stream
+      userStreamRef.current = stream;
+
       // add video preview of the current user stream
       updateCallFram(0, { stream, isMuted: true, userId: userId });
 
@@ -77,5 +82,6 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
     isReady,
     peers,
     updateCallFram,
+    userStreamRef,
   }
 }

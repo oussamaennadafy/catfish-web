@@ -6,13 +6,21 @@ import { useHome } from "@/features/callHub/hooks/useHome";
 
 export default function Home() {
   const {
-    selectedRoomType,
-    setSelectedRoomType,
-    videoStreamsList,
-    handleJoinNextRoom,
-    userState,
-    handleAppFriend,
-    handleEndLive
+    state: {
+      selectedRoomType,
+      setSelectedRoomType,
+      userState,
+      videoStreamsList,
+      isCameraOpen,
+      isMicOpen,
+    },
+    functions: {
+      handleAppFriend,
+      handleEndLive,
+      handleJoinNextRoom,
+      handleToggleCamera,
+      handleToggleMic,
+    }
   } = useHome();
   return (
     <div className={`flex flex-col w-full h-full min-h-full p-2 gap-2 md:p-4 md:gap-4`}>
@@ -21,6 +29,8 @@ export default function Home() {
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
         userState={userState}
+        isCameraOpen={isCameraOpen}
+        isMicOpen={isMicOpen}
       />
       <TabBar
         selectedRoomType={selectedRoomType}
@@ -28,6 +38,10 @@ export default function Home() {
         handleJoinNextRoom={handleJoinNextRoom}
         userState={userState}
         handleEndLive={handleEndLive}
+        handleToggleCamera={handleToggleCamera}
+        handleToggleMic={handleToggleMic}
+        isCameraOpen={isCameraOpen}
+        isMicOpen={isMicOpen}
       />
     </div>
   );

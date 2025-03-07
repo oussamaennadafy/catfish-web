@@ -7,9 +7,11 @@ import useDeviceSize from '@/utils/useDeviceSize';
 type CallFramProps = {
   videoStreamsList: CallFramContentType[],
   userState: userStateType,
+  isCameraOpen: boolean,
+  isMicOpen: boolean,
 }
 
-function TwoUsersCallFram({ videoStreamsList, userState }: CallFramProps) {
+function TwoUsersCallFram({ videoStreamsList, userState, isCameraOpen, isMicOpen }: CallFramProps) {
   const { isMobile } = useDeviceSize();
 
   return <div className='h-full'>
@@ -19,11 +21,15 @@ function TwoUsersCallFram({ videoStreamsList, userState }: CallFramProps) {
           videoStreamsList={videoStreamsList}
           className='grid md:hidden'
           userState={userState}
+          isCameraOpen={isCameraOpen}
+          isMicOpen={isMicOpen}
         />
         :
         <DesktopCallView
           videoStreamsList={videoStreamsList}
           className='hidden md:grid'
+          isCameraOpen={isCameraOpen}
+          isMicOpen={isMicOpen}
         />
     }
   </div>

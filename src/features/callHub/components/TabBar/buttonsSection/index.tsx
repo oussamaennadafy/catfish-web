@@ -1,6 +1,6 @@
 import IconButton from '@/common/components/buttons/IconButton';
 import IconDropDown from '@/common/components/dropDowns/IconDropDown';
-import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
 import React, { Dispatch, SetStateAction } from 'react';
 import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
 import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
@@ -12,9 +12,12 @@ type ButtonsSectionProps = {
   setSelectedRoomType: Dispatch<SetStateAction<RoomTypeEnum>>,
   handleEndLive: () => void,
   userState: userStateType,
+  handleToggleCamera: () => void,
+  handleToggleMic: () => void,
+  isCameraOpen: boolean,
 }
 
-function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, userState }: ButtonsSectionProps) {
+function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, userState, handleToggleCamera, handleToggleMic, isCameraOpen }: ButtonsSectionProps) {
   return (
     <div className='flex items-center gap-1 md:gap-3'>
       {/* mic button */}
@@ -22,7 +25,7 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
         <IconButton
           icon={faMicrophone}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => { }}
+          onClick={handleToggleMic}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -33,9 +36,10 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
       {/* video button */}
       <div className='flex'>
         <IconButton
-          icon={faVideo}
+          icon={isCameraOpen ? faVideo : faVideoSlash}
           containerClassName='md:rounded-r-none md:border-r-0'
-          onClick={() => { }}
+          onClick={handleToggleCamera}
+          isActive={!isCameraOpen}
         />
         <IconButton
           icon={faEllipsisVertical}
