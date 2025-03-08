@@ -9,6 +9,8 @@ type SliderProps = {
   calssName?: string
 }
 
+const imageSize = 300;
+
 function Slider({ 
   images = [], 
   duration = 20, 
@@ -16,7 +18,6 @@ function Slider({
   direction = 'up',
   calssName,
 }: SliderProps) {
-  const imageSize = 300;
 
   // If no images, don't render
   if (!images.length) {
@@ -58,23 +59,25 @@ function Slider({
             className="w-full"
           >
             <Image
-              style={{ height: `${imageSize}px` }}
-              className="rounded-xl object-cover w-full"
-              src={{src: image, width: imageSize, height: imageSize}}
+              // style={{ height: `${imageSize}px`, width: `${imageSize}px` }}
+              priority
+              className={`rounded-xl object-cover`}
+              src={{src: image, width: 300, height: 400}}
               alt={`Slide ${index + 1}`}
-            />
+              />
           </div>
         ))}
         {/* Duplicate set for seamless loop */}
         {images.map((image, index) => (
           <div
-            key={`${image}-${index}-duplicate`}
-            className="w-full"
+          key={`${image}-${index}-duplicate`}
+          className="w-full"
           >
             <Image
-              style={{ height: `${imageSize}px` }}
-              className="rounded-xl object-cover w-full"
-              src={{src: image, width: imageSize, height: imageSize}}
+              // style={{ height: `${imageSize}px`, width: `${imageSize}px`  }}
+              priority
+              className={`rounded-xl object-cover`}
+              src={{src: image, width: 300, height: 400}}
               alt={`Slide ${index + 1}`}
             />
           </div>
