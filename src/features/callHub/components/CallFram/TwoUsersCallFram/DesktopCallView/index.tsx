@@ -3,7 +3,7 @@ import { CallFramContentType } from '@/features/callHub/types';
 import CallFramIllustration from '../../CallFramStates/CallFramIllustration';
 import CallFramLoader from '../../CallFramStates/CallFramLoader';
 import CallFramPlaceHolder from '../../CallFramStates/CallFramPlaceHolder';
-import CallView from './CallView';
+import CallView from '../CallView';
 import CallFramAvatar from '../../CallFramStates/CallFramAvatar';
 
 type DesktopCallViewProps = {
@@ -21,8 +21,8 @@ function DesktopCallView({ videoStreamsList, className, isCameraOpen }: DesktopC
     >
       {
         videoStreamsList.map((callFram, index) => {
-          if(index === 0) {
-            if(!isCameraOpen) return <CallFramAvatar key={callFram.id} />;
+          if (index === 0) {
+            if (!isCameraOpen) return <CallFramAvatar key={callFram.id} />;
           }
           switch (callFram.content) {
             case "illustration":

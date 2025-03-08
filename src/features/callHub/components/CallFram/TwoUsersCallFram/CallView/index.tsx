@@ -2,6 +2,7 @@ import AppAvatar from '@/common/components/Avatar';
 import Video from '@/common/components/Video';
 import { VideoStream } from '@/features/callHub/types';
 import React, { useMemo } from 'react';
+import CallFramAvatar from '../../CallFramStates/CallFramAvatar';
 
 type CallViewProps = {
   borderWidth?: "none" | "Small" | "Meduim" | "Large",
@@ -39,6 +40,14 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
         />
         <p className='text-sm'>{`${userFullName} - ${videoStream.userId}`}</p>
       </div>
+
+      {/* audio fram overlay */}
+      {
+        videoStream.isCameraOff &&
+        <div className='absolute top-0 left-0 right-0 bottom-0 w-full h-full'>
+          <CallFramAvatar />
+        </div>
+      }
     </div>
   )
 }

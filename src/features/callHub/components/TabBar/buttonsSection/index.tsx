@@ -1,6 +1,6 @@
 import IconButton from '@/common/components/buttons/IconButton';
 import IconDropDown from '@/common/components/dropDowns/IconDropDown';
-import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faShuffle, faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faEllipsisVertical, faMicrophone, faMicrophoneSlash, faShuffle, faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
 import React, { Dispatch, SetStateAction } from 'react';
 import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
 import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
@@ -15,17 +15,19 @@ type ButtonsSectionProps = {
   handleToggleCamera: () => void,
   handleToggleMic: () => void,
   isCameraOpen: boolean,
+  isMicOpen: boolean,
 }
 
-function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, userState, handleToggleCamera, handleToggleMic, isCameraOpen }: ButtonsSectionProps) {
+function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, userState, handleToggleCamera, handleToggleMic, isCameraOpen, isMicOpen }: ButtonsSectionProps) {
   return (
     <div className='flex items-center gap-1 md:gap-3'>
       {/* mic button */}
       <div className='flex'>
         <IconButton
-          icon={faMicrophone}
+          icon={isMicOpen ? faMicrophone : faMicrophoneSlash}
           containerClassName='md:rounded-r-none md:border-r-0'
           onClick={handleToggleMic}
+          isActive={!isMicOpen}
         />
         <IconButton
           icon={faEllipsisVertical}

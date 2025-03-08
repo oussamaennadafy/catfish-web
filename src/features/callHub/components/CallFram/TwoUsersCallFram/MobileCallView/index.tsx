@@ -3,8 +3,9 @@ import React from 'react'
 import CallFramIllustration from '../../CallFramStates/CallFramIllustration'
 import CallFramLoader from '../../CallFramStates/CallFramLoader'
 import CallFramPlaceHolder from '../../CallFramStates/CallFramPlaceHolder'
-import CallView from '../DesktopCallView/CallView'
+import CallView from '../CallView'
 import PopupCallFram from './PopupCallFram'
+import CallFramAvatar from '../../CallFramStates/CallFramAvatar'
 
 type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
@@ -22,14 +23,15 @@ function MobileCallView({ videoStreamsList, className, userState, isCameraOpen }
     >
       {
         videoStreamsList.map((callFram, index) => {
-          if (index === 0) {
-            if (userState === "noAction") return;
+          if (index === 0 && userState !== "noAction") {
             return <PopupCallFram
               callFramContent={callFram.content}
               isCameraOpen={isCameraOpen}
               key={index}
             />
           }
+          if (index === 0 && !isCameraOpen) return <CallFramAvatar key={callFram.id} />;
+          if (index === 1 && userState === "noAction") return;
           switch (callFram.content) {
             case "illustration":
               return <CallFramIllustration key={callFram.id} />

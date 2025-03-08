@@ -9,6 +9,7 @@ export type VideoStream = {
   userId: string,
   stream: MediaStream,
   isMuted: boolean,
+  isCameraOff?: boolean,
 }
 
 export type CallFramContentType = {

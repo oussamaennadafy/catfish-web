@@ -8,7 +8,7 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ setVideoStreamsList, setUserState });
+  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ setVideoStreamsList, setUserState, videoStreamsList });
   const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
@@ -47,8 +47,8 @@ export const useHome = () => {
 
 
   const handleAppFriend = useCallback(() => {
-    console.log({ peers, userState });
-  }, [peers, userState]);
+    console.log(videoStreamsList);
+  }, [videoStreamsList]);
 
   const handleEndLive = useCallback(() => {
     // // close all calls
@@ -77,9 +77,11 @@ export const useHome = () => {
     // disable video track from users stream
     const videoTrack = (userStreamRef.current as MediaStream).getVideoTracks()[0];
     videoTrack.enabled = !videoTrack.enabled;
+    // emit camera toggle event
+    socket.emit('toggle-camera', userId, isCameraOpen);
     // set state to update ui
     setIsCameraOpen((prev) => !prev);
-  }, [userStreamRef]);
+  }, [userId, userStreamRef, isCameraOpen]);
 
   return {
     state: {
