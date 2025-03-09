@@ -6,6 +6,7 @@ import CallFramIllustration from '../../../CallFramStates/CallFramIllustration';
 import Video from '@/common/components/Video';
 import { useSpring, animated, } from "@react-spring/web";
 import { useDrag } from '@use-gesture/react'
+import CallFramAvatar from '../../../CallFramStates/CallFramAvatar';
 
 type PopupCallFramProps = {
   callFramContent: CallFramContentType["content"],
@@ -71,12 +72,22 @@ function PopupCallFram({ callFramContent }: PopupCallFramProps) {
       content = <CallFramPlaceHolder />
       break;
     default:
-      content = <Video
-        srcObject={(callFramContent as VideoStream).stream}
-        muted={(callFramContent as VideoStream).isMuted}
-        autoPlay
-        className="h-full w-full object-cover -scale-x-100"
-      />
+      content =
+        <>
+          <Video
+            srcObject={(callFramContent as VideoStream).stream}
+            muted={(callFramContent as VideoStream).isMuted}
+            autoPlay
+            className="h-full w-full object-cover -scale-x-100 rounded-xl border-2 border-transparent"
+          />
+          {
+            !callFramContent.isCameraOpen &&
+            //  audio fram overlay 
+            <div className='absolute top-0 left-0 right-0 bottom-0 w-full h-full rounded-xl'>
+              <CallFramAvatar />
+            </div>
+          }
+        </>
   }
   return (
     <AnimatedDiv ref={ref} {...bind()} style={{ touchAction: "none", x, y }} className='absolute top-2 right-2 w-1/4 h-1/4 z-10 rounded-xl overflow-hidden items-center justify-center bg-[#161931]'>
