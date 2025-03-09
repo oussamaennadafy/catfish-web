@@ -29,7 +29,6 @@ export default function Home() {
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
         userState={userState}
-        isCameraOpen={isCameraOpen}
         isMicOpen={isMicOpen}
       />
       <TabBar

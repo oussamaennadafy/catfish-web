@@ -5,17 +5,15 @@ import CallFramLoader from '../../CallFramStates/CallFramLoader'
 import CallFramPlaceHolder from '../../CallFramStates/CallFramPlaceHolder'
 import CallView from '../CallView'
 import PopupCallFram from './PopupCallFram'
-import CallFramAvatar from '../../CallFramStates/CallFramAvatar'
 
 type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
   userState: userStateType,
-  isCameraOpen: boolean,
   isMicOpen: boolean,
 }
 
-function MobileCallView({ videoStreamsList, className, userState, isCameraOpen }: MobileCallViewProps) {
+function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {
   return (
     <div
       className={`relative h-full grid-cols-1 grid-rows-1 ${className}`}
@@ -26,11 +24,9 @@ function MobileCallView({ videoStreamsList, className, userState, isCameraOpen }
           if (index === 0 && userState !== "noAction") {
             return <PopupCallFram
               callFramContent={callFram.content}
-              isCameraOpen={isCameraOpen}
               key={index}
             />
           }
-          if (index === 0 && !isCameraOpen) return <CallFramAvatar key={callFram.id} />;
           if (index === 1 && userState === "noAction") return;
           switch (callFram.content) {
             case "illustration":

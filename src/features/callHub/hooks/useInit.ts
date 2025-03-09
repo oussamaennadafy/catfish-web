@@ -43,9 +43,8 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
         call.answer(stream);
         // listen to the new user stream to show it to the current user
         call.once('stream', userVideoStream => {
-          const isCameraOpen = call.metadata?.isCameraOpen;
           // add video of the new user
-          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOff: !isCameraOpen });
+          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false });
           setUserState("inCall");
         })
 
@@ -58,8 +57,8 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
       })
 
       // listenner on future connected users
-      socket.on('user-connected', (userId, isCameraOpen) => {
-        connectToNewUser(userId, stream, myPeer, peers, isCameraOpen);
+      socket.on('user-connected', (userId) => {
+        connectToNewUser(userId, stream, myPeer, peers);
       })
 
       isReady.isUserReady = true;

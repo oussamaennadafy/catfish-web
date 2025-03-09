@@ -6,14 +6,12 @@ import CallFramIllustration from '../../../CallFramStates/CallFramIllustration';
 import Video from '@/common/components/Video';
 import { useSpring, animated, } from "@react-spring/web";
 import { useDrag } from '@use-gesture/react'
-import CallFramAvatar from '../../../CallFramStates/CallFramAvatar';
 
 type PopupCallFramProps = {
   callFramContent: CallFramContentType["content"],
-  isCameraOpen: boolean,
 }
 
-function PopupCallFram({ callFramContent, isCameraOpen }: PopupCallFramProps) {
+function PopupCallFram({ callFramContent }: PopupCallFramProps) {
   const AnimatedDiv = animated<React.ElementType>("div");
   const ref = useRef<HTMLDivElement>(null);
   // Track previous position
@@ -73,15 +71,12 @@ function PopupCallFram({ callFramContent, isCameraOpen }: PopupCallFramProps) {
       content = <CallFramPlaceHolder />
       break;
     default:
-      {
-        if (!isCameraOpen) content = <CallFramAvatar />;
-        else content = <Video
-            srcObject={(callFramContent as VideoStream).stream}
-            muted={(callFramContent as VideoStream).isMuted}
-            autoPlay
-            className="h-full w-full object-cover -scale-x-100"
-          />
-      }
+      content = <Video
+        srcObject={(callFramContent as VideoStream).stream}
+        muted={(callFramContent as VideoStream).isMuted}
+        autoPlay
+        className="h-full w-full object-cover -scale-x-100"
+      />
   }
   return (
     <AnimatedDiv ref={ref} {...bind()} style={{ touchAction: "none", x, y }} className='absolute top-2 right-2 w-1/4 h-1/4 z-10 rounded-xl overflow-hidden items-center justify-center bg-[#161931]'>

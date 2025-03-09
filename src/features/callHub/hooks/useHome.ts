@@ -21,7 +21,7 @@ export const useHome = () => {
     if (userState == "noAction") {
       updateCallFram(1, "loader");
       setUserState("waiting");
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
@@ -29,7 +29,7 @@ export const useHome = () => {
         peers[peer].close();
       }
       socket.emit('user-disconnected', userId);
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
       // clear previous interval
       clearInterval(prevIntervalId.current);
 
@@ -37,14 +37,14 @@ export const useHome = () => {
       const intervalId = setInterval(() => {
         if (Object.keys(peers).length == 0) {
           socket.emit('user-disconnected', userId);
-          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
+          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
         }
       }, 5000);
 
       // set the interval id to clear later
       prevIntervalId.current = intervalId;
     }
-  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, userId, selectedRoomType, isCameraOpen, peers]);
+  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, userId, selectedRoomType, peers]);
 
 
   const handleAppFriend = useCallback(() => {
