@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     // dev
     DEV_BASE_URL: "http://localhost:3001/api/v1",
     DEV_SOCKET_URL: "http://localhost:3001"
+    // DEV_SOCKET_URL: "https://api.catfishmeet.live"
   },
   images: {
     remotePatterns: [

@@ -10,12 +10,11 @@ type useInitParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
   setUserState: Dispatch<SetStateAction<userStateType>>,
   videoStreamsList: CallFramContentType[],
-  isCameraOpen: boolean,
 }
 
 export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) => {
   const userId = useRef(v4()).current;
-  const { addCallFram, connectToNewUser, removeCallFram, updateCallFram, makeCallFramAudioOnly } = useHomeHelpers({ setVideoStreamsList, setUserState });
+  const { addCallFram, connectToNewUser, removeCallFram, updateCallFram } = useHomeHelpers({ setVideoStreamsList, setUserState });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
   const isReady = useRef({
     isPeerOpen: false,
@@ -79,18 +78,6 @@ export const useInit = ({ setVideoStreamsList, setUserState }: useInitParams) =>
       isReady.isPeerOpen = true;
     })
   }, [peers, addCallFram, removeCallFram, connectToNewUser, userId, isReady, updateCallFram, setUserState]);
-
-  useEffect(() => {
-    // listenner on future connected users
-    const listenner = () => {
-      makeCallFramAudioOnly(1);
-    };
-
-    socket.on('toggle-camera', listenner);
-    return () => {
-      socket.off('toggle-camera', listenner);
-    }
-  }, [peers, updateCallFram, setVideoStreamsList, makeCallFramAudioOnly]);
 
   return {
     userId,

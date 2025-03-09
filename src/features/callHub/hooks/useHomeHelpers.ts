@@ -40,26 +40,13 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
     });
   }, [setVideoStreamsList]);
 
-  const makeCallFramAudioOnly = useCallback((id: CallFramContentType["id"]) => {
-    setVideoStreamsList((prev) => {
-      return prev.map((item): CallFramContentType => {
-        if(item.id === id) {
-          return { id: id, content: { ...item.content as VideoStream, isCameraOff: !(item.content as VideoStream).isCameraOff } };
-        } else {
-          return item;
-        }
-      })
-    });
-  }, [setVideoStreamsList]);
-
   const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>, isCameraOpen: boolean) => {
     // call the new entered user and pass current user stream
     const call = peer.call(userId, stream, { metadata: { isCameraOpen } });
 
     // listen to the new user stream to show it to the current user
     call.once('stream', userVideoStream => {
-      console.log("stream event from connectToNewUser...");
-      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false, isCameraOff: !isCameraOpen });
+      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false });
       setUserState("inCall");
     })
     call.on('close', () => {
@@ -77,6 +64,5 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
     removeCallFram,
     connectToNewUser,
     updateCallFram,
-    makeCallFramAudioOnly,
   }
 }
