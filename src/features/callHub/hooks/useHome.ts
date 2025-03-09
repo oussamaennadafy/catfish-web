@@ -9,13 +9,13 @@ export const useHome = () => {
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
   const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
-  
+
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
   const isCameraOpenRef = useRef<boolean>(true);
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
 
-  const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpenRef });
-  
+  const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
+
   const handleJoinNextRoom = useCallback(() => {
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
     // handle first click
@@ -72,7 +72,7 @@ export const useHome = () => {
     // set state to update ui
     setIsMicOpen((prev) => !prev);
   }, [userStreamRef]);
-  
+
   const handleToggleCamera = useCallback(() => {
     // check if current user has stream
     if (!userStreamRef) return;
@@ -83,6 +83,7 @@ export const useHome = () => {
     videoTrack.enabled = !videoTrack.enabled;
     // set state to update ui
     setIsCameraOpen((prev) => !prev);
+    isCameraOpenRef.current = !isCameraOpenRef.current;
     toggleCallFramCamera(0);
   }, [isCameraOpen, userStreamRef, toggleCallFramCamera]);
 

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef } from "react";
 import { socket } from "@/services/socket";
 import { createPeer } from "@/services/peer";
 import { v4 } from "uuid";
@@ -11,11 +11,12 @@ type useInitParams = {
   setUserState: Dispatch<SetStateAction<userStateType>>,
   videoStreamsList: CallFramContentType[],
   isCameraOpen: boolean,
+  isCameraOpenRef: RefObject<boolean>,
 }
 
-export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen }: useInitParams) => {
+export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef }: useInitParams) => {
   const userId = useRef(v4()).current;
-  const { addCallFram, connectToNewUser, removeCallFram, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen });
+  const { addCallFram, connectToNewUser, removeCallFram, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
   const isReady = useRef({
     isPeerOpen: false,
@@ -43,9 +44,11 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen }: use
         // answer right away to the new user so he can enter
         call.answer(stream);
         // listen to the new user stream to show it to the current user
-        call.on('stream', userVideoStream => {
-          console.log(call.metadata);
-          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOpen: true });
+        call.once('stream', userVideoStream => {
+          if(isCameraOpenRef.current === false) {
+            socket.emit("toggle-camera", isCameraOpenRef.current)
+          }
+          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOpen: call.metadata.current });
           setUserState("inCall");
         })
 
@@ -75,13 +78,15 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen }: use
     })
     // listen on disconnected users
     socket.on('toggle-camera', () => {
-      toggleCallFramCamera(1);
+      setTimeout(() => {
+        toggleCallFramCamera(1);
+      }, 300);
     })
 
     myPeer.on('open', () => {
       isReady.isPeerOpen = true;
     })
-  }, [peers, addCallFram, removeCallFram, connectToNewUser, userId, isReady, updateCallFram, setUserState, toggleCallFramCamera]);
+  }, [peers, addCallFram, removeCallFram, connectToNewUser, userId, isReady, updateCallFram, setUserState, toggleCallFramCamera, isCameraOpenRef]);
 
   return {
     userId,
