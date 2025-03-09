@@ -1,13 +1,15 @@
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { Dispatch, RefObject, SetStateAction, useCallback } from "react";
 import { CallFramContentType, userStateType, VideoStream } from "../types";
 import Peer, { MediaConnection } from "peerjs";
 
 type useHomeHelpersParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
   setUserState: Dispatch<SetStateAction<userStateType>>,
+  isCameraOpen: boolean,
+  isCameraOpenRef: RefObject<boolean>,
 }
 
-export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHelpersParams) => {
+export const useHomeHelpers = ({ setVideoStreamsList, setUserState, isCameraOpenRef }: useHomeHelpersParams) => {
   const addCallFram = useCallback(({ stream, isMuted, userId }: VideoStream) => {
     setVideoStreamsList((prev) => ([
       ...prev,
@@ -40,13 +42,25 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
     });
   }, [setVideoStreamsList]);
 
+  const toggleCallFramCamera = useCallback((id: CallFramContentType["id"]) => {
+    setVideoStreamsList((prev) => {
+      return prev.map(item => {
+        if (item.id == id) {
+          return { id: item.id, content: { ...(item.content as VideoStream), isCameraOpen: !(item.content as VideoStream).isCameraOpen } };
+        } else {
+          return item;
+        }
+      })
+    });
+  }, [setVideoStreamsList]);
+
   const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>) => {
     // call the new entered user and pass current user stream
-    const call = peer.call(userId, stream);
+    const call = peer.call(userId, stream, { metadata: isCameraOpenRef });
 
     // listen to the new user stream to show it to the current user
     call.once('stream', userVideoStream => {
-      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false });
+      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false, isCameraOpen: true });
       setUserState("inCall");
     })
     call.on('close', () => {
@@ -57,12 +71,13 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
 
     // register the call in our dictionary
     peers[call.peer] = call;
-  }, [updateCallFram, setUserState]);
+  }, [isCameraOpenRef, updateCallFram, setUserState]);
 
   return {
     addCallFram,
     removeCallFram,
     connectToNewUser,
     updateCallFram,
+    toggleCallFramCamera
   }
 }
