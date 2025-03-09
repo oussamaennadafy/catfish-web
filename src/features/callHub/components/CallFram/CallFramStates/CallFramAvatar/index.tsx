@@ -1,8 +1,12 @@
 import React from 'react'
 
-function CallFramAvatar() {
+type CallFramAvatarProps = {
+  className?: string
+}
+
+function CallFramAvatar({ className }: CallFramAvatarProps) {
   return (
-    <div className='flex bg-[#161931] border border-slate-800 rounded-2xl relative gap-5 overflow-hidden items-center justify-center h-full'>
+    <div className={`flex bg-[#161931] border border-slate-800 rounded-2xl relative gap-5 overflow-hidden items-center justify-center h-full ${className}`}>
       {/* shadow  */}
       <div
         className='absolute w-14 md:w-20 lg:w-24 aspect-square rounded-full'

@@ -78,19 +78,19 @@ function PopupCallFram({ callFramContent }: PopupCallFramProps) {
             srcObject={(callFramContent as VideoStream).stream}
             muted={(callFramContent as VideoStream).isMuted}
             autoPlay
-            className="h-full w-full object-cover -scale-x-100 rounded-xl border-2 border-transparent"
+            className="h-full w-full object-cover -scale-x-100"
           />
           {
             !callFramContent.isCameraOpen &&
             //  audio fram overlay 
-            <div className='absolute top-0 left-0 right-0 bottom-0 w-full h-full rounded-xl'>
-              <CallFramAvatar />
+            <div className='absolute top-0 left-0 right-0 bottom-0 w-full h-full'>
+              <CallFramAvatar className='rounded-xl' />
             </div>
           }
         </>
   }
   return (
-    <AnimatedDiv ref={ref} {...bind()} style={{ touchAction: "none", x, y }} className='absolute top-2 right-2 w-1/4 h-1/4 z-10 rounded-xl overflow-hidden items-center justify-center bg-[#161931]'>
+    <AnimatedDiv ref={ref} {...bind()} style={{ touchAction: "none", x, y }} className='absolute top-2 right-2 w-1/4 h-1/4 z-10 overflow-hidden items-center rounded-xl justify-center bg-[#161931]'>
       {content}
     </AnimatedDiv>
   )
