@@ -52,13 +52,14 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState }: useHomeHel
     });
   }, [setVideoStreamsList]);
 
-  const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>) => {
+  const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>, isCameraOpen: boolean) => {
     // call the new entered user and pass current user stream
-    const call = peer.call(userId, stream);
+    const call = peer.call(userId, stream, { metadata: { isCameraOpen } });
 
     // listen to the new user stream to show it to the current user
     call.once('stream', userVideoStream => {
-      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false });
+      console.log("stream event from connectToNewUser...");
+      updateCallFram(1, { stream: userVideoStream, userId, isMuted: false, isCameraOff: !isCameraOpen });
       setUserState("inCall");
     })
     call.on('close', () => {

@@ -8,11 +8,12 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ setVideoStreamsList, setUserState, videoStreamsList });
   const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
-
+  
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
+
+  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpen });
   
   const handleJoinNextRoom = useCallback(() => {
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
@@ -20,7 +21,7 @@ export const useHome = () => {
     if (userState == "noAction") {
       updateCallFram(1, "loader");
       setUserState("waiting");
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
@@ -28,7 +29,7 @@ export const useHome = () => {
         peers[peer].close();
       }
       socket.emit('user-disconnected', userId);
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
       // clear previous interval
       clearInterval(prevIntervalId.current);
 
@@ -36,14 +37,14 @@ export const useHome = () => {
       const intervalId = setInterval(() => {
         if (Object.keys(peers).length == 0) {
           socket.emit('user-disconnected', userId);
-          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType], isCameraOpen);
         }
       }, 5000);
 
       // set the interval id to clear later
       prevIntervalId.current = intervalId;
     }
-  }, [isReady.isPeerOpen, isReady.isUserReady, userId, selectedRoomType, updateCallFram, userState, peers]);
+  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, userId, selectedRoomType, isCameraOpen, peers]);
 
 
   const handleAppFriend = useCallback(() => {
