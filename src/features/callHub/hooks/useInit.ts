@@ -78,10 +78,9 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     })
     // listen on disconnected users
     socket.on('toggle-camera', () => {
-      console.log("toggle-camera");
-      // setTimeout(() => {
-      toggleCallFramCamera(1);
-      // }, 300);
+      setTimeout(() => {
+        toggleCallFramCamera(1);
+      }, 100);
     })
 
     myPeer.on('open', () => {
