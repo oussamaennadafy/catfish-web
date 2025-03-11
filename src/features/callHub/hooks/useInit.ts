@@ -45,7 +45,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
         call.answer(stream);
         // listen to the new user stream to show it to the current user
         call.once('stream', userVideoStream => {
-          if(isCameraOpenRef.current === false) {
+          if (isCameraOpenRef.current === false) {
             socket.emit("toggle-camera", isCameraOpenRef.current)
           }
           updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOpen: call.metadata.current });
@@ -78,9 +78,10 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     })
     // listen on disconnected users
     socket.on('toggle-camera', () => {
-      setTimeout(() => {
-        toggleCallFramCamera(1);
-      }, 300);
+      console.log("toggle-camera");
+      // setTimeout(() => {
+      toggleCallFramCamera(1);
+      // }, 300);
     })
 
     myPeer.on('open', () => {

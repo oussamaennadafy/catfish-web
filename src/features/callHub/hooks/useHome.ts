@@ -8,7 +8,6 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-  const prevIntervalId = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
   const isCameraOpenRef = useRef<boolean>(true);
@@ -29,21 +28,8 @@ export const useHome = () => {
       for (const peer in peers) {
         peers[peer].close();
       }
-      socket.emit('user-disconnected', userId);
+      socket.emit('leave-room', userId);
       socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-      // clear previous interval
-      clearInterval(prevIntervalId.current);
-
-      // set interval
-      const intervalId = setInterval(() => {
-        if (Object.keys(peers).length == 0) {
-          socket.emit('user-disconnected', userId);
-          socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
-        }
-      }, 5000);
-
-      // set the interval id to clear later
-      prevIntervalId.current = intervalId;
     }
   }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, userId, selectedRoomType, peers]);
 
@@ -59,8 +45,7 @@ export const useHome = () => {
     }
     updateCallFram(1, "illustration");
     setUserState("noAction");
-    socket.emit('user-disconnected', userId);
-    clearInterval(prevIntervalId.current);
+    socket.emit('leave-room', userId);
   }, [peers, updateCallFram, userId]);
 
   const handleToggleMic = useCallback(() => {
