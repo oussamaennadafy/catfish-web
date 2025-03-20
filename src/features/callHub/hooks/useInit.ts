@@ -1,10 +1,11 @@
 import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef } from "react";
-import { socket } from "@/services/socket";
 import { createPeer } from "@/services/peer";
 import { v4 } from "uuid";
 import { useHomeHelpers } from "./useHomeHelpers";
 import { CallFramContentType, userStateType } from "../types";
 import { MediaConnection } from "peerjs";
+import { RoomEvents } from "../constants/events";
+import socketUtils from "@/networking/socketUtils";
 
 type useInitParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
@@ -46,7 +47,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
         // listen to the new user stream to show it to the current user
         call.once('stream', userVideoStream => {
           if (isCameraOpenRef.current === false) {
-            socket.emit("toggle-camera", isCameraOpenRef.current)
+            socketUtils.getSocket().emit("toggle-camera", isCameraOpenRef.current)
           }
           updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOpen: call.metadata.current });
           setUserState("inCall");
@@ -61,15 +62,16 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       })
 
       // listenner on future connected users
-      socket.on('user-connected', (userId) => {
-        connectToNewUser(userId, stream, myPeer, peers);
+      socketUtils.getSocket().on(RoomEvents.server.USER_JOINED, (message) => {
+        console.log(message);
+        // connectToNewUser(userId, stream, myPeer, peers);
       })
 
       isReady.isUserReady = true;
     })
 
     // listen on disconnected users
-    socket.on('user-disconnected', userId => {
+    socketUtils.getSocket().on('user-disconnected', userId => {
       // clean up to make sure that the user connection is closed
       if (peers[userId]) {
         peers[userId].close();
@@ -77,7 +79,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       }
     })
     // listen on disconnected users
-    socket.on('toggle-camera', () => {
+    socketUtils.getSocket().on('toggle-camera', () => {
       setTimeout(() => {
         toggleCallFramCamera(1);
       }, 100);

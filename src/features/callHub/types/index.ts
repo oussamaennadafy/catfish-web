@@ -1,8 +1,8 @@
 export enum RoomTypeEnum {
-  twoUsers,
-  shuffle,
-  threeUsers,
-  moreThanThreeUsers,
+  TWO_USERS,
+  THREE_USERS,
+  NINE_USERS,
+  SHUFFLE,
 }
 
 export type VideoStream = {

@@ -54,31 +54,31 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
         selectedItemId={selectedRoomType.toString()}
         items={[
           {
-            id: RoomTypeEnum.moreThanThreeUsers,
+            id: RoomTypeEnum.NINE_USERS,
             children: <PlusThreePersonsIcon />,
             onClick: () => {
-              setSelectedRoomType(RoomTypeEnum.moreThanThreeUsers)
+              setSelectedRoomType(RoomTypeEnum.NINE_USERS)
             },
           },
           {
-            id: RoomTypeEnum.threeUsers,
+            id: RoomTypeEnum.THREE_USERS,
             children: <ThreePersonsIcon />,
             onClick: () => {
-              setSelectedRoomType(RoomTypeEnum.threeUsers)
+              setSelectedRoomType(RoomTypeEnum.THREE_USERS)
             },
           },
           {
-            id: RoomTypeEnum.shuffle,
+            id: RoomTypeEnum.SHUFFLE,
             icon: faShuffle,
             onClick: () => {
-              setSelectedRoomType(RoomTypeEnum.shuffle)
+              setSelectedRoomType(RoomTypeEnum.SHUFFLE)
             },
           },
           {
-            id: RoomTypeEnum.twoUsers,
+            id: RoomTypeEnum.TWO_USERS,
             children: <TwoPersonsIcon />,
             onClick: () => {
-              setSelectedRoomType(RoomTypeEnum.twoUsers)
+              setSelectedRoomType(RoomTypeEnum.TWO_USERS)
             },
           },
         ]}

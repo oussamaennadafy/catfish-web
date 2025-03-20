@@ -6,13 +6,13 @@ import { getInitialVideoStreamsForTwoUsers } from "./videoStreamsGetters/getInit
 
 export const getInitialVideoStreamList = (roomType: RoomTypeEnum): CallFramContentType[] => {
   switch (roomType) {
-    case RoomTypeEnum.twoUsers:
+    case RoomTypeEnum.TWO_USERS:
       return getInitialVideoStreamsForTwoUsers();
-    case RoomTypeEnum.threeUsers:
+    case RoomTypeEnum.THREE_USERS:
       return getInitialVideoStreamsForThreeUsers();
-    case RoomTypeEnum.moreThanThreeUsers:
+    case RoomTypeEnum.NINE_USERS:
       return getInitialVideoStreamsForMoreThanThree();
-    case RoomTypeEnum.shuffle:
+    case RoomTypeEnum.SHUFFLE:
       return getInitialVideoStreamsForShuffle();
   }
 }

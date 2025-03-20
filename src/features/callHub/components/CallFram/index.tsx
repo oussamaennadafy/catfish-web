@@ -15,21 +15,21 @@ type CallFramProps = {
 
 function CallFram({ videoStreamsList, selectedRoomType, userState, isMicOpen }: CallFramProps) {
   switch (selectedRoomType) {
-    case RoomTypeEnum.twoUsers:
+    case RoomTypeEnum.TWO_USERS:
       return <TwoUsersCallFram
         videoStreamsList={videoStreamsList}
         userState={userState}
         isMicOpen={isMicOpen}
       />
-    case RoomTypeEnum.threeUsers:
+    case RoomTypeEnum.THREE_USERS:
       return <ThreeUsersCallFram
         videoStreamsList={videoStreamsList}
       />
-    case RoomTypeEnum.moreThanThreeUsers:
+    case RoomTypeEnum.NINE_USERS:
       return <MoreThanThreeUsersCallFram
         videoStreamsList={videoStreamsList}
       />
-    case RoomTypeEnum.shuffle:
+    case RoomTypeEnum.SHUFFLE:
       return <ShuffleCallFram
         videoStreamsList={videoStreamsList}
       />

@@ -1,11 +1,14 @@
 import { useCallback, useRef, useState } from "react";
 import { RoomTypeEnum, CallFramContentType, userStateType } from "../types";
-import { socket } from "@/services/socket";
 import { useInit } from "./useInit";
 import { getInitialVideoStreamList } from "../helpers/getInitialVideoStreamList";
+import { useRouter } from "next/navigation";
+import { selectToken } from "@/store/selectors/authSelectors";
+import { useSelector } from "react-redux";
+import socketUtils from "@/networking/socketUtils";
 
 export const useHome = () => {
-  const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.twoUsers);
+  const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.TWO_USERS);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
 
@@ -14,24 +17,32 @@ export const useHome = () => {
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
 
   const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
+  const token = useSelector(selectToken);
 
-  const handleJoinNextRoom = useCallback(() => {
+  const router = useRouter();
+
+  const handleJoinNextRoom = useCallback(async () => {
+    if (!token) {
+      router.push("/authentication/login");
+      return;
+    }
+
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
     // handle first click
     if (userState == "noAction") {
       updateCallFram(1, "loader");
       setUserState("waiting");
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
       for (const peer in peers) {
         peers[peer].close();
       }
-      socket.emit('leave-room', userId);
-      socket.emit('join-room', userId, RoomTypeEnum[selectedRoomType]);
+      socketUtils.getSocket().emit('leave-room', userId);
+      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
     }
-  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, userId, selectedRoomType, peers]);
+  }, [token, isReady.isPeerOpen, isReady.isUserReady, userState, router, updateCallFram, selectedRoomType, userId, peers]);
 
 
   const handleAppFriend = useCallback(() => {
@@ -45,7 +56,7 @@ export const useHome = () => {
     }
     updateCallFram(1, "illustration");
     setUserState("noAction");
-    socket.emit('leave-room', userId);
+    socketUtils.getSocket().emit('leave-room', userId);
   }, [peers, updateCallFram, userId]);
 
   const handleToggleMic = useCallback(() => {
@@ -62,7 +73,7 @@ export const useHome = () => {
     // check if current user has stream
     if (!userStreamRef) return;
     // emit camera toggle event
-    socket.emit("toggle-camera", !isCameraOpen);
+    socketUtils.getSocket().emit("toggle-camera", !isCameraOpen);
     // disable video track from users stream
     const videoTrack = (userStreamRef.current as MediaStream).getVideoTracks()[0];
     videoTrack.enabled = !videoTrack.enabled;

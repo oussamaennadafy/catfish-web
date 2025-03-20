@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import CallFramPlaceHolder from '../../../CallFramStates/CallFramPlaceHolder';
 import CallFramLoader from '../../../CallFramStates/CallFramLoader';
 import CallFramIllustration from '../../../CallFramStates/CallFramIllustration';
-import Video from '@/common/components/Video';
+import Video from '@/common/components/videos/Video';
 import { useSpring, animated, } from "@react-spring/web";
 import { useDrag } from '@use-gesture/react'
 import CallFramAvatar from '../../../CallFramStates/CallFramAvatar';

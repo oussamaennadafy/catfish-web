@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import React from "react";
+
 config.autoAddCss = false;
 
 const geistSans = Geist({
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
   description: "catfishmeet app to connect with people around the world",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -28,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#161931] bg-[url('/images/background.png')] bg-cover bg-center h-[100svh]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#161931] bg-[url('/images/background.png')] bg-cover bg-center min-h-[100svh] h-auto`}
       >
         {children}
       </body>
