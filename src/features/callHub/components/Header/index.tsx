@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDispatch } from 'react-redux'
 import { clearToken } from '@/store/slices/authenticationSlice'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { selectToken } from '@/store/selectors/authSelectors'
+import { selectUser } from '@/store/selectors/userSelectors'
 
 type buttonType = {
   icon: IconDefinition,
@@ -23,10 +26,17 @@ type HeaderProps = {
 function Header({ handleAppFriend }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
   const router = useRouter();
+
   const handleAvatarClick = useCallback(() => {
+    if (!token) {
+      router.push("/authentication/login");
+      return;
+    }
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [router, token]);
 
   const handleLogoutClick = useCallback(() => {
     dispatch(clearToken());
@@ -40,7 +50,7 @@ function Header({ handleAppFriend }: HeaderProps) {
       onClick: handleLogoutClick
     }
   ], [handleLogoutClick]);
-  
+
   return (
     <div className='relative flex items-center justify-between max-h-10'>
       <Image
@@ -76,8 +86,8 @@ function Header({ handleAppFriend }: HeaderProps) {
               size={40}
             />
             <div className='flex flex-col justify-center'>
-              <p className='font-bold text-xl'>oussama</p>
-              <p className='text-gray-400 text-sm'>oussama@gmail.com</p>
+              <p className='font-bold text-xl'>{user.name}</p>
+              <p className='text-gray-400 text-sm'>{user.email}</p>
             </div>
           </div>
 

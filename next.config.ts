@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
         hostname: 'i.ibb.co',
       },
     ]
-  }
+  },
+  reactStrictMode: false,
 };
 
 export default nextConfig;

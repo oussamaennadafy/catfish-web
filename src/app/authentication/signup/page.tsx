@@ -2,6 +2,7 @@
 import { AuthService } from '@/features/authentication/services/authService';
 import socketUtils from '@/networking/socketUtils';
 import { setToken } from '@/store/slices/authenticationSlice';
+import { setUser } from '@/store/slices/userSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, FormEvent, ChangeEvent, useEffect, JSX } from 'react';
@@ -137,6 +138,7 @@ function Signup(): JSX.Element {
       const service = new AuthService();
       const res = await service.signup({ email, name, password, passwordConfirm });
       dispatch(setToken(res.data.token));
+      dispatch(setUser(res.data.data.user));
       socketUtils.setAuthorizationToken(res.data.token);
       router.push("/rooms");
     } catch (error: unknown) {
@@ -356,7 +358,7 @@ function Signup(): JSX.Element {
 
         <button
           type="submit"
-          className="w-full py-3 px-4 text-white bg-purple-600 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-70 font-medium"
+          className="w-full py-3 px-4 text-white bg-purple-600 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-70 font-medium cursor-pointer"
           disabled={isLoading}
           aria-busy={isLoading ? 'true' : 'false'}
         >

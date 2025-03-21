@@ -2,6 +2,7 @@
 import { AuthService } from '@/features/authentication/services/authService';
 import socketUtils from '@/networking/socketUtils';
 import { setToken } from '@/store/slices/authenticationSlice';
+import { setUser } from '@/store/slices/userSlice';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -56,6 +57,7 @@ function Login(): JSX.Element {
       const service = new AuthService();
       const res = await service.login({ email, password });
       dispatch(setToken(res.data.token));
+      dispatch(setUser(res.data.data.user));
       socketUtils.setAuthorizationToken(res.data.token);
       router.push("/rooms");
     } catch (error) {

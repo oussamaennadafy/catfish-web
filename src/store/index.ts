@@ -2,16 +2,24 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { authenticationSlice } from "./slices/authenticationSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
+import { userSlice } from "./slices/userSlice";
 
-const persistConfig = {
+const persistAuthenticationConfig = {
   key: 'authentication',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, authenticationSlice.reducer);
+const persistUserConfig = {
+  key: 'user',
+  storage,
+};
+
+const persistedAuthenticationReducer = persistReducer(persistAuthenticationConfig, authenticationSlice.reducer);
+const persistedUserReducer = persistReducer(persistUserConfig, userSlice.reducer);
 
 const rootReducer = combineReducers({
-  authentication: persistedReducer,
+  authentication: persistedAuthenticationReducer,
+  user: persistedUserReducer,
 });
 
 const store = configureStore({

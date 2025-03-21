@@ -40,7 +40,9 @@ export const useHome = () => {
         peers[peer].close();
       }
       socketUtils.getSocket().emit('leave-room', userId);
-      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
+      setTimeout(() => {
+        socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
+      }, 500);
     }
   }, [token, isReady.isPeerOpen, isReady.isUserReady, userState, router, updateCallFram, selectedRoomType, userId, peers]);
 
