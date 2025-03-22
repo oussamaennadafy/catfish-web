@@ -18,7 +18,7 @@ type useInitParams = {
 
 export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef }: useInitParams) => {
   const user = useSelector(selectUser);
-  const userId = user.id;
+  const userId = user?.id;
 
   const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);

@@ -10,7 +10,7 @@ class SocketUtils {
 	private socket: Socket;
 
 	constructor() {
-		this.socket = io(process.env.NODE_ENV === "production" ? process.env.PROD_SOCKET_URL : process.env.DEV_SOCKET_URL, {
+		this.socket = io(process.env.SOCKET_URL, {
 			autoConnect: false,
 			transports: ["websocket"],
 		});
