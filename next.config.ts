@@ -14,12 +14,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   env: {
     // connect to dev
-    // BASE_URL: process.env.NODE_ENV === "production" ? BASE_URLS.PROD_BASE_URL :  BASE_URLS.DEV_BASE_URL,
-    // SOCKET_URL: process.env.NODE_ENV === "production" ? SOCKET_URLS.PROD_SOCKET_URL :  SOCKET_URLS.DEV_SOCKET_URL,
+    BASE_URL: process.env.NODE_ENV === "production" ? BASE_URLS.PROD_BASE_URL :  BASE_URLS.DEV_BASE_URL,
+    SOCKET_URL: process.env.NODE_ENV === "production" ? SOCKET_URLS.PROD_SOCKET_URL :  SOCKET_URLS.DEV_SOCKET_URL,
 
     // connect to prod
-    BASE_URL: process.env.NODE_ENV === "development" ? BASE_URLS.PROD_BASE_URL :  BASE_URLS.DEV_BASE_URL,
-    SOCKET_URL: process.env.NODE_ENV === "development" ? SOCKET_URLS.PROD_SOCKET_URL :  SOCKET_URLS.DEV_SOCKET_URL,
+    // BASE_URL: process.env.NODE_ENV === "development" ? BASE_URLS.PROD_BASE_URL :  BASE_URLS.DEV_BASE_URL,
+    // SOCKET_URL: process.env.NODE_ENV === "development" ? SOCKET_URLS.PROD_SOCKET_URL :  SOCKET_URLS.DEV_SOCKET_URL,
   },
   images: {
     remotePatterns: [
