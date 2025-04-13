@@ -15,7 +15,8 @@ export const RoomEvents = {
     USER_DISCONNECTED: 'user-disconnected',
     TOGGLE_CAMERA_UPDATE: 'toggle-camera',
     ROOM_FULL: 'room-full',
-    MATCH_FOUND: 'match-found'
+    MATCH_FOUND: 'match-found',
+    READY_TO_JOIN: "ready-to-join"
   }
 } as const;
 

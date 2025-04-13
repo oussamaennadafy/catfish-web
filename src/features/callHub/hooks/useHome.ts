@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { selectToken } from "@/store/selectors/authSelectors";
 import { useSelector } from "react-redux";
 import socketUtils from "@/networking/socketUtils";
+import { RoomEvents } from "../constants/events";
 
 export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.TWO_USERS);
@@ -40,9 +41,10 @@ export const useHome = () => {
         peers[peer].close();
       }
       socketUtils.getSocket().emit('leave-room', userId);
-      setTimeout(() => {
+      // join room after complete leaving process
+      socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
         socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
-      }, 500);
+      })
     }
   }, [token, isReady.isPeerOpen, isReady.isUserReady, userState, router, updateCallFram, selectedRoomType, userId, peers]);
 
