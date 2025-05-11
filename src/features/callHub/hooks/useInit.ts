@@ -28,6 +28,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
 
   useEffect(() => {
     const myPeer = createPeer(userId);
+    console.log({ "BASE_URL": process.env.BASE_URL });
 
     // request user media (audio and video)
     navigator.mediaDevices?.getUserMedia({
@@ -87,7 +88,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     myPeer.on('open', () => {
       isReady.isPeerOpen = true;
     })
-  }, [connectToNewUser, isCameraOpenRef, isReady, peers, setUserState, toggleCallFramCamera, updateCallFram, userId]);
+  }, []);
 
   return {
     userId,

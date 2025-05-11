@@ -22,7 +22,7 @@ export const useHome = () => {
     if (userState == "noAction") {
       updateCallFram(1, "loader");
       setUserState("waiting");
-      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
+      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType], userId);
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
@@ -32,15 +32,10 @@ export const useHome = () => {
       socketUtils.getSocket().emit('leave-room', userId);
       // join room after complete leaving process
       socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
-        socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
+        socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType], userId);
       })
     }
   }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, selectedRoomType, userId, peers]);
-
-
-  const handleAppFriend = useCallback(() => {
-    console.log(videoStreamsList);
-  }, [videoStreamsList]);
 
   const handleEndLive = useCallback(() => {
     // // close all calls
@@ -87,7 +82,6 @@ export const useHome = () => {
     },
     functions: {
       handleJoinNextRoom,
-      handleAppFriend,
       handleEndLive,
       handleToggleMic,
       handleToggleCamera,
