@@ -62,51 +62,6 @@ class NetworkUtilsClass {
 	}
 
 	/**
-	 * This function will set the authorization token for the axios instance.
-	 * @param token The token to set.
-	 */
-	public setAuthorizationToken(token: string) {
-		axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-	}
-
-	/**
-	 * This function will remove the authorization token from the axios instance.
-	 */
-	public removeAuthorizationToken() {
-		delete axiosInstance.defaults.headers.common["Authorization"];
-	}
-
-	/**
-	 * This function will set the wallet token for the axios instance.
-	 * @param walletToken The wallet token to set.
-	 */
-	public setWalletToken(walletToken: string) {
-		axiosInstance.defaults.headers.common["X-Wallet-Token"] = walletToken;
-	}
-
-	/**
-	 * This function will remove the wallet token from the axios instance.
-	 */
-	public removeWalletToken() {
-		delete axiosInstance.defaults.headers.common["X-Wallet-Token"];
-	}
-
-	/**
-	 * This function will set the device token for the axios instance.
-	 * @param token The device token to set.
-	 */
-	public setDeviceToken(token: string) {
-		axiosInstance.defaults.headers.common["device-id"] = token;
-	}
-
-	/**
-	 * This function will remove the device token from the axios instance.
-	 */
-	public removeDeviceToken() {
-		delete axiosInstance.defaults.headers.common["device-id"];
-	}
-
-	/**
 	 * This function will add a dynamic header and value to the axios instance.
 	 * @param header The header name.
 	 * @param value The header value.

@@ -3,7 +3,6 @@
  * @description Socket service to handle socket connection and events
  */
 
-import { store } from "@/store";
 import { Socket, io } from "socket.io-client";
 
 class SocketUtils {
@@ -15,28 +14,7 @@ class SocketUtils {
 			transports: ["websocket"],
 		});
 
-    const token = store.getState().authentication.token;
-    if(token) {
-      this.setAuthorizationToken(token);
-    }
-	}
-
-	/**
-	 * set the socket auth token
-	 * @param token
-	 */
-	public setAuthorizationToken(token: string) {
-		const Authorization = `Bearer ${token}`;
-		this.socket.auth = { token: Authorization };
 		this.socket.connect();
-	}
-	/**
-	 * set the socket device token in headers
-	 */
-	public setDeviceToken(deviceToken: string) {
-		this.socket.io.opts.extraHeaders = {
-			"device-id": deviceToken,
-		};
 	}
 
 	/**

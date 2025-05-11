@@ -16,7 +16,6 @@ export default function Home() {
       isMicOpen,
     },
     functions: {
-      handleAppFriend,
       handleEndLive,
       handleJoinNextRoom,
       handleToggleCamera,
@@ -25,7 +24,7 @@ export default function Home() {
   } = useHome();
   return (
     <div className={`flex flex-col w-full h-full min-h-full p-2 gap-2 md:p-4 md:gap-4`}>
-      <Header handleAppFriend={handleAppFriend} />
+      <Header />
       <CallFram
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}

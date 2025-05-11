@@ -5,8 +5,7 @@ import { CallFramContentType, userStateType } from "../types";
 import { MediaConnection } from "peerjs";
 import { RoomEvents } from "../constants/events";
 import socketUtils from "@/networking/socketUtils";
-import { useSelector } from "react-redux";
-import { selectUser } from "@/store/selectors/userSelectors";
+import { v4 as uuidv4 } from 'uuid';
 
 type useInitParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
@@ -17,9 +16,7 @@ type useInitParams = {
 }
 
 export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef }: useInitParams) => {
-  const user = useSelector(selectUser);
-  const userId = user?.id;
-
+  const userId = useRef(uuidv4()).current;
   const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
   const isReady = useRef({
@@ -30,9 +27,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
   const userStreamRef = useRef<MediaStream>(null);
 
   useEffect(() => {
-    if (!user || !userId) return;
-
-    const myPeer = createPeer(userId.toString());
+    const myPeer = createPeer(userId);
 
     // request user media (audio and video)
     navigator.mediaDevices?.getUserMedia({
@@ -43,7 +38,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       userStreamRef.current = stream;
 
       // add video preview of the current user stream
-      updateCallFram(0, { stream, isMuted: true, userId: userId.toString(), isCameraOpen: true });
+      updateCallFram(0, { stream, isMuted: true, userId: userId, isCameraOpen: true });
 
       // set up listener if a new user call the current user
       myPeer.on('call', call => {
@@ -92,7 +87,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     myPeer.on('open', () => {
       isReady.isPeerOpen = true;
     })
-  }, []);
+  }, [connectToNewUser, isCameraOpenRef, isReady, peers, setUserState, toggleCallFramCamera, updateCallFram, userId]);
 
   return {
     userId,

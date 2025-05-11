@@ -2,9 +2,6 @@ import { useCallback, useRef, useState } from "react";
 import { RoomTypeEnum, CallFramContentType, userStateType } from "../types";
 import { useInit } from "./useInit";
 import { getInitialVideoStreamList } from "../helpers/getInitialVideoStreamList";
-import { useRouter } from "next/navigation";
-import { selectToken } from "@/store/selectors/authSelectors";
-import { useSelector } from "react-redux";
 import socketUtils from "@/networking/socketUtils";
 import { RoomEvents } from "../constants/events";
 
@@ -18,16 +15,8 @@ export const useHome = () => {
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
 
   const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
-  const token = useSelector(selectToken);
-
-  const router = useRouter();
 
   const handleJoinNextRoom = useCallback(async () => {
-    if (!token) {
-      router.push("/authentication/login");
-      return;
-    }
-
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
     // handle first click
     if (userState == "noAction") {
@@ -46,7 +35,7 @@ export const useHome = () => {
         socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType]);
       })
     }
-  }, [token, isReady.isPeerOpen, isReady.isUserReady, userState, router, updateCallFram, selectedRoomType, userId, peers]);
+  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, selectedRoomType, userId, peers]);
 
 
   const handleAppFriend = useCallback(() => {
