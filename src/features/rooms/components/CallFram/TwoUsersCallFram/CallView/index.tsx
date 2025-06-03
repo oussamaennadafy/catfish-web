@@ -1,6 +1,6 @@
 import AppAvatar from '@/common/components/avatars/Avatar';
 import Video from '@/common/components/videos/Video';
-import { VideoStream } from '@/features/callHub/types';
+import { VideoStream } from '@/features/rooms/types';
 import React, { useMemo } from 'react';
 import CallFramAvatar from '../../CallFramStates/CallFramAvatar';
 

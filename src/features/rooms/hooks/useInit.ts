@@ -1,8 +1,7 @@
 import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef } from "react";
-import { createPeer } from "@/services/peer";
 import { useHomeHelpers } from "./useHomeHelpers";
 import { CallFramContentType, userStateType } from "../types";
-import { MediaConnection } from "peerjs";
+import Peer, { MediaConnection } from "peerjs";
 import { RoomEvents } from "../constants/events";
 import socketUtils from "@/networking/socketUtils";
 import { v4 as uuidv4 } from 'uuid';
@@ -27,7 +26,11 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
   const userStreamRef = useRef<MediaStream>(null);
 
   useEffect(() => {
-    const myPeer = createPeer(userId);
+    const myPeer = new Peer(userId, {
+      host: "0.peerjs.com",
+      port: 443,
+      secure: true,
+    });
     console.log({ "BASE_URL": process.env.BASE_URL });
 
     // request user media (audio and video)

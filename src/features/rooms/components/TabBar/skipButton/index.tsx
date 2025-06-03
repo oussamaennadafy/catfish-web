@@ -1,6 +1,6 @@
 import IconButton from '@/common/components/buttons/IconButton'
 import PrimaryButton from '@/common/components/buttons/PrimaryButton'
-import { userStateType } from '@/features/callHub/types'
+import { userStateType } from '@/features/rooms/types'
 import { faArrowRight, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 

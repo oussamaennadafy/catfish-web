@@ -1,4 +1,4 @@
-import { CallFramContentType, VideoStream } from '@/features/callHub/types'
+import { CallFramContentType, VideoStream } from '@/features/rooms/types'
 import React, { useRef } from 'react'
 import CallFramPlaceHolder from '../../../CallFramStates/CallFramPlaceHolder';
 import CallFramLoader from '../../../CallFramStates/CallFramLoader';

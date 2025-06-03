@@ -1,5 +1,5 @@
 import React from 'react';
-import { CallFramContentType } from '@/features/callHub/types';
+import { CallFramContentType } from '@/features/rooms/types';
 import CallFramIllustration from '../../CallFramStates/CallFramIllustration';
 import CallFramLoader from '../../CallFramStates/CallFramLoader';
 import CallFramPlaceHolder from '../../CallFramStates/CallFramPlaceHolder';

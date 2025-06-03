@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import ThreePersonsIcon from '../../../../../../public/icons/three-persons';
 import PlusThreePersonsIcon from '../../../../../../public/icons/plus-three-persons';
 import TwoPersonsIcon from '../../../../../../public/icons/two-person';
-import { RoomTypeEnum, userStateType } from '@/features/callHub/types';
+import { RoomTypeEnum, userStateType } from '@/features/rooms/types';
 
 type ButtonsSectionProps = {
   selectedRoomType: RoomTypeEnum,

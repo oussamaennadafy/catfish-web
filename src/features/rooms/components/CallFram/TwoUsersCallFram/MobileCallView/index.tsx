@@ -1,4 +1,4 @@
-import { CallFramContentType, userStateType } from '@/features/callHub/types'
+import { CallFramContentType, userStateType } from '@/features/rooms/types'
 import React from 'react'
 import CallFramIllustration from '../../CallFramStates/CallFramIllustration'
 import CallFramLoader from '../../CallFramStates/CallFramLoader'
