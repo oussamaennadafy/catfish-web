@@ -7,9 +7,10 @@ import React from 'react'
 type SkipButtonProps = {
   handleJoinNextRoom: () => void,
   userState: userStateType,
+  isReady: { isPeerOpen: boolean; isUserReady: boolean; },
 }
 
-function SkipButton({ handleJoinNextRoom, userState }: SkipButtonProps) {
+function SkipButton({ handleJoinNextRoom, userState, isReady }: SkipButtonProps) {
   return (
     <div className='flex items-center justify-center gap-3 w-full md:w-auto'>
       <PrimaryButton
@@ -17,6 +18,7 @@ function SkipButton({ handleJoinNextRoom, userState }: SkipButtonProps) {
         icon={faArrowRight}
         onClick={handleJoinNextRoom}
         isLoading={userState === "waiting"}
+        disabled={!isReady.isPeerOpen || !isReady.isUserReady}
       />
       <IconButton
         icon={faQuestion}

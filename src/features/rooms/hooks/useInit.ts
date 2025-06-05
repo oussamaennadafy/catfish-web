@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { useHomeHelpers } from "./useHomeHelpers";
 import { CallFramContentType, userStateType } from "../types";
 import Peer, { MediaConnection } from "peerjs";
@@ -15,18 +15,18 @@ type useInitParams = {
 }
 
 export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef }: useInitParams) => {
-  const userId = useRef(uuidv4()).current;
+  const currentUserId = useRef(uuidv4()).current;
   const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
-  const isReady = useRef({
+  const [isReady, setIsReady] = useState({
     isPeerOpen: false,
     isUserReady: false
-  }).current;
+  });
 
   const userStreamRef = useRef<MediaStream>(null);
 
   useEffect(() => {
-    const myPeer = new Peer(userId, {
+    const myPeer = new Peer(currentUserId, {
       host: "0.peerjs.com",
       port: 443,
       secure: true,
@@ -42,7 +42,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       userStreamRef.current = stream;
 
       // add video preview of the current user stream
-      updateCallFram(0, { stream, isMuted: true, userId: userId, isCameraOpen: true });
+      updateCallFram(0, { stream, isMuted: true, userId: currentUserId, isCameraOpen: true });
 
       // set up listener if a new user call the current user
       myPeer.on('call', call => {
@@ -70,11 +70,14 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
         connectToNewUser(userId.toString(), stream, myPeer, peers);
       })
 
-      isReady.isUserReady = true;
+      setIsReady(prev => ({
+        ...prev,
+        isUserReady: true,
+      }));
     })
 
     // listen on disconnected users
-    socketUtils.getSocket().on('user-disconnected', userId => {
+    socketUtils.getSocket().on(RoomEvents.server.USER_DISCONNECTED, (userId) => {
       // clean up to make sure that the user connection is closed
       if (peers[userId]) {
         peers[userId].close();
@@ -89,12 +92,15 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     })
 
     myPeer.on('open', () => {
-      isReady.isPeerOpen = true;
+      setIsReady(prev => ({
+        ...prev,
+        isPeerOpen: true,
+      }));
     })
   }, []);
 
   return {
-    userId,
+    userId: currentUserId,
     isReady,
     peers,
     updateCallFram,

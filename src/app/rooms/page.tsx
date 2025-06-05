@@ -14,6 +14,7 @@ export default function Home() {
       videoStreamsList,
       isCameraOpen,
       isMicOpen,
+      isReady,
     },
     functions: {
       handleEndLive,
@@ -41,6 +42,7 @@ export default function Home() {
         handleToggleMic={handleToggleMic}
         isCameraOpen={isCameraOpen}
         isMicOpen={isMicOpen}
+        isReady={isReady}
       />
     </div>
   );

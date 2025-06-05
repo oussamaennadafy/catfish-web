@@ -22,20 +22,22 @@ export const useHome = () => {
     if (userState == "noAction") {
       updateCallFram(1, "loader");
       setUserState("waiting");
-      socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType], userId);
+      socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, userId);
+      // handle skipi a abd sami3
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
       for (const peer in peers) {
         peers[peer].close();
+        delete peers[peer];
       }
-      socketUtils.getSocket().emit('leave-room', userId);
+      socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, userId);
       // join room after complete leaving process
       socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
-        socketUtils.getSocket().emit('join-room', RoomTypeEnum[selectedRoomType], userId);
+        socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, userId);
       })
     }
-  }, [isReady.isPeerOpen, isReady.isUserReady, userState, updateCallFram, selectedRoomType, userId, peers]);
+  }, [isReady, userState, updateCallFram, userId, peers]);
 
   const handleEndLive = useCallback(() => {
     // // close all calls
@@ -44,7 +46,7 @@ export const useHome = () => {
     }
     updateCallFram(1, "illustration");
     setUserState("noAction");
-    socketUtils.getSocket().emit('leave-room', userId);
+    socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, userId);
   }, [peers, updateCallFram, userId]);
 
   const handleToggleMic = useCallback(() => {
@@ -61,7 +63,7 @@ export const useHome = () => {
     // check if current user has stream
     if (!userStreamRef) return;
     // emit camera toggle event
-    socketUtils.getSocket().emit("toggle-camera", !isCameraOpen);
+    socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_CAMERA, !isCameraOpen);
     // disable video track from users stream
     const videoTrack = (userStreamRef.current as MediaStream).getVideoTracks()[0];
     videoTrack.enabled = !videoTrack.enabled;
@@ -79,6 +81,7 @@ export const useHome = () => {
       userState,
       isCameraOpen,
       isMicOpen,
+      isReady,
     },
     functions: {
       handleJoinNextRoom,
