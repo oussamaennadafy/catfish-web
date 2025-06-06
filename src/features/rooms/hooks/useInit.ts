@@ -12,16 +12,18 @@ type useInitParams = {
   videoStreamsList: CallFramContentType[],
   isCameraOpen: boolean,
   isCameraOpenRef: RefObject<boolean>,
+  userState: userStateType,
 }
 
-export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef }: useInitParams) => {
+export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef, userState }: useInitParams) => {
   const currentUserId = useRef(uuidv4()).current;
-  const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef });
+  const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef, currentUserId });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
   const [isReady, setIsReady] = useState({
     isPeerOpen: false,
     isUserReady: false
   });
+  const myPeerRef = useRef<Peer>(null);
 
   const userStreamRef = useRef<MediaStream>(null);
 
@@ -31,6 +33,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       port: 443,
       secure: true,
     });
+    myPeerRef.current = myPeer;
     console.log({ "BASE_URL": process.env.BASE_URL });
 
     // request user media (audio and video)
@@ -98,6 +101,25 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       }));
     })
   }, []);
+  
+  useEffect(() => {
+    let timeoutID: NodeJS.Timeout;
+    if(userState == "waiting") {
+      timeoutID = setTimeout(() => {
+        socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, currentUserId);
+        // join room after complete leaving process
+        socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
+          socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, currentUserId);
+        })
+      }, 5000);
+    }
+    
+    return () => {
+      if(userState == "waiting" && timeoutID) {
+        clearTimeout(timeoutID);
+      }
+    }
+  }, [userState, currentUserId]);
 
   return {
     userId: currentUserId,
@@ -106,5 +128,6 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     updateCallFram,
     userStreamRef,
     toggleCallFramCamera,
+    myPeerRef,
   }
 }

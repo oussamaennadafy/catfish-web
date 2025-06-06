@@ -7,9 +7,10 @@ type useHomeHelpersParams = {
   setUserState: Dispatch<SetStateAction<userStateType>>,
   isCameraOpen: boolean,
   isCameraOpenRef: RefObject<boolean>,
+  currentUserId: string,
 }
 
-export const useHomeHelpers = ({ setVideoStreamsList, setUserState, isCameraOpenRef }: useHomeHelpersParams) => {
+export const useHomeHelpers = ({ setVideoStreamsList, setUserState, isCameraOpenRef, currentUserId }: useHomeHelpersParams) => {
   const addCallFram = useCallback(({ stream, isMuted, userId }: VideoStream) => {
     setVideoStreamsList((prev) => ([
       ...prev,
@@ -55,6 +56,9 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState, isCameraOpen
   }, [setVideoStreamsList]);
 
   const connectToNewUser = useCallback((userId: string, stream: MediaStream, peer: Peer, peers: Record<string, MediaConnection>) => {
+    if (!peer.open) {
+      peer.connect(currentUserId);
+    }
     // call the new entered user and pass current user stream
     const call = peer.call(userId, stream, { metadata: isCameraOpenRef });
 
@@ -71,7 +75,7 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState, isCameraOpen
 
     // register the call in our dictionary
     peers[call.peer] = call;
-  }, [isCameraOpenRef, updateCallFram, setUserState]);
+  }, [isCameraOpenRef, currentUserId, updateCallFram, setUserState]);
 
   return {
     addCallFram,

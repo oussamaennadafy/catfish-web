@@ -1,8 +1,13 @@
 "use client"
+import PrimaryButton from '@/common/components/buttons/PrimaryButton'
 import Image from 'next/image'
-import React, {  } from 'react'
+import React, { } from 'react'
 
-function Header() {
+type HeaderProps = {
+  testFunc: () => void,
+}
+
+function Header({ testFunc }: HeaderProps) {
   return (
     <div className='relative flex items-center justify-between max-h-10'>
       <Image
@@ -11,6 +16,11 @@ function Header() {
         width={40}
         height={40}
         alt='catfish logo'
+      />
+      <PrimaryButton
+        text='test'
+        onClick={testFunc}
+        className='max-w-32'
       />
     </div>
   )

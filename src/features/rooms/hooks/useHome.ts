@@ -14,7 +14,7 @@ export const useHome = () => {
   const isCameraOpenRef = useRef<boolean>(true);
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
 
-  const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera } = useInit({ setVideoStreamsList, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
+  const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera, myPeerRef } = useInit({ setVideoStreamsList, userState, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
 
   const handleJoinNextRoom = useCallback(async () => {
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
@@ -23,7 +23,7 @@ export const useHome = () => {
       updateCallFram(1, "loader");
       setUserState("waiting");
       socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, userId);
-      // handle skipi a abd sami3
+      // handle skip (skipi a abd sami3)
     } else if (userState == "inCall") {
       setUserState("waiting");
       // close all calls
@@ -73,6 +73,13 @@ export const useHome = () => {
     toggleCallFramCamera(0);
   }, [isCameraOpen, userStreamRef, toggleCallFramCamera]);
 
+  const testFunc = () => {
+    console.log({
+      myPeerRef: myPeerRef,
+      "socketUtils.getSocket()": socketUtils.getSocket()
+    });
+  }
+
   return {
     state: {
       videoStreamsList,
@@ -88,6 +95,7 @@ export const useHome = () => {
       handleEndLive,
       handleToggleMic,
       handleToggleCamera,
+      testFunc,
     },
   }
 }
