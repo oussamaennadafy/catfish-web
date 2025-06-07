@@ -28,7 +28,6 @@ function CallFram({ videoStreamsList, selectedRoomType, userState, isMicOpen, us
           <ChatSideBar
             userId={userId}
             userState={userState}
-            className={userState == "inCall" ? "sm:max-w-5/12 md:w-4/12 lg:w-3/12 opacity-100" :  "max-w-0 opacity-0"}
           />
         </div>
       )
