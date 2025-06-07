@@ -5,9 +5,10 @@ type AppAvatarProps = {
   src?: string,
   rounded?: "small" | "meduim" | "large"
   size?: number,
+  className?: string,
 }
 
-function AppAvatar({ src, rounded = "meduim", size = 40 }: AppAvatarProps) {
+function AppAvatar({ src, rounded = "meduim", size = 40, className }: AppAvatarProps) {
   const imageRoundedClass = useMemo(() => {
     switch (rounded) {
       case "large":
@@ -19,7 +20,7 @@ function AppAvatar({ src, rounded = "meduim", size = 40 }: AppAvatarProps) {
     }
   }, [rounded])
   return (
-    <div style={{ height: size }} className='aspect-square'>
+    <div style={{ height: size }} className={`aspect-square ${className}`}>
       <Image
         src={{ src: src || "/images/user-placeholder.png", width: size, height: size }}
         alt='user avatar'

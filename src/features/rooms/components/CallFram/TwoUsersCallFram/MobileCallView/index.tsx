@@ -39,7 +39,7 @@ function MobileCallView({ videoStreamsList, className, userState }: MobileCallVi
               return <CallView
                 key={callFram.id}
                 videoStream={callFram.content}
-                userFullName="John doe"
+                userFullName="Guest"
               />
           }
         })

@@ -30,7 +30,7 @@ function DesktopCallView({ videoStreamsList, className }: DesktopCallViewProps) 
               return <CallView
                 key={callFram.id}
                 videoStream={callFram.content}
-                userFullName="John doe"
+                userFullName="Guest"
               />
           }
         })

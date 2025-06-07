@@ -13,7 +13,7 @@ type CallFramProps = {
 function TwoUsersCallFram({ videoStreamsList, userState, isMicOpen }: CallFramProps) {
   const { isMobile } = useDeviceSize();
 
-  return <div className='h-full'>
+  return <div className='h-full w-full'>
     {
       isMobile() ?
         <MobileCallView

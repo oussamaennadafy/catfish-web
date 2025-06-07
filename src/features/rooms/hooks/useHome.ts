@@ -81,6 +81,9 @@ export const useHome = () => {
   }
 
   return {
+    refs: {
+      userId,
+    },
     state: {
       videoStreamsList,
       selectedRoomType,

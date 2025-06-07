@@ -8,11 +8,13 @@ export type IconButtonProps = PropsWithChildren<{
   iconColor?: "red" | "white" | "gray",
   backgroundColor?: string,
   iconSize?: SizeProp,
-  containerClassName?: string,
+  className?: string,
+  isRounded?: boolean,
   onClick?: () => void,
+  type?: "submit" | "reset" | "button" | undefined
 }>;
 
-function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, children, containerClassName, isActive = false, backgroundColor = "bg-[#161931]" }: IconButtonProps) {
+function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, children, isActive = false, backgroundColor = "bg-[#161931]", className, isRounded, type }: IconButtonProps) {
   const iconBackgroundClassName = useMemo(() => {
     switch (iconColor) {
       case "red":
@@ -24,7 +26,7 @@ function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, child
     }
   }, [iconColor]);
   return (
-    <button disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} aspect-square h-10 p-2 border border-slate-800 rounded-lg ${isActive ? "bg-[#46446B]" : backgroundColor} ${containerClassName} ${onClick ? "cursor-pointer" : ""}`} onClick={onClick}>
+    <button type={type} disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} aspect-square h-10 p-2 border border-slate-800 ${isRounded ? "rounded-full" : "rounded-lg"} ${isActive ? "bg-[#46446B]" : backgroundColor} ${onClick ? "cursor-pointer" : ""} ${className}`} onClick={onClick}>
       {
         icon ?
           <FontAwesomeIcon className={`text-lg ${iconBackgroundClassName}`} size={iconSize} icon={icon} />

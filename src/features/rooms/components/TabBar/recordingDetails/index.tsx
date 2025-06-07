@@ -17,7 +17,7 @@ function RecordingDetails({ isLive, handleEndLive }: RecordingDetailsProps) {
         iconColor={isLive ? "red" : "gray"}
       />
       <div className='flex'>
-        <IconButton containerClassName='px-3 rounded-r-none'>
+        <IconButton className='px-3 rounded-r-none'>
           <div className='flex items-center justify-center gap-3 transition-all'>
             <div className={`w-2 h-2 rounded-full ${isLive ? "bg-red-500" : "bg-slate-500"}`} />
             <p className='text-sm tracking-wide'>LIVE</p>
@@ -28,7 +28,7 @@ function RecordingDetails({ isLive, handleEndLive }: RecordingDetailsProps) {
           </div>
         </IconButton>
         <IconButton
-          containerClassName='px-3 rounded-l-none border-l-0'
+          className='px-3 rounded-l-none border-l-0'
           onClick={handleEndLive}
         >
           <div className='flex items-center justify-center gap-2'>

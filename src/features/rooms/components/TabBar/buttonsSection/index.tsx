@@ -25,13 +25,13 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
       <div className='flex'>
         <IconButton
           icon={isMicOpen ? faMicrophone : faMicrophoneSlash}
-          containerClassName='md:rounded-r-none md:border-r-0'
+          className='md:rounded-r-none md:border-r-0'
           onClick={handleToggleMic}
           isActive={!isMicOpen}
         />
         <IconButton
           icon={faEllipsisVertical}
-          containerClassName='rounded-l-none hidden md:flex'
+          className='rounded-l-none hidden md:flex'
           onClick={() => { }}
         />
       </div>
@@ -39,13 +39,13 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
       <div className='flex'>
         <IconButton
           icon={isCameraOpen ? faVideo : faVideoSlash}
-          containerClassName='md:rounded-r-none md:border-r-0'
+          className='md:rounded-r-none md:border-r-0'
           onClick={handleToggleCamera}
           isActive={!isCameraOpen}
         />
         <IconButton
           icon={faEllipsisVertical}
-          containerClassName='rounded-l-none hidden md:flex'
+          className='rounded-l-none hidden md:flex'
           onClick={() => { }}
         />
       </div>
@@ -89,12 +89,12 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
         <div className='flex'>
           <IconButton
             icon={faArrowRightFromBracket}
-            containerClassName='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
+            className='md:rounded-l-none md:border-l-0 rotate-180 bg-red-500'
             onClick={handleEndLive}
           />
           <IconButton
             icon={faEllipsisVertical}
-            containerClassName='rounded-l-none bg-red-500 hidden md:flex'
+            className='rounded-l-none bg-red-500 hidden md:flex'
             onClick={() => { }}
           />
         </div>
