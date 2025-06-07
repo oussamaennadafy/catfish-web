@@ -115,21 +115,21 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
         </button>
       }
 
-      <div className={`flex flex-col max-h-[calc(100vh-144px)] justify-end ${isCollapsed ? "items-center py-4" : "py-2"} h-full rounded-2xl bg-slate-900 transition-all duration-300 ${generateSidebarDimentions()} ${className}`}>
+      <div className={`flex flex-col max-h-[calc(100vh-144px)] overflow-hidden justify-end ${isCollapsed ? "items-center py-4" : "py-2"} h-full rounded-2xl bg-slate-900 transition-all duration-300 ${generateSidebarDimentions()} ${className}`}>
         {/* header */}
         {
           userState === "inCall" && !isChatInvisible &&
-          <div className='flex py-4 px-4 h-22 gap-4 border-b border-slate-800'>
+          <div className='flex py-4 px-4 h-20 gap-4 border-b border-slate-800'>
             <AppAvatar />
             <div>
               <h2 className='font-bold'>Guest</h2>
-              <p className='text-xs font-bold'>🏳️‍🌈 dubai</p>
+              <p className='text-xs font-bold whitespace-nowrap'>🏳️ {Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll("/", ", ")}</p>
             </div>
           </div>
         }
         {/* messages list */}
         {
-          !isChatInvisible &&
+          !isChatInvisible && userState === "inCall" &&
           <div
             style={{
               maxHeight: "calc(100vh - 300px)"
@@ -148,8 +148,8 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
                     className='mt-1'
                   />
                   <div>
-                    <p className='text-sm font-bold text-slate-400'>Guest</p>
-                    <p className='text-sm font-bold'>{message.messageContent}</p>
+                    <p className='text-sm font-semibold text-slate-500'>Guest</p>
+                    <p className='text-sm font-semibold text-slate-200'>{message.messageContent}</p>
                   </div>
                 </div>
               ))
@@ -164,7 +164,7 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
             onSubmit={(e) => {
               e.preventDefault();
             }}
-            className="relative bg-slate-800 rounded-full m-3 mt-1"
+            className="relative bg-slate-800 rounded-full mx-3 my-2"
           >
             {/* input message */}
             <input
