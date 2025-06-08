@@ -28,6 +28,7 @@ function CallFram({ videoStreamsList, selectedRoomType, userState, isMicOpen, us
           <ChatSideBar
             userId={userId}
             userState={userState}
+            videoStreamsList={videoStreamsList}
           />
         </div>
       )

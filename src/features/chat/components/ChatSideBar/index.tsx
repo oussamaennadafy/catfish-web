@@ -5,22 +5,24 @@ import { Message } from '@/features/chat/types';
 import socketUtils from '@/networking/socketUtils';
 import { faAnglesRight, faPaperPlane, faPlus } from '@fortawesome/free-solid-svg-icons'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { userStateType } from '../../../rooms/types';
+import { CallFramContentType, userStateType, VideoStream } from '../../../rooms/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type ChatSideBarProps = {
   userId: string,
   className?: string,
   userState: userStateType,
+  videoStreamsList: CallFramContentType[],
 }
 
-function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
+function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSideBarProps) {
   const [message, setMessage] = useState("");
   const [messagesList, setMessagesList] = useState<Message[]>([]);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isChatInvisible, setIsChatInvisible] = useState<boolean>(false);
   const [isMembersListVisible, setIsMembersListVisible] = useState<boolean>(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const [usersHasNotificationsMap, setUsersHasNotificationsMap] = useState<Record<string, boolean>>({});
 
   const handleSendMessage = useCallback(() => {
     // check message content
@@ -49,21 +51,33 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
 
   useEffect(() => {
     const callback = (message: Message) => {
+      if (isCollapsed) {
+        setUsersHasNotificationsMap((prev) => ({
+          ...prev,
+          [message.userId]: true,
+        }));
+        // play notification sound
+        const audioElement = new Audio("/audios/notification-sound.mp3");
+        audioElement.play();
+      }
       setMessagesList((prev) => {
         return [
           message,
           ...prev,
         ]
       })
-    }
+    };
     socketUtils.on(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);
     return () => {
       socketUtils.off(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);
     }
-  });
+  }, [isCollapsed, videoStreamsList]);
 
   useEffect(() => {
     if (userState == "inCall") {
+      if (Object.keys(usersHasNotificationsMap).length) {
+        setUsersHasNotificationsMap({});
+      }
       if (messagesList.length) {
         setMessagesList([]);
       } if (message.length) {
@@ -91,6 +105,9 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
       clearTimeout(timeoutRef.current);
     }
     if (isCollapsed) {
+      // clear messages notifications when chat opens
+      setUsersHasNotificationsMap({});
+      // update state of chat components
       setIsCollapsed(false);
       setIsMembersListVisible(false);
       timeoutRef.current = setTimeout(() => {
@@ -163,46 +180,46 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
         }
 
         {/* input and send button container */}
-        {
-          userState === "inCall" && !isChatInvisible &&
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+          className={`relative bg-slate-800 rounded-full mx-3 my-2 ${userState === "inCall" && !isChatInvisible ? "visible pointer-events-auto opacity-100 transition-all duration-300 translate-y-0" : "invisible pointer-events-none opacity-0 translate-y-2"}`}
+        >
+          {/* input message */}
+          <input
+            className='h-14 w-full rounded-full p-5 pr-14 focus:outline focus:outline-slate-400 border border-slate-700'
+            placeholder='Say Hi 👋'
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
             }}
-            className="relative bg-slate-800 rounded-full mx-3 my-2"
-          >
-            {/* input message */}
-            <input
-              className='h-14 w-full rounded-full p-5 pr-14 focus:outline focus:outline-slate-400 border border-slate-700'
-              placeholder='Say Hi 👋'
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-            />
-            {/* submit button */}
-            <IconButton
-              icon={faPaperPlane}
-              isRounded
-              type="submit"
-              onClick={handleSendMessage}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 max-w-fit transition-all ${message.trim().length === 0 ? "scale-0" : "scale-100"}`}
-            />
-          </form>
-        }
+          />
+          {/* submit button */}
+          <IconButton
+            icon={faPaperPlane}
+            isRounded
+            type="submit"
+            onClick={handleSendMessage}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 max-w-fit transition-all ${message.trim().length === 0 ? "scale-0" : "scale-100"}`}
+          />
+        </form>
         {/* users list */}
-        {
-          userState === "inCall" && isMembersListVisible &&
-          <div className='flex flex-col gap-4'>
-            <AppAvatar />
-            <AppAvatar />
-            <IconButton
-              icon={faPlus}
-              isRounded
-              className='cursor-pointer hover:rotate-90 duration-300 transition-all'
-            />
-          </div>
-        }
+        <div className={`flex flex-col gap-4 transition-all duration-300 ${userState === "inCall" && isMembersListVisible ? "h-auto w-auto visible pointer-events-auto opacity-100" : "h-0 w-0 invisible pointer-events-none opacity-0"}`}>
+          {
+            videoStreamsList.map(stream => (
+              <AppAvatar
+                key={stream.id}
+                hasNotification={usersHasNotificationsMap[(stream.content as VideoStream).userId]}
+              />
+            ))
+          }
+          <IconButton
+            icon={faPlus}
+            isRounded
+            className='cursor-pointer hover:rotate-90 duration-300 transition-all'
+          />
+        </div>
       </div>
     </>
   )
