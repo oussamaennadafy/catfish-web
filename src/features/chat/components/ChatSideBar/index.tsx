@@ -19,6 +19,7 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
   const [messagesList, setMessagesList] = useState<Message[]>([]);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isChatInvisible, setIsChatInvisible] = useState<boolean>(false);
+  const [isMembersListVisible, setIsMembersListVisible] = useState<boolean>(false);
   const listRef = useRef<HTMLDivElement>(null);
 
   const handleSendMessage = useCallback(() => {
@@ -91,12 +92,16 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
     }
     if (isCollapsed) {
       setIsCollapsed(false);
+      setIsMembersListVisible(false);
       timeoutRef.current = setTimeout(() => {
         setIsChatInvisible(false);
       }, 250);
     } else {
       setIsCollapsed(true);
       setIsChatInvisible(true);
+      timeoutRef.current = setTimeout(() => {
+        setIsMembersListVisible(true);
+      }, 200);
     }
   }, [isCollapsed]);
 
@@ -106,7 +111,7 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
       {
         userState === "inCall" &&
         <button
-          className={`absolute top-[94px] right-[30px] rounded-full w-10 h-10 cursor-pointer hover:bg-slate-800 duration-300 transition-all ${isCollapsed ? "-rotate-180" : ""}`}
+          className={`absolute top-[94px] right-[30px] rounded-full w-10 h-10 cursor-pointer duration-300 transition-all ${isCollapsed ? "-rotate-180 bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800"}`}
           onClick={handleToogleChat}
         >
           <FontAwesomeIcon
@@ -187,7 +192,7 @@ function ChatSideBar({ userId, className, userState }: ChatSideBarProps) {
         }
         {/* users list */}
         {
-          userState === "inCall" && isCollapsed &&
+          userState === "inCall" && isMembersListVisible &&
           <div className='flex flex-col gap-4'>
             <AppAvatar />
             <AppAvatar />
