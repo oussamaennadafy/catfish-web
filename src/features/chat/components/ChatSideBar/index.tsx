@@ -50,15 +50,36 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
   }, [messagesList]);
 
   useEffect(() => {
+    const handleVisibiltyChange = () => {
+      if (!document.hidden && document.title !== "Catfishmeet") {
+        document.title = "Catfishmeet";
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibiltyChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibiltyChange);
+    }
+  }, []);
+
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
     const callback = (message: Message) => {
       if (isCollapsed) {
         setUsersHasNotificationsMap((prev) => ({
           ...prev,
           [message.userId]: true,
         }));
+        // clear audio if audio already playing
+        if(audioRef.current && !audioRef.current.paused) {
+          audioRef.current.pause();
+        } 
         // play notification sound
         const audioElement = new Audio("/audios/notification-sound.mp3");
         audioElement.play();
+        // change document title
+        document.title = "Catfishmeet (New Message)"
       }
       setMessagesList((prev) => {
         return [
@@ -128,7 +149,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
       {
         userState === "inCall" &&
         <button
-          className={`absolute top-[94px] right-[30px] rounded-full w-10 h-10 cursor-pointer duration-300 transition-all ${isCollapsed ? "-rotate-180 bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800"}`}
+          className={`absolute z-10 top-[94px] right-[30px] rounded-full w-10 h-10 cursor-pointer duration-300 transition-all ${isCollapsed ? "-rotate-180 bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800"}`}
           onClick={handleToogleChat}
         >
           <FontAwesomeIcon
