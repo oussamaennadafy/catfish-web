@@ -12,9 +12,9 @@ export default function Home() {
       setSelectedRoomType,
       userState,
       videoStreamsList,
+      isReady,
       isCameraOpen,
       isMicOpen,
-      isReady,
     },
     functions: {
       handleEndLive,
@@ -35,7 +35,6 @@ export default function Home() {
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
         userState={userState}
-        isMicOpen={isMicOpen}
         userId={userId}
       />
       <TabBar
@@ -46,9 +45,9 @@ export default function Home() {
         handleEndLive={handleEndLive}
         handleToggleCamera={handleToggleCamera}
         handleToggleMic={handleToggleMic}
+        isReady={isReady}
         isCameraOpen={isCameraOpen}
         isMicOpen={isMicOpen}
-        isReady={isReady}
       />
     </div>
   );

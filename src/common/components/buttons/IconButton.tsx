@@ -29,7 +29,7 @@ function IconButton({ icon, iconColor = "white", iconSize = "1x", onClick, child
     <button type={type} disabled={onClick ? false : true} className={`flex items-center justify-center ${icon ? "w-10" : ""} aspect-square h-10 p-2 border border-slate-800 ${isRounded ? "rounded-full" : "rounded-lg"} ${isActive ? "bg-[#46446B]" : backgroundColor} ${onClick ? "cursor-pointer" : ""} ${className}`} onClick={onClick}>
       {
         icon ?
-          <FontAwesomeIcon className={`text-lg ${iconBackgroundClassName}`} size={iconSize} icon={icon} />
+          <FontAwesomeIcon className={`text-lg transition-all duration-300 ${iconBackgroundClassName}`} size={iconSize} icon={icon} />
           : children
       }
     </button>

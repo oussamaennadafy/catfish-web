@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { RoomTypeEnum, CallFramContentType, userStateType } from "../types";
 import { useInit } from "./useInit";
 import { getInitialVideoStreamList } from "../helpers/getInitialVideoStreamList";
@@ -9,12 +9,10 @@ export const useHome = () => {
   const [selectedRoomType, setSelectedRoomType] = useState<RoomTypeEnum>(RoomTypeEnum.TWO_USERS);
   const [videoStreamsList, setVideoStreamsList] = useState<CallFramContentType[]>(getInitialVideoStreamList(selectedRoomType));
   const [userState, setUserState] = useState<userStateType>("noAction");
-
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(true);
-  const isCameraOpenRef = useRef<boolean>(true);
   const [isMicOpen, setIsMicOpen] = useState<boolean>(true);
 
-  const { userId, isReady, updateCallFram, peers, userStreamRef, toggleCallFramCamera, myPeerRef } = useInit({ setVideoStreamsList, userState, setUserState, videoStreamsList, isCameraOpen, isCameraOpenRef });
+  const { userId, isReady, updateCallFram, peers, userStreamRef } = useInit({ videoStreamsList, setVideoStreamsList, userState, setUserState, isCameraOpen, isMicOpen });
 
   const handleJoinNextRoom = useCallback(async () => {
     if (!isReady.isPeerOpen && !isReady.isUserReady) return;
@@ -31,7 +29,7 @@ export const useHome = () => {
         peers[peer].close();
         delete peers[peer];
       }
-      socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, userId);
+      socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM);
       // join room after complete leaving process
       socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
         socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, userId);
@@ -46,39 +44,35 @@ export const useHome = () => {
     }
     updateCallFram(1, "illustration");
     setUserState("noAction");
-    socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, userId);
-  }, [peers, updateCallFram, userId]);
-
-  const handleToggleMic = useCallback(() => {
-    // check if current user has stream
-    if (!userStreamRef) return;
-    // disable audio track from users stream
-    const audioTrack = (userStreamRef.current as MediaStream).getAudioTracks()[0];
-    audioTrack.enabled = !audioTrack.enabled;
-    // set state to update ui
-    setIsMicOpen((prev) => !prev);
-  }, [userStreamRef]);
+    socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM);
+  }, [peers, updateCallFram]);
 
   const handleToggleCamera = useCallback(() => {
-    // check if current user has stream
-    if (!userStreamRef) return;
+    if (!userStreamRef.current) return;
     // emit camera toggle event
-    socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_CAMERA, !isCameraOpen);
-    // disable video track from users stream
-    const videoTrack = (userStreamRef.current as MediaStream).getVideoTracks()[0];
-    videoTrack.enabled = !videoTrack.enabled;
-    // set state to update ui
-    setIsCameraOpen((prev) => !prev);
-    isCameraOpenRef.current = !isCameraOpenRef.current;
-    toggleCallFramCamera(0);
-  }, [isCameraOpen, userStreamRef, toggleCallFramCamera]);
+    socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_CAMERA, userId);
+    // update isCameraOpen on current user
+    setIsCameraOpen(prev => !prev);
+    // disable video track from the users stream
+    userStreamRef.current.getVideoTracks()[0].enabled = !userStreamRef.current.getVideoTracks()[0].enabled;
+  }, [userId, userStreamRef]);
 
-  const testFunc = () => {
+  const handleToggleMic = useCallback(() => {
+    if (!userStreamRef.current) return;
+    // emit mic toggle event
+    socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_MIC, userId);
+    // update isMicOpen on current user
+    setIsMicOpen(prev => !prev);
+    // disable audio track from users stream
+    userStreamRef.current.getAudioTracks()[0].enabled = !userStreamRef.current.getAudioTracks()[0].enabled;
+  }, [userId, userStreamRef]);
+
+  const testFunc = useCallback(() => {
     console.log({
-      myPeerRef: myPeerRef,
-      "socketUtils.getSocket()": socketUtils.getSocket()
+      getAudioTracks: userStreamRef.current?.getAudioTracks()[0],
+      getVideoTracks: userStreamRef.current?.getVideoTracks()[0],
     });
-  }
+  }, [userStreamRef])
 
   return {
     refs: {
@@ -89,9 +83,9 @@ export const useHome = () => {
       selectedRoomType,
       setSelectedRoomType,
       userState,
+      isReady,
       isCameraOpen,
       isMicOpen,
-      isReady,
     },
     functions: {
       handleJoinNextRoom,

@@ -10,11 +10,10 @@ type CallFramProps = {
   videoStreamsList: CallFramContentType[],
   selectedRoomType: RoomTypeEnum,
   userState: userStateType,
-  isMicOpen: boolean,
   userId: string,
 }
 
-function CallFram({ videoStreamsList, selectedRoomType, userState, isMicOpen, userId }: CallFramProps) {
+function CallFram({ videoStreamsList, selectedRoomType, userState, userId }: CallFramProps) {
   switch (selectedRoomType) {
     case RoomTypeEnum.TWO_USERS:
       return (
@@ -22,7 +21,7 @@ function CallFram({ videoStreamsList, selectedRoomType, userState, isMicOpen, us
           <TwoUsersCallFram
             videoStreamsList={videoStreamsList}
             userState={userState}
-            isMicOpen={isMicOpen}
+            userId={userId}
           />
           {/* chat sidebar */}
           <ChatSideBar

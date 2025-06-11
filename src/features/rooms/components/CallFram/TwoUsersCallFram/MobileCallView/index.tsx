@@ -10,7 +10,6 @@ type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
   userState: userStateType,
-  isMicOpen: boolean,
 }
 
 function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {

@@ -25,9 +25,9 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
       <div className='flex'>
         <IconButton
           icon={isMicOpen ? faMicrophone : faMicrophoneSlash}
+          isActive={!isMicOpen}
           className='md:rounded-r-none md:border-r-0'
           onClick={handleToggleMic}
-          isActive={!isMicOpen}
         />
         <IconButton
           icon={faEllipsisVertical}
@@ -39,9 +39,9 @@ function ButtonsSection({ selectedRoomType, setSelectedRoomType, handleEndLive, 
       <div className='flex'>
         <IconButton
           icon={isCameraOpen ? faVideo : faVideoSlash}
+          isActive={!isCameraOpen}
           className='md:rounded-r-none md:border-r-0'
           onClick={handleToggleCamera}
-          isActive={!isCameraOpen}
         />
         <IconButton
           icon={faEllipsisVertical}

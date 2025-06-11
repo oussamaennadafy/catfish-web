@@ -8,10 +8,10 @@ import CallView from '../CallView';
 type DesktopCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
-  isMicOpen: boolean,
+  userId?: string,
 }
 
-function DesktopCallView({ videoStreamsList, className }: DesktopCallViewProps) {
+function DesktopCallView({ videoStreamsList, className, userId }: DesktopCallViewProps) {
   return (
     <div
       className={`relative gap-3 h-full grid-cols-1 md:grid-cols-2 grid-rows-1 ${className}`}
@@ -31,6 +31,7 @@ function DesktopCallView({ videoStreamsList, className }: DesktopCallViewProps) 
                 key={callFram.id}
                 videoStream={callFram.content}
                 userFullName="Guest"
+                userId={userId}
               />
           }
         })

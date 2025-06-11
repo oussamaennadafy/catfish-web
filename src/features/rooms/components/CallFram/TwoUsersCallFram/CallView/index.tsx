@@ -3,15 +3,18 @@ import Video from '@/common/components/videos/Video';
 import { VideoStream } from '@/features/rooms/types';
 import React, { useMemo } from 'react';
 import CallFramAvatar from '../../CallFramStates/CallFramAvatar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeXmark } from '@fortawesome/free-solid-svg-icons';
 
 type CallViewProps = {
   borderWidth?: "none" | "Small" | "Meduim" | "Large",
   videoStream: VideoStream,
   imageSrc?: string,
   userFullName: string,
+  userId?: string,
 }
 
-function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }: CallViewProps) {
+function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, userId }: CallViewProps) {
   const borderWidthClassName = useMemo(() => {
     switch (borderWidth) {
       case "none":
@@ -23,7 +26,15 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
       case "Large":
         return "border-8"
     }
-  }, [borderWidth])
+  }, [borderWidth]);
+
+  const isMuted = useMemo(() => {
+    if (videoStream.userId === userId) {
+      return !videoStream.isMuted
+    }
+    return videoStream.isMuted;
+  }, [videoStream, userId]);
+
   return (
     <div className={`relative rounded-2xl overflow-hidden bg-cover bg-center ${borderWidthClassName} border-[#6B67C8]`}>
       <Video
@@ -41,10 +52,34 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName }:
         <p className='text-sm'>{`${userFullName} - ${videoStream.userId}`}</p>
       </div>
       {
-        !videoStream.isCameraOpen &&
-        //  audio fram overlay 
-        <div className='absolute top-0 left-0 right-0 bottom-0 w-full h-full'>
-          <CallFramAvatar />
+        // audio fram overlay 
+        <div className={`absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${videoStream.isCameraOpen ? "invisible opacity-0 pointer-events-none" : "visible opacity-100 pointer-events-auto"}`}>
+          <CallFramAvatar
+            isCameraOpen={videoStream.isCameraOpen}
+          />
+        </div>
+      }
+      {
+        // square muted overlay
+        <div className={`flex items-center justify-center absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${isMuted && videoStream.isCameraOpen ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"}`}>
+          <div className='flex justify-between items-center bg-slate-700/70 w-fit rounded-full px-4 py-2 gap-2 aspect-square'>
+            <FontAwesomeIcon
+              icon={faVolumeXmark}
+              className='w-10 text-slate-200'
+            />
+          </div>
+        </div>
+      }
+      {
+        // bottom text muted overlay
+        <div className={`flex items-end justify-center py-5 absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${isMuted && !videoStream.isCameraOpen ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"}`}>
+          <div className='flex justify-between items-center bg-slate-700/70 w-fit rounded-full px-4 py-2 gap-2'>
+            <FontAwesomeIcon
+              icon={faVolumeXmark}
+              className='w-4 text-slate-200'
+            />
+            <p className='font-sans'>Muted</p>
+          </div>
         </div>
       }
     </div>

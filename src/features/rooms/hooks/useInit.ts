@@ -1,6 +1,6 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { useHomeHelpers } from "./useHomeHelpers";
-import { CallFramContentType, userStateType } from "../types";
+import { CallFramContentType, userStateType, VideoStream } from "../types";
 import Peer, { MediaConnection } from "peerjs";
 import { RoomEvents } from "../constants/events";
 import socketUtils from "@/networking/socketUtils";
@@ -10,14 +10,14 @@ type useInitParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
   setUserState: Dispatch<SetStateAction<userStateType>>,
   videoStreamsList: CallFramContentType[],
-  isCameraOpen: boolean,
-  isCameraOpenRef: RefObject<boolean>,
   userState: userStateType,
+  isCameraOpen: boolean,
+  isMicOpen: boolean,
 }
 
-export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef, userState }: useInitParams) => {
+export const useInit = ({ setVideoStreamsList, setUserState, userState, isCameraOpen, isMicOpen }: useInitParams) => {
   const currentUserId = useRef(uuidv4()).current;
-  const { connectToNewUser, updateCallFram, toggleCallFramCamera } = useHomeHelpers({ setVideoStreamsList, setUserState, isCameraOpen, isCameraOpenRef, currentUserId });
+  const { connectToNewUser, updateCallFram } = useHomeHelpers({ setVideoStreamsList, setUserState, currentUserId, isCameraOpen, isMicOpen });
   const peers: Record<string, MediaConnection> = useMemo(() => ({}), []);
   const [isReady, setIsReady] = useState({
     isPeerOpen: false,
@@ -34,7 +34,7 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       secure: true,
     });
     myPeerRef.current = myPeer;
-    console.log({ "BASE_URL": process.env.BASE_URL });
+    // console.log({ "BASE_URL": process.env.BASE_URL });
 
     // request user media (audio and video)
     navigator.mediaDevices?.getUserMedia({
@@ -47,31 +47,42 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       // add video preview of the current user stream
       updateCallFram(0, { stream, isMuted: true, userId: currentUserId, isCameraOpen: true });
 
-      // set up listener if a new user call the current user
-      myPeer.on('call', call => {
-        // answer right away to the new user so he can enter
-        call.answer(stream);
-        // listen to the new user stream to show it to the current user
-        call.once('stream', userVideoStream => {
-          if (isCameraOpenRef.current === false) {
-            socketUtils.getSocket().emit("toggle-camera", isCameraOpenRef.current)
-          }
-          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: false, isCameraOpen: call.metadata.current });
-          setUserState("inCall");
-        })
-
-        call.on("close", () => {
-          updateCallFram(1, "loader");
-          setUserState("waiting");
-        })
-
-        peers[call.peer] = call;
-      })
-
       // listenner on future connected users
-      socketUtils.getSocket().on(RoomEvents.server.USER_JOINED, (userId) => {
-        connectToNewUser(userId.toString(), stream, myPeer, peers);
-      })
+      socketUtils.getSocket().on(RoomEvents.server.CAMERA_TOGGLED, (userId) => {
+        // update streams state
+        setVideoStreamsList((prev) => {
+          return prev.map((streamContent) => {
+            if ((streamContent?.content as VideoStream)?.userId === userId) {
+              return {
+                ...streamContent,
+                content: {
+                  ...(streamContent.content as VideoStream),
+                  isCameraOpen: !(streamContent.content as VideoStream).isCameraOpen,
+                }
+              }
+            }
+            return streamContent;
+          })
+        });
+      });
+
+      socketUtils.getSocket().on(RoomEvents.server.MIC_TOGGLED, (userId) => {
+        // update streams state
+        setVideoStreamsList((prev) => {
+          return prev.map((streamContent) => {
+            if ((streamContent?.content as VideoStream)?.userId === userId) {
+              return {
+                ...streamContent,
+                content: {
+                  ...(streamContent.content as VideoStream),
+                  isMuted: !(streamContent.content as VideoStream).isMuted,
+                }
+              }
+            }
+            return streamContent;
+          })
+        });
+      });
 
       setIsReady(prev => ({
         ...prev,
@@ -87,12 +98,6 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
         delete peers[userId];
       }
     })
-    // listen on disconnected users
-    socketUtils.getSocket().on('toggle-camera', () => {
-      setTimeout(() => {
-        toggleCallFramCamera(1);
-      }, 100);
-    })
 
     myPeer.on('open', () => {
       setIsReady(prev => ({
@@ -101,21 +106,76 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
       }));
     })
   }, []);
-  
+
+  useEffect(() => {
+    const callback = (userId: string) => {
+      if (!userStreamRef.current || !myPeerRef.current) return;
+      connectToNewUser(userId.toString(), userStreamRef.current, myPeerRef.current, peers, isCameraOpen, isMicOpen);
+    };
+    // listenner on future connected users
+    socketUtils.on(RoomEvents.server.USER_JOINED, callback as () => void);
+
+    return () => {
+      socketUtils.off(RoomEvents.server.USER_JOINED, callback as () => void);
+    }
+  }, [connectToNewUser, isCameraOpen, isMicOpen, peers])
+
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
+
+  useEffect(() => {
+    if (!myPeerRef.current) return;
+    // set up listener if a new user call the current user
+    const callback = (call: MediaConnection) => {
+      if (!userStreamRef.current) return;
+      // answer right away to the new user so he can enter
+      call.answer(userStreamRef.current);
+      // listen to the new user stream to show it to the current user
+      call.once('stream', (userVideoStream) => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        // on stream start toggle camera if needed
+        timeoutRef.current = setTimeout(() => {
+          if (isCameraOpen) {
+            socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_CAMERA, currentUserId, false);
+          }
+          if (!isMicOpen) {
+            socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_MIC, currentUserId, false);
+          }
+        }, 200);
+        updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: !call.metadata.isMicOpen, isCameraOpen: call.metadata.isCameraOpen });
+        setUserState("inCall");
+      })
+
+      call.on("close", () => {
+        updateCallFram(1, "loader");
+        setUserState("waiting");
+      })
+
+      peers[call.peer] = call;
+    }
+
+    myPeerRef.current.on('call', callback);
+
+    return () => {
+      myPeerRef.current?.off("call", callback);
+    }
+  }, [currentUserId, isCameraOpen, isMicOpen, peers, setUserState, updateCallFram]);
+
   useEffect(() => {
     let timeoutID: NodeJS.Timeout;
-    if(userState == "waiting") {
+    if (userState == "waiting") {
       timeoutID = setTimeout(() => {
-        socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM, currentUserId);
+        socketUtils.getSocket().emit(RoomEvents.client.LEAVE_ROOM);
         // join room after complete leaving process
         socketUtils.getSocket().once(RoomEvents.server.READY_TO_JOIN, () => {
           socketUtils.getSocket().emit(RoomEvents.client.JOIN_ROOM, currentUserId);
         })
       }, 5000);
     }
-    
+
     return () => {
-      if(userState == "waiting" && timeoutID) {
+      if (userState == "waiting" && timeoutID) {
         clearTimeout(timeoutID);
       }
     }
@@ -127,7 +187,6 @@ export const useInit = ({ setVideoStreamsList, setUserState, isCameraOpen, isCam
     peers,
     updateCallFram,
     userStreamRef,
-    toggleCallFramCamera,
     myPeerRef,
   }
 }

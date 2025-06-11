@@ -88,6 +88,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
         ]
       })
     };
+    
     socketUtils.on(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);
     return () => {
       socketUtils.off(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);

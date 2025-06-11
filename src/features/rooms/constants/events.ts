@@ -7,15 +7,15 @@ export const RoomEvents = {
     JOIN_ROOM: 'join-room',
     LEAVE_ROOM: 'leave-room',
     TOGGLE_CAMERA: 'toggle-camera',
+    TOGGLE_MIC: 'toggle-mic',
   },
   
   // Server events (sent from server to client)
   server: {
     USER_JOINED: 'user-joined',
     USER_DISCONNECTED: 'user-disconnected',
-    TOGGLE_CAMERA_UPDATE: 'toggle-camera',
-    ROOM_FULL: 'room-full',
-    MATCH_FOUND: 'match-found',
+    CAMERA_TOGGLED: 'camera-toggled',
+    MIC_TOGGLED: 'mic-toggled',
     READY_TO_JOIN: "ready-to-join"
   }
 } as const;

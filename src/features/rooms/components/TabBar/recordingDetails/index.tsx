@@ -19,7 +19,7 @@ function RecordingDetails({ isLive, handleEndLive }: RecordingDetailsProps) {
       <div className='flex'>
         <IconButton className='px-3 rounded-r-none'>
           <div className='flex items-center justify-center gap-3 transition-all'>
-            <div className={`w-2 h-2 rounded-full ${isLive ? "bg-red-500" : "bg-slate-500"}`} />
+            <div className={`w-2 h-2 rounded-full transition-all duration-200 ${isLive ? "bg-red-500" : "bg-slate-500"}`} />
             <p className='text-sm tracking-wide'>LIVE</p>
             {
               isLive &&

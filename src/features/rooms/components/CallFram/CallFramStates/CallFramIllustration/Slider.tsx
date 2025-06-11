@@ -11,10 +11,10 @@ type SliderProps = {
 
 const imageSize = 300;
 
-function Slider({ 
-  images = [], 
-  duration = 20, 
-  gap = 20, 
+function Slider({
+  images = [],
+  duration = 20,
+  gap = 20,
   direction = 'up',
   calssName,
 }: SliderProps) {
@@ -46,9 +46,9 @@ function Slider({
           }
         `}
       </style>
-      <div 
+      <div
         className="flex flex-col absolute w-full gap-5"
-        style={{ 
+        style={{
           animation: `${direction === 'up' ? 'slideUp' : 'slideDown'} ${duration}s linear infinite`,
         }}
       >
@@ -62,22 +62,22 @@ function Slider({
               // style={{ height: `${imageSize}px`, width: `${imageSize}px` }}
               priority
               className={`rounded-xl object-cover`}
-              src={{src: image, width: 300, height: 400}}
+              src={{ src: image, width: 300, height: 400 }}
               alt={`Slide ${index + 1}`}
-              />
+            />
           </div>
         ))}
         {/* Duplicate set for seamless loop */}
         {images.map((image, index) => (
           <div
-          key={`${image}-${index}-duplicate`}
-          className="w-full"
+            key={`${image}-${index}-duplicate`}
+            className="w-full"
           >
             <Image
               // style={{ height: `${imageSize}px`, width: `${imageSize}px`  }}
               priority
               className={`rounded-xl object-cover`}
-              src={{src: image, width: 300, height: 400}}
+              src={{ src: image, width: 300, height: 400 }}
               alt={`Slide ${index + 1}`}
             />
           </div>

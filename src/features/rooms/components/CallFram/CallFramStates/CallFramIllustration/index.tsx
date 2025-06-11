@@ -9,7 +9,7 @@ function CallFramIllustration() {
         calssName='flex md:hidden lg:flex'
         images={[
           "/images/persons/male/male-1.jpg",
-          "/images/persons/female/female-1.jpg",
+          "/images/persons/female/female-6.jpg",
           "/images/persons/male/male-2.jpg",
           "/images/persons/female/female-2.jpg",
           "/images/persons/male/male-3.jpg",
