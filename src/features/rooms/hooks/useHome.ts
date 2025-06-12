@@ -67,9 +67,6 @@ export const useHome = () => {
     userStreamRef.current.getAudioTracks()[0].enabled = !userStreamRef.current.getAudioTracks()[0].enabled;
   }, [userId, userStreamRef]);
 
-  const testFunc = useCallback(() => {
-  }, []);
-
   return {
     refs: {
       userId,
@@ -88,7 +85,6 @@ export const useHome = () => {
       handleEndLive,
       handleToggleMic,
       handleToggleCamera,
-      testFunc,
     },
   }
 }

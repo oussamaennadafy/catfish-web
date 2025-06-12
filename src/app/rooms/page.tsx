@@ -21,7 +21,6 @@ export default function Home() {
       handleJoinNextRoom,
       handleToggleCamera,
       handleToggleMic,
-      testFunc,
     },
     refs: {
       userId,
@@ -30,7 +29,7 @@ export default function Home() {
 
   return (
     <div className={`flex flex-col w-full h-full min-h-full max-h-full p-2 gap-2 md:p-4 md:gap-4`}>
-      <Header testFunc={testFunc} />
+      <Header />
       <CallFram
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
