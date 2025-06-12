@@ -120,8 +120,6 @@ export const useInit = ({ setVideoStreamsList, setUserState, userState, isCamera
     }
   }, [connectToNewUser, isCameraOpen, isMicOpen, peers])
 
-  const timeoutRef = useRef<NodeJS.Timeout>(null);
-
   useEffect(() => {
     if (!myPeerRef.current) return;
     // set up listener if a new user call the current user
@@ -131,20 +129,16 @@ export const useInit = ({ setVideoStreamsList, setUserState, userState, isCamera
       call.answer(userStreamRef.current);
       // listen to the new user stream to show it to the current user
       call.once('stream', (userVideoStream) => {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-        // on stream start toggle camera if needed
-        timeoutRef.current = setTimeout(() => {
+        socketUtils.once(RoomEvents.server.STREAM_STARTED, () => {
           if (isCameraOpen) {
             socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_CAMERA, currentUserId, false);
           }
           if (!isMicOpen) {
             socketUtils.getSocket().emit(RoomEvents.client.TOGGLE_MIC, currentUserId, false);
           }
-        }, 200);
-        updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: !call.metadata.isMicOpen, isCameraOpen: call.metadata.isCameraOpen });
-        setUserState("inCall");
+          updateCallFram(1, { stream: userVideoStream, userId: call.peer, isMuted: !call.metadata.isMicOpen, isCameraOpen: call.metadata.isCameraOpen });
+          setUserState("inCall");
+        });
       })
 
       call.on("close", () => {

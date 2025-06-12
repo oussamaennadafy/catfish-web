@@ -68,11 +68,7 @@ export const useHome = () => {
   }, [userId, userStreamRef]);
 
   const testFunc = useCallback(() => {
-    console.log({
-      getAudioTracks: userStreamRef.current?.getAudioTracks()[0],
-      getVideoTracks: userStreamRef.current?.getVideoTracks()[0],
-    });
-  }, [userStreamRef])
+  }, []);
 
   return {
     refs: {

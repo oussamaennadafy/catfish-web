@@ -5,6 +5,8 @@ import ThreeUsersCallFram from './ThreeUsersCallFram';
 import MoreThanThreeUsersCallFram from './MorrThanThreeUsersCallFram';
 import ShuffleCallFram from './ShuffleCallFram';
 import ChatSideBar from '../../../chat/components/ChatSideBar';
+import useDeviceSize from '@/utils/useDeviceSize';
+import ChatMobileOverlay from '@/features/chat/components/ChatMobileOverlay';
 
 type CallFramProps = {
   videoStreamsList: CallFramContentType[],
@@ -14,21 +16,32 @@ type CallFramProps = {
 }
 
 function CallFram({ videoStreamsList, selectedRoomType, userState, userId }: CallFramProps) {
+  const { lg } = useDeviceSize();
+
   switch (selectedRoomType) {
     case RoomTypeEnum.TWO_USERS:
       return (
-        <div className='w-full h-full max-h-full flex gap-3 transition-all'>
+        <div className='relative w-full h-full max-h-full flex gap-3 transition-all'>
           <TwoUsersCallFram
             videoStreamsList={videoStreamsList}
             userState={userState}
             userId={userId}
           />
           {/* chat sidebar */}
-          <ChatSideBar
-            userId={userId}
-            userState={userState}
-            videoStreamsList={videoStreamsList}
-          />
+          {
+            lg() ?
+              <ChatSideBar
+                userId={userId}
+                userState={userState}
+                videoStreamsList={videoStreamsList}
+              />
+              :
+              <ChatMobileOverlay
+                userState={userState}
+                userId={userId}
+                videoStreamsList={videoStreamsList}
+              />
+          }
         </div>
       )
     case RoomTypeEnum.THREE_USERS:

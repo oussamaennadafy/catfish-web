@@ -11,20 +11,21 @@ type CallFramProps = {
 }
 
 function TwoUsersCallFram({ videoStreamsList, userState, userId }: CallFramProps) {
-  const { isMobile } = useDeviceSize();
+  const { lg } = useDeviceSize();
 
   return <div className='h-full w-full'>
     {
-      isMobile() ?
-        <MobileCallView
-          videoStreamsList={videoStreamsList}
-          className='grid md:hidden'
-          userState={userState}
-        />
-        :
+      lg() ?
         <DesktopCallView
           videoStreamsList={videoStreamsList}
-          className='hidden md:grid'
+          className='hidden lg:grid'
+          userId={userId}
+        />
+        :
+        <MobileCallView
+          videoStreamsList={videoStreamsList}
+          className='grid lg:hidden'
+          userState={userState}
           userId={userId}
         />
     }

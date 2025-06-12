@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { CallFramContentType, userStateType, VideoStream } from "../types";
 import Peer, { MediaConnection } from "peerjs";
+import socketUtils from "@/networking/socketUtils";
+import { RoomEvents } from "../constants/events";
 
 type useHomeHelpersParams = {
   setVideoStreamsList: Dispatch<SetStateAction<CallFramContentType[]>>,
@@ -57,6 +59,7 @@ export const useHomeHelpers = ({ setVideoStreamsList, setUserState, currentUserI
 
     // listen to the new user stream to show it to the current user
     call.once('stream', (userVideoStream) => {
+      socketUtils.emit(RoomEvents.client.STREAM_STARTED, {});
       updateCallFram(1, { stream: userVideoStream, userId, isMuted: false, isCameraOpen: false });
       setUserState("inCall");
       // emit stream start

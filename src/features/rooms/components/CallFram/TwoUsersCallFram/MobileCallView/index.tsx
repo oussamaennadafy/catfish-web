@@ -10,9 +10,10 @@ type MobileCallViewProps = {
   videoStreamsList: CallFramContentType[],
   className?: string,
   userState: userStateType,
+  userId: string,
 }
 
-function MobileCallView({ videoStreamsList, className, userState }: MobileCallViewProps) {
+function MobileCallView({ videoStreamsList, className, userState, userId }: MobileCallViewProps) {
   return (
     <div
       className={`relative h-full grid-cols-1 grid-rows-1 ${className}`}
@@ -39,6 +40,8 @@ function MobileCallView({ videoStreamsList, className, userState }: MobileCallVi
                 key={callFram.id}
                 videoStream={callFram.content}
                 userFullName="Guest"
+                userId={userId}
+                isMobile={true}
               />
           }
         })

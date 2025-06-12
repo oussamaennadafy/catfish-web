@@ -8,6 +8,7 @@ export const RoomEvents = {
     LEAVE_ROOM: 'leave-room',
     TOGGLE_CAMERA: 'toggle-camera',
     TOGGLE_MIC: 'toggle-mic',
+    STREAM_STARTED: 'stream-started',
   },
   
   // Server events (sent from server to client)
@@ -16,7 +17,8 @@ export const RoomEvents = {
     USER_DISCONNECTED: 'user-disconnected',
     CAMERA_TOGGLED: 'camera-toggled',
     MIC_TOGGLED: 'mic-toggled',
-    READY_TO_JOIN: "ready-to-join"
+    READY_TO_JOIN: "ready-to-join",
+    STREAM_STARTED: 'stream-started',
   }
 } as const;
 

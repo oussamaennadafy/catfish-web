@@ -72,9 +72,9 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
           [message.userId]: true,
         }));
         // clear audio if audio already playing
-        if(audioRef.current && !audioRef.current.paused) {
+        if (audioRef.current && !audioRef.current.paused) {
           audioRef.current.pause();
-        } 
+        }
         // play notification sound
         const audioElement = new Audio("/audios/notification-sound.mp3");
         audioElement.play();
@@ -88,7 +88,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
         ]
       })
     };
-    
+
     socketUtils.on(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);
     return () => {
       socketUtils.off(ChatEvents.server.RECEIVE_MESSAGE, callback as () => void);
@@ -150,7 +150,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
       {
         userState === "inCall" &&
         <button
-          className={`absolute z-10 top-[94px] right-[30px] rounded-full w-10 h-10 cursor-pointer duration-300 transition-all ${isCollapsed ? "-rotate-180 bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800"}`}
+          className={`absolute z-10 top-[22px] right-[13px] rounded-full w-10 h-10 cursor-pointer duration-300 transition-all ${isCollapsed ? "-rotate-180 bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800"}`}
           onClick={handleToogleChat}
         >
           <FontAwesomeIcon
@@ -163,7 +163,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
         {/* header */}
         {
           userState === "inCall" && !isChatInvisible &&
-          <div className='flex py-4 px-4 h-20 gap-4 border-b border-slate-800'>
+          <div className={`flex py-4 px-4 gap-4 border-b border-slate-800 flex-wrap pr-14`}>
             <AppAvatar />
             <div>
               <h2 className='font-bold'>Guest</h2>
@@ -192,7 +192,7 @@ function ChatSideBar({ userId, className, userState, videoStreamsList }: ChatSid
                     className='mt-1'
                   />
                   <div>
-                    <p className='text-sm font-semibold text-slate-500'>Guest</p>
+                    <p className='text-sm font-semibold text-slate-500'>Guest {userId === message.userId ? "(you)" : ""}</p>
                     <p className='text-sm font-semibold text-slate-200'>{message.messageContent}</p>
                   </div>
                 </div>

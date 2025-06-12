@@ -12,9 +12,10 @@ type CallViewProps = {
   imageSrc?: string,
   userFullName: string,
   userId?: string,
+  isMobile?: boolean,
 }
 
-function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, userId }: CallViewProps) {
+function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, userId, isMobile }: CallViewProps) {
   const borderWidthClassName = useMemo(() => {
     switch (borderWidth) {
       case "none":
@@ -43,17 +44,17 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, u
         autoPlay
         className="h-full w-full object-cover -scale-x-100"
       />
-      <div className='absolute bottom-2 left-2 mr-2 flex items-center justify-between gap-2 bg-[rgba(0,0,0,0.5)] py-1 px-2 rounded-lg backdrop-blur-lg'>
+      <div className={`absolute ${isMobile ? "top-2" : "bottom-2"} left-2 flex items-center justify-between gap-2 bg-[rgba(0,0,0,0.5)] py-1 px-2 pr-3 rounded-lg backdrop-blur-lg`}>
         <AppAvatar
           rounded='large'
           src={imageSrc}
-          size={35}
+          size={30}
         />
-        <p className='text-sm'>{`${userFullName} - ${videoStream.userId}`}</p>
+        <p className='text-sm'>{`${userFullName}`}</p>
       </div>
       {
         // audio fram overlay 
-        <div className={`absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${videoStream.isCameraOpen ? "invisible opacity-0 pointer-events-none" : "visible opacity-100 pointer-events-auto"}`}>
+        <div className={`absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all pointer-events-none ${videoStream.isCameraOpen ? "invisible opacity-0" : "visible opacity-100"}`}>
           <CallFramAvatar
             isCameraOpen={videoStream.isCameraOpen}
           />
@@ -61,7 +62,7 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, u
       }
       {
         // square muted overlay
-        <div className={`flex items-center justify-center absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${isMuted && videoStream.isCameraOpen ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"}`}>
+        <div className={`flex items-center justify-center absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all pointer-events-none ${isMuted && videoStream.isCameraOpen ? "visible opacity-100" : "invisible opacity-0"}`}>
           <div className='flex justify-between items-center bg-slate-700/70 w-fit rounded-full px-4 py-2 gap-2 aspect-square'>
             <FontAwesomeIcon
               icon={faVolumeXmark}
@@ -72,13 +73,24 @@ function CallView({ borderWidth = "none", videoStream, imageSrc, userFullName, u
       }
       {
         // bottom text muted overlay
-        <div className={`flex items-end justify-center py-5 absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all ${isMuted && !videoStream.isCameraOpen ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"}`}>
+        <div className={`flex items-end justify-center py-5 absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all pointer-events-none ${isMuted && !videoStream.isCameraOpen && !isMobile ? "visible opacity-100" : "invisible opacity-0"}`}>
           <div className='flex justify-between items-center bg-slate-700/70 w-fit rounded-full px-4 py-2 gap-2'>
             <FontAwesomeIcon
               icon={faVolumeXmark}
               className='w-4 text-slate-200'
             />
             <p className='font-sans'>Muted</p>
+          </div>
+        </div>
+      }
+      {
+        // bottom text muted overlay
+        <div className={`flex items-end justify-center absolute top-0 left-0 right-0 bottom-0 w-full h-full transition-all pointer-events-none ${isMuted && !videoStream.isCameraOpen && isMobile ? "visible opacity-100" : "invisible opacity-0"}`}>
+          <div className='flex justify-between items-center bg-slate-700/70 w-fit rounded-full px-4 py-2 aspect-square transition-all absolute left-2 top-2'>
+            <FontAwesomeIcon
+              icon={faVolumeXmark}
+              className='w-4 text-slate-200'
+            />
           </div>
         </div>
       }
