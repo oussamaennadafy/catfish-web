@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
 import IconButton, { IconButtonProps } from '../buttons/IconButton'
 import { createPortal } from 'react-dom';
-import { RoomTypeEnum } from '@/features/callHub/types';
+import { RoomTypeEnum } from '@/features/rooms/types';
 
 type IconDropDownProps = {
   items: (IconButtonProps & { id: RoomTypeEnum })[],

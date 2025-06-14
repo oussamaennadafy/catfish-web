@@ -1,9 +1,9 @@
 "use client"
 
-import CallFram from "@/features/callHub/components/CallFram";
-import Header from "@/features/callHub/components/Header";
-import TabBar from "@/features/callHub/components/TabBar";
-import { useHome } from "@/features/callHub/hooks/useHome";
+import CallFram from "@/features/rooms/components/CallFram";
+import Header from "@/features/rooms/components/Header";
+import TabBar from "@/features/rooms/components/TabBar";
+import { useHome } from "@/features/rooms/hooks/useHome";
 
 export default function Home() {
   const {
@@ -12,25 +12,29 @@ export default function Home() {
       setSelectedRoomType,
       userState,
       videoStreamsList,
+      isReady,
       isCameraOpen,
       isMicOpen,
     },
     functions: {
-      handleAppFriend,
       handleEndLive,
       handleJoinNextRoom,
       handleToggleCamera,
       handleToggleMic,
+    },
+    refs: {
+      userId,
     }
   } = useHome();
+
   return (
-    <div className={`flex flex-col w-full h-full min-h-full p-2 gap-2 md:p-4 md:gap-4`}>
-      <Header handleAppFriend={handleAppFriend} />
+    <div className={`flex flex-col w-full h-full min-h-full max-h-full p-2 gap-2 md:p-4 md:gap-4`}>
+      <Header />
       <CallFram
         videoStreamsList={videoStreamsList}
         selectedRoomType={selectedRoomType}
         userState={userState}
-        isMicOpen={isMicOpen}
+        userId={userId}
       />
       <TabBar
         selectedRoomType={selectedRoomType}
@@ -40,6 +44,7 @@ export default function Home() {
         handleEndLive={handleEndLive}
         handleToggleCamera={handleToggleCamera}
         handleToggleMic={handleToggleMic}
+        isReady={isReady}
         isCameraOpen={isCameraOpen}
         isMicOpen={isMicOpen}
       />
