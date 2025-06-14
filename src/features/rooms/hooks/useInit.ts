@@ -34,7 +34,6 @@ export const useInit = ({ setVideoStreamsList, setUserState, userState, isCamera
       secure: true,
     });
     myPeerRef.current = myPeer;
-    // console.log({ "BASE_URL": process.env.BASE_URL });
 
     // request user media (audio and video)
     navigator.mediaDevices?.getUserMedia({

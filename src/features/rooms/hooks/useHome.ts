@@ -67,6 +67,12 @@ export const useHome = () => {
     userStreamRef.current.getAudioTracks()[0].enabled = !userStreamRef.current.getAudioTracks()[0].enabled;
   }, [userId, userStreamRef]);
 
+  const testFunc = () => {
+    console.log({ "BASE_URL": process.env.BASE_URL });
+    console.log({ "SOCKET_URL": process.env.SOCKET_URL });
+  }
+
+
   return {
     refs: {
       userId,
@@ -85,6 +91,7 @@ export const useHome = () => {
       handleEndLive,
       handleToggleMic,
       handleToggleCamera,
+      testFunc,
     },
   }
 }
