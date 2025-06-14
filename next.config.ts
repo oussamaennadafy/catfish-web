@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const PROD_URL = "http://ec2-44-204-42-93.compute-1.amazonaws.com";
+const PROD_URL = "https://ec2-44-204-42-93.compute-1.amazonaws.com";
 const DEV_URL = "http://localhost:3000";
 
 const BASE_URLS = {
