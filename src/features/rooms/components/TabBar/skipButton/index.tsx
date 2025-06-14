@@ -23,7 +23,7 @@ function SkipButton({ handleJoinNextRoom, userState, isReady }: SkipButtonProps)
       <IconButton
         icon={faQuestion}
         onClick={() => {}}
-        containerClassName='hidden md:flex'
+        className='hidden md:flex'
       />
     </div>
   )
