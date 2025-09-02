@@ -33,7 +33,7 @@
 
 CatfishMeet is a Next.js web client for discovering and connecting with people in real‑time video rooms. It combines Socket.IO for realtime signaling, PeerJS/WebRTC for low‑latency media, and a clean component architecture for multiple room layouts (2‑user, 3‑user, shuffle, etc.).
 
-> Production demo URL used by the client: `https://demo.catfishmeet.live`
+> Production demo URL used by the client: `https://www.catfishmeet.live`
 
 ### 🔥 Features
 
