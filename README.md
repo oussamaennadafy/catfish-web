@@ -29,6 +29,10 @@
 
 ---
 
+<div align="center">
+  <img src="public/images/Screenshot-preview.png" alt="CatfishMeet Preview" width="800" />
+</div>
+
 ### ✨ Overview
 
 CatfishMeet is a Next.js web client for discovering and connecting with people in real‑time video rooms. It combines Socket.IO for realtime signaling, PeerJS/WebRTC for low‑latency media, and a clean component architecture for multiple room layouts (2‑user, 3‑user, shuffle, etc.).
