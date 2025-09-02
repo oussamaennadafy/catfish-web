@@ -67,23 +67,6 @@ src/
 
 The client maintains a Socket.IO connection for room coordination and uses PeerJS for WebRTC media between matched peers. Media state (camera/mic) is synchronized through socket events.
 
-```mermaid
-flowchart LR
-  subgraph Client[CatfishMeet Web]
-    UI[Next.js UI]
-    Hook[useHome/useInit]
-    Socket[socketUtils (Socket.IO)]
-    Peer[PeerJS]
-  end
-
-  UI <--> Hook
-  Hook <--> Socket
-  Hook <--> Peer
-
-  Socket <-- Signaling & Events --> SIO[Socket.IO Server]
-  Peer <-- WebRTC Streams --> Peer
-```
-
 ## 🔧 Environment
 
 The client reads environment variables via Next.js config.
