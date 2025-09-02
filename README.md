@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="public/icons/logo.svg" alt="CatfishMeet Logo" height="72" />
+  <img src="public/icons/logo-new.svg" alt="CatfishMeet Logo" height="72" />
 
   <h2>CatfishMeet • Real‑time Social Video Rooms</h2>
 

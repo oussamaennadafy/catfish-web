@@ -11,7 +11,7 @@ function Header({ testFunc }: HeaderProps) {
   return (
     <div className='relative flex items-center justify-between max-h-10'>
       <Image
-        src="/icons/logo.svg"
+        src="/icons/logo-new.svg"
         priority
         width={40}
         height={40}
